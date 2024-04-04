@@ -1,19 +1,18 @@
 'use client';
 import { ChevronFirst, ChevronLast, MoreVertical } from "lucide-react";
 import { createContext, useContext, useState } from "react";
-import { LayoutDashboard, Home, StickyNote, Layers, Flag, Calendar, LifeBuoy, Settings } from "lucide-react";
+import { Warehouse, Utensils, FileLineChart, LockKeyhole, Flag, BriefcaseBusiness, LifeBuoy, Settings } from "lucide-react";
 
 const SidebarContext = createContext();
 
 export default function Sidebar() {
   const [expanded, setExpanded] = useState(true);
-
   const sidebarItems = [
-    { icon: <Home size={20} />, text: "POS", alert: true },
-    { icon: <LayoutDashboard size={20} />, text: "Inventario", active: true },
-    { icon: <StickyNote size={20} />, text: "Reportes", alert: true },
-    { icon: <Calendar size={20} />, text: "Empleados" },
-    { icon: <Layers size={20} />, text: "Tasks" },
+    { icon: <Utensils size={20} />, text: "POS",  },
+    { icon: <Warehouse size={20} />, text: "Inventario", },
+    { icon: <FileLineChart size={20} />, text: "Reportes", },
+    { icon: <BriefcaseBusiness size={20} />, text: "Empleados" },
+    { icon: <LockKeyhole size={20} />, text: "Seguridad" },
     { icon: <Flag size={20} />, text: "Reporting" },
     { icon: <hr className="my-3" /> },
     { icon: <Settings size={20} />, text: "Settings" },
@@ -83,9 +82,7 @@ export function SidebarItem({ icon, text, active, alert }) {
       <span className={`overflow-hidden transition-all ${expanded ? "w-52 ml-3" : "w-0"}`}>
         {text}
       </span>
-      {alert && (
-        <div className={`absolute right-2 w-2 h-2 rounded bg-yellow-400 ${expanded ? "" : "top-2"}`}></div>
-      )}
+      
 
       {!expanded && (
         <div
