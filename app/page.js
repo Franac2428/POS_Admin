@@ -1,10 +1,12 @@
 import Image from "next/image";
+import Buscador from "./components/buscador";
 
 export default function login(){
     return(
-    <div className="flex w-full h-screen">
-        hola
-    </div>
+        <>
+        
+        
+    </>
     );
 
 }
