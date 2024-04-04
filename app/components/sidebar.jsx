@@ -1,4 +1,5 @@
 'use client';
+import Link from "next/link";
 import { ChevronFirst, ChevronLast, MoreVertical } from "lucide-react";
 import { createContext, useContext, useState } from "react";
 import { Warehouse, Utensils, FileLineChart, LockKeyhole, Flag, BriefcaseBusiness, LifeBuoy, Settings } from "lucide-react";
@@ -8,8 +9,8 @@ const SidebarContext = createContext();
 export default function Sidebar() {
   const [expanded, setExpanded] = useState(true);
   const sidebarItems = [
-    { icon: <Utensils size={20} />, text: "POS",  },
-    { icon: <Warehouse size={20} />, text: "Inventario", },
+    { icon: <Utensils size={20} />, text: "POS",link:"/menu"  },
+    { icon: <Warehouse size={20} />, text: "Inventario",link:"/inventario"   },
     { icon: <FileLineChart size={20} />, text: "Reportes", },
     { icon: <BriefcaseBusiness size={20} />, text: "Empleados" },
     { icon: <LockKeyhole size={20} />, text: "Seguridad" },
@@ -68,8 +69,10 @@ export default function Sidebar() {
   );
 }
 
-export function SidebarItem({ icon, text, active, alert }) {
+export function SidebarItem({ icon, text, active, link }) {
   const { expanded } = useContext(SidebarContext);
+  const MenuItem = link ? Link : 'div';
+
   return (
     <li
       className={`relative flex items-center py-2 px-3 my-1 font-medium rounded-md cursor-pointer transition-colors group ${
@@ -78,11 +81,12 @@ export function SidebarItem({ icon, text, active, alert }) {
           : "hover:bg-yellow-50 text-gray-600"
       }`}
     >
-      {icon}
-      <span className={`overflow-hidden transition-all ${expanded ? "w-52 ml-3" : "w-0"}`}>
-        {text}
-      </span>
-      
+      <MenuItem className="flex" href={link}>
+          {icon}
+          <span className={`overflow-hidden transition-all ${expanded ? "ml-3" : "w-0"}`}>
+            {text}
+          </span>
+      </MenuItem>
 
       {!expanded && (
         <div
