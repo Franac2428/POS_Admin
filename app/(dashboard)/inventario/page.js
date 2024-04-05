@@ -1,9 +1,9 @@
 'use client';
 
 import {  SlidersHorizontal,FileUp, CirclePlus,Pencil,Trash } from "lucide-react";
-import Buscador from "../components/buscador";
+import Buscador from "../../components/buscador";
 import { useState } from "react"
-import Eliminar from "../components/eliminarProducto"
+import Eliminar from "../../components/eliminarProducto"
 
 
 

@@ -1,5 +1,5 @@
-import CartaComida from "../components/cartaComida";
-import Orden from "../components/orden";
+import CartaComida from "../../components/cartaComida";
+import Orden from "../../components/orden";
 
 export default function App() {
   return (

@@ -1,5 +1,5 @@
 import Image from "next/image";
-
+import Link from "next/link"
 export default function login(){
     return(
     <div className="flex w-full h-screen">
@@ -23,8 +23,8 @@ export default function login(){
                         />
                     </div>
                     <div className='flex flex-col mt-4'>    
-                        <a href="./menu" className='active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform py-4 bg-custom-yellow rounded-xlz
-                         text-white font-bold text-lg' >Ingresar</a>
+                        <Link href="./menu" className='active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform py-4 bg-custom-yellow rounded-xl
+                         text-white font-bold text-center text-lg' >Ingresar</Link>
                    
                     </div>
                     <div className='mt-4'>  
