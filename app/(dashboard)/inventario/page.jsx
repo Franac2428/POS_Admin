@@ -1,10 +1,10 @@
 'use client';
 
-import {  SlidersHorizontal,FileUp, CirclePlus,Pencil,Trash } from "lucide-react";
-import Buscador from "../../components/buscador";
-import { useState } from "react"
-import Eliminar from "../../components/eliminarProducto"
-import Agregar from "@/app/components/crearProducto";
+import Agregar from "@/app/components/inventario/crearProducto";
+import { CirclePlus, FileUp, Pencil, SlidersHorizontal, Trash } from "lucide-react";
+import { useState } from "react";
+import Eliminar from "../../components/inventario/eliminarProducto";
+import Buscador from "../../components/pos/buscador";
 
 export default function inventario() {
   const [open, setOpen] = useState(false);
