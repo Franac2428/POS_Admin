@@ -4,12 +4,13 @@ import {  SlidersHorizontal,FileUp, CirclePlus,Pencil,Trash } from "lucide-react
 import Buscador from "../../components/buscador";
 import { useState } from "react"
 import Eliminar from "../../components/eliminarProducto"
-
-
-
+import Agregar from "@/app/components/crearProducto";
 
 export default function inventario() {
   const [open, setOpen] = useState(false);
+  const [agregar, setAgregar] = useState(false);
+  
+
   return (
     <>
     
@@ -22,8 +23,8 @@ export default function inventario() {
           <div className="col-start-8 col-span-3 ">
             <div className="flex justify-end gap-6">
               <button className="active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform shadow-sm bg-white px-3 py-1 rounded-md"><SlidersHorizontal/></button>
-              <button className="flex items-center gap-4 shadow-sm active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform
-                 text-white font-semibold bg-verde px-4 py-1 rounded-md relative flex-1">                  
+              <button  className="flex items-center gap-4 shadow-sm active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform
+                 text-white font-semibold bg-verde px-4 py-1 rounded-md relative flex-1" onClick={() => setAgregar(true)} >                  
                     <CirclePlus className=" text-white-800"/>
                     <div className="">Agregar</div>
                 </button>
@@ -62,8 +63,8 @@ export default function inventario() {
                   <td className="p-3 text-center text-sm text-gray-900 whitespace-nowrap">16/10/2021</td>
                   <td className="p-3 text-center text-sm text-gray-900 whitespace-nowrap">Bebidas</td>
                   <td className=" flex gap-1 justify-evenly my-1 whitespace-nowrap">
-                    <button className="p-1.5 text-gray-900 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-blue-600 bg-opacity-50 rounded-md "><Pencil size={15}  strokeWidth={2.2}/></button>
-                    <button className="p-1.5 text-gray-900 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-red-600 bg-opacity-50 rounded-md "><Trash size={15} strokeWidth={2.2} /> </button>
+                    <button className="p-1.5 text-gray-900 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-blue-600 bg-opacity-50 rounded-md " onClick={() => setAgregar(true)}><Pencil size={15}  strokeWidth={2.2}/></button>
+                    <button className="p-1.5 text-gray-900 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-red-600 bg-opacity-50 rounded-md"  onClick={() => setOpen(true)}><Trash size={15} strokeWidth={2.2} /> </button>
                   </td>
                 </tr>
                 <tr className="">
@@ -79,7 +80,7 @@ export default function inventario() {
                   <td className="p-3 text-center text-sm text-gray-900 whitespace-nowrap">16/10/2021</td>
                   <td className="p-3 text-center text-sm text-gray-900 whitespace-nowrap">Verduras</td>
                   <td className=" flex gap-1 justify-evenly my-1 whitespace-nowrap">
-                    <button className="p-1.5 text-gray-900 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-blue-600 bg-opacity-50 rounded-md "><Pencil size={15}  strokeWidth={2.2}/></button>
+                  <button className="p-1.5 text-gray-900 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-blue-600 bg-opacity-50 rounded-md "onClick={() => setAgregar(true)}><Pencil size={15}  strokeWidth={2.2}/></button>
                     <button className="p-1.5 text-gray-900 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-red-600 bg-opacity-50 rounded-md"  onClick={() => setOpen(true)}><Trash size={15} strokeWidth={2.2} /> </button>
                   </td>
                 </tr>
@@ -96,7 +97,7 @@ export default function inventario() {
                   <td className="p-3 text-center text-sm text-gray-900 whitespace-nowrap">16/10/2021</td>
                   <td className="p-3 text-center text-sm text-gray-900 whitespace-nowrap">Carnes</td>
                   <td className=" flex gap-1 justify-evenly my-1 whitespace-nowrap">
-                    <button className="p-1.5 text-gray-900 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-blue-600 bg-opacity-50 rounded-md "><Pencil size={15}  strokeWidth={2.2}/></button>
+                  <button className="p-1.5 text-gray-900 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-blue-600 bg-opacity-50 rounded-md "onClick={() => setAgregar(true)}><Pencil size={15}  strokeWidth={2.2}/></button>
                     <button className="p-1.5 text-gray-900 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-red-600 bg-opacity-50 rounded-md"  onClick={() => setOpen(true)}><Trash size={15} strokeWidth={2.2} /> </button>
                   </td>
                 </tr>
@@ -113,7 +114,7 @@ export default function inventario() {
                   <td className="p-3 text-center text-sm text-gray-900 whitespace-nowrap">16/10/2021</td>
                   <td className="p-3 text-center text-sm text-gray-900 whitespace-nowrap">Carnes</td>
                   <td className=" flex gap-1 justify-evenly my-1 whitespace-nowrap">
-                    <button className="p-1.5 text-gray-900 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-blue-600 bg-opacity-50 rounded-md "><Pencil size={15}  strokeWidth={2.2}/></button>
+                  <button className="p-1.5 text-gray-900 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-blue-600 bg-opacity-50 rounded-md "onClick={() => setAgregar(true)}><Pencil size={15}  strokeWidth={2.2}/></button>
                     <button className="p-1.5 text-gray-900 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-red-600 bg-opacity-50 rounded-md"  onClick={() => setOpen(true)}><Trash size={15} strokeWidth={2.2} /> </button>
                   </td>
                 </tr>              
@@ -122,6 +123,8 @@ export default function inventario() {
           </div>
         </div>  
         <Eliminar open={open} onClose={() => setOpen(false)}/>
+        <Agregar open={agregar} onClose={() => setAgregar(false)}/>
+
     
       </div>      
     </>

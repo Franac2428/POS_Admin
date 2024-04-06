@@ -11,13 +11,11 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-            <body className={roboto.className}>        
-
+        <body className={roboto.className}>       
           <div className="w-full h-screen flex flex-col">
-          {children}
+            {children}
 
-          </div>
-          
+          </div>          
         </body>
     </html>
 

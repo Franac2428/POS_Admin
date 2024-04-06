@@ -1,4 +1,4 @@
-import { X } from "lucide-react";
+import { X,CircleAlert } from "lucide-react";
 import {Toaster, toast} from 'sonner'
 
 export default function Eliminar({ open, onClose }) {
@@ -19,7 +19,7 @@ export default function Eliminar({ open, onClose }) {
                     <X /></button>
                     <div className="w-full">
             <div className="mx-5 my-4 w-full">
-              <h2 className="text-lg font-bold text-gray-900">Confirmar eliminación</h2>
+              <h2 className="text-xl font-bold flex gap-3 text-center text-red-500"><CircleAlert/>Confirmar eliminación</h2>
               <hr className="my-3 mr-7 py-0.2 border border-black"></hr>
               <p className="text-md text-gray-800">
                 ¿Seguro que desea eliminar este producto?
