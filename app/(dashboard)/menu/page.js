@@ -1,5 +1,5 @@
-import CartaComida from "../components/cartaComida";
-import Orden from "../components/orden";
+import CartaComida from "../../components/cartaComida";
+import Orden from "../../components/orden";
 
 export default function App() {
   return (
@@ -11,7 +11,7 @@ export default function App() {
           <div className="flex flex-col justify-around">
             <div className="flex flex-col mb-3">
               <h1 className="font-semibold pt-4" style={{ fontSize: "28px" }}>Menú</h1>
-              <div className="py-4 bg-white rounded-md ">
+              <div className="py-4 shadow-sm bg-white rounded-md ">
               <ul className="flex justify-evenly items-center">
               <li className="font-semibold border-2 border-custom-yellow rounded  bg-yellow-100 p-2 -yellow-800">Todos</li>
                   <li className="font-semibold  p-2 hover:bg-yellow-100 hover:border-2 border-custom-yellow rounded ">Combos</li>
@@ -71,7 +71,7 @@ export default function App() {
                 </div>
             </div>  
             <div className='flex flex-col pb-8 mt-4 px-12'>    
-                         <button className='active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform py-2 rounded-xl text-white font-bold text-lg'style={{ backgroundColor: '#09AA29' }}>Cancelar Pago</button>
+                         <button className='active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform py-2 rounded-xl text-white font-bold text-lg bg-verde'>Cancelar Pago</button>
                    
             </div>
             </div>

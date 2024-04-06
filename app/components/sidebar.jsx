@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { ChevronFirst, ChevronLast, MoreVertical } from "lucide-react";
 import { createContext, useContext, useState } from "react";
-import { Warehouse, Utensils, FileLineChart, LockKeyhole, Flag, BriefcaseBusiness, LifeBuoy, Settings } from "lucide-react";
+import { Warehouse, Utensils, FileLineChart, LockKeyhole, Flag, BriefcaseBusiness, LifeBuoy, Settings,Truck} from "lucide-react";
 
 const SidebarContext = createContext();
 
@@ -14,7 +14,7 @@ export default function Sidebar() {
     { icon: <FileLineChart size={20} />, text: "Reportes", },
     { icon: <BriefcaseBusiness size={20} />, text: "Empleados" },
     { icon: <LockKeyhole size={20} />, text: "Seguridad" },
-    { icon: <Flag size={20} />, text: "Reporting" },
+    { icon: <Truck size={20} />, text: "Pedidos" },
     { icon: <hr className="my-3" /> },
     { icon: <Settings size={20} />, text: "Settings" },
     { icon: <LifeBuoy size={20} />, text: "Help" },
@@ -55,9 +55,9 @@ export default function Sidebar() {
               }`}
             >
               <div className="leading-4">
-                <h4 className="font-semibold">constGenius</h4>
+                <h4 className="font-semibold">Grupo03</h4>
                 <span className="text-xs text-gray-600">
-                  constgenius@gmail.com
+                  Grupo3
                 </span>
               </div>
               <MoreVertical size={20} />
