@@ -1,20 +1,20 @@
 'use client';
+import Link from "next/link";
 import { ChevronFirst, ChevronLast, MoreVertical } from "lucide-react";
 import { createContext, useContext, useState } from "react";
-import { LayoutDashboard, Home, StickyNote, Layers, Flag, Calendar, LifeBuoy, Settings } from "lucide-react";
+import { Warehouse, Utensils, FileLineChart, LockKeyhole, Flag, BriefcaseBusiness, LifeBuoy, Settings,Truck} from "lucide-react";
 
 const SidebarContext = createContext();
 
 export default function Sidebar() {
   const [expanded, setExpanded] = useState(true);
-
   const sidebarItems = [
-    { icon: <Home size={20} />, text: "POS", alert: true },
-    { icon: <LayoutDashboard size={20} />, text: "Inventario", active: true },
-    { icon: <StickyNote size={20} />, text: "Reportes", alert: true },
-    { icon: <Calendar size={20} />, text: "Empleados" },
-    { icon: <Layers size={20} />, text: "Tasks" },
-    { icon: <Flag size={20} />, text: "Reporting" },
+    { icon: <Utensils size={20} />, text: "POS",link:"/menu"  },
+    { icon: <Warehouse size={20} />, text: "Inventario",link:"/inventario"   },
+    { icon: <FileLineChart size={20} />, text: "Reportes", },
+    { icon: <BriefcaseBusiness size={20} />, text: "Empleados" },
+    { icon: <LockKeyhole size={20} />, text: "Seguridad" },
+    { icon: <Truck size={20} />, text: "Pedidos" },
     { icon: <hr className="my-3" /> },
     { icon: <Settings size={20} />, text: "Settings" },
     { icon: <LifeBuoy size={20} />, text: "Help" },
@@ -55,9 +55,9 @@ export default function Sidebar() {
               }`}
             >
               <div className="leading-4">
-                <h4 className="font-semibold">constGenius</h4>
+                <h4 className="font-semibold">Grupo03</h4>
                 <span className="text-xs text-gray-600">
-                  constgenius@gmail.com
+                  Grupo3
                 </span>
               </div>
               <MoreVertical size={20} />
@@ -69,8 +69,10 @@ export default function Sidebar() {
   );
 }
 
-export function SidebarItem({ icon, text, active, alert }) {
+export function SidebarItem({ icon, text, active, link }) {
   const { expanded } = useContext(SidebarContext);
+  const MenuItem = link ? Link : 'div';
+
   return (
     <li
       className={`relative flex items-center py-2 px-3 my-1 font-medium rounded-md cursor-pointer transition-colors group ${
@@ -79,13 +81,12 @@ export function SidebarItem({ icon, text, active, alert }) {
           : "hover:bg-yellow-50 text-gray-600"
       }`}
     >
-      {icon}
-      <span className={`overflow-hidden transition-all ${expanded ? "w-52 ml-3" : "w-0"}`}>
-        {text}
-      </span>
-      {alert && (
-        <div className={`absolute right-2 w-2 h-2 rounded bg-yellow-400 ${expanded ? "" : "top-2"}`}></div>
-      )}
+      <MenuItem className="flex" href={link}>
+          {icon}
+          <span className={`overflow-hidden transition-all ${expanded ? "ml-3" : "w-0"}`}>
+            {text}
+          </span>
+      </MenuItem>
 
       {!expanded && (
         <div
