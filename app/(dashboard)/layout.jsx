@@ -1,5 +1,6 @@
 import { Roboto } from "next/font/google";
 import Sidebar from "../components/sidebar";
+import Footer from '../components/footer';
 import "../globals.css";
 import { ThemeProvider } from "../components/theme/ThemeProvider";
 import Script from 'next/script'
@@ -28,5 +29,6 @@ export default function RootLayout({ children }) {
         <Toaster richColors />
       </body>
     </ThemeProvider>
+
   );
 }

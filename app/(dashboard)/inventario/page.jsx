@@ -5,6 +5,7 @@ import Eliminar from "../../components/inventario/eliminarProducto";
 import Buscador from "../../components/pos/buscador";
 import { CirclePlus, FileUp, Pencil, SlidersHorizontal, Trash } from "lucide-react";
 import { useState } from "react";
+import Filtro from "../../components/inventario/filtro";
 
 export default function Inventario() {
   const [open, setOpen] = useState(false);
@@ -20,6 +21,7 @@ export default function Inventario() {
           </div>
           <div className="col-start-8 col-span-3">
             <div className="flex justify-end gap-6">
+
               <button className="transition-transform ease-in-out duration-75 hover:scale-105 active:scale-95 transform shadow-lg bg-white dark:bg-gray-700 px-3 py-2 rounded-lg">
                 <SlidersHorizontal className="text-gray-500 dark:text-gray-400" />
               </button>
