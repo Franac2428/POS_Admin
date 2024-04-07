@@ -1,12 +1,10 @@
 import Image from "next/image";
 
-export default function login(){
-    return(
+export default function login() {
+    return (
         <>
-        <a href="/login">Login</a>
-        
-        
-    </>
+            <a href="/login">Login</a>
+        </>
     );
 
 }

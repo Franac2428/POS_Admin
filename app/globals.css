@@ -3,9 +3,35 @@
 @tailwind utilities;
 
 
-body{
+body {
   background: #f1f1f1;
 }
+
 .dashed-border {
   border-bottom: 1px dashed black;
+}
+
+
+/*CUSTOM
+
+/* width */
+::-webkit-scrollbar {
+  width: 3px;
+  height: 3px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  border-radius: 2px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgb(255, 242, 0);
+  border-radius: 8px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(255, 255, 0);
 }
