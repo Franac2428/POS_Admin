@@ -2,6 +2,9 @@
 import Link from "next/link";
 import { ChevronFirst, ChevronLast, MoreVertical } from "lucide-react";
 import { createContext, useContext, useState } from "react";
+import { Warehouse, Utensils, FileLineChart, LockKeyhole, Flag, BriefcaseBusiness, LifeBuoy, Settings, BadgeCent, Truck } from "lucide-react";
+import ThemeButton from "./theme/ChangeTheme";
+
 import { Warehouse, Utensils, FileLineChart, LockKeyhole, Flag, BriefcaseBusiness, LifeBuoy, Settings, Truck } from "lucide-react";
 
 const SidebarContext = createContext();
@@ -11,8 +14,10 @@ export default function Sidebar() {
   const sidebarItems = [
     { icon: <Utensils size={20} />, text: "POS", link: "/menu" },
     { icon: <Warehouse size={20} />, text: "Inventario", link: "/inventario" },
-    { icon: <FileLineChart size={20} />, text: "Reportes", link: "/reporteria" },
-    { icon: <BriefcaseBusiness size={20} />, text: "Empleados", link: "/empleado" },
+
+    { icon: <FileLineChart size={20} />, text: "Reportes", },
+    { icon: <BadgeCent size={20} />, text: "Transacciones", link: "/transacciones" },
+    { icon: <BriefcaseBusiness size={20} />, text: "Empleados" },
     { icon: <LockKeyhole size={20} />, text: "Seguridad" },
     { icon: <Truck size={20} />, text: "Pedidos",link:"/pedido"  },
     { icon: <hr className="my-3" /> },
@@ -23,42 +28,38 @@ export default function Sidebar() {
   return (
     <>
       <aside className="h-screen">
-        <nav className="h-full flex flex-col bg-white border-r shadow-sm">
+        <nav className="h-full flex flex-col bg-white dark:bg-gray-800 border-r shadow-sm">
           <div className="p-4 pb-2 flex justify-between items-center bg-custom-yellow">
-            <img
-              src="/nombre.png"
-              className={`overflow-hidden transition-all ${expanded ? "w-32" : "w-0"
-                }`}
-            />
+            <img src="/nombre.png" className={`overflow-hidden transition-all ${expanded ? "w-32" : "w-0"}`} />
 
             <button
-              onClick={() => setExpanded((curr) => !curr)}
+              onClick={() => setExpanded(!expanded)}
               className="p-1.5 rounded-lg bg-custom-yellow hover:bg-yellow-600"
             >
               {expanded ? <ChevronFirst /> : <ChevronLast />}
             </button>
           </div>
 
-          <SidebarContext.Provider value={{ expanded }}>
-            <ul className="flex-1 px-3">
-              {sidebarItems.map((item, index) => (
-                <SidebarItem key={index} {...item} />
-              ))}
-            </ul>
-          </SidebarContext.Provider>
+          <ul className="flex-1 px-3">
+            {sidebarItems.map((item, index) => (
+              <SidebarItem key={index} expanded={expanded} {...item} />
+            ))}
+          </ul>
 
-          <div className="border-t flex p-3">
-            <div
-              className={`flex justify-between items-center overflow-hidden transition-all ${expanded ? "w-52 ml-3" : "w-0"
-                }`}
-            >
-              <div className="leading-4">
+          <div className="border-t border-gray-400 dark:border-gray-200  flex p-3">
+            <div className={`flex justify-between items-center overflow-hidden transition-all ${expanded ? "w-52 ml-3" : "w-0"}`}>
+              <div className="leading-4 text-gray-700 dark:text-white">
                 <h4 className="font-semibold">Grupo03</h4>
                 <span className="text-xs text-gray-600">
                   Grupo3
                 </span>
               </div>
-              <MoreVertical size={20} />
+              <div className="flex flex-row space-x-2">
+                <ThemeButton />
+                <button class="inline-flex items-center p-2 text-sm font-medium text-gray-500 rounded-lg dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-600">
+                  <MoreVertical size={16} />
+                </button>
+              </div>
             </div>
           </div>
         </nav>
@@ -67,16 +68,13 @@ export default function Sidebar() {
   );
 }
 
-export function SidebarItem({ icon, text, active, link }) {
-  const { expanded } = useContext(SidebarContext);
+export function SidebarItem({ icon, text, active, link, expanded }) {
   const MenuItem = link ? Link : 'div';
 
   return (
     <li
-      className={`relative flex items-center py-2 px-3 my-1 font-medium rounded-md cursor-pointer transition-colors group ${active
-        ? "bg-gradient-to-tr from-yellow-200 to-yellow-100 text-yellow-800"
-        : "hover:bg-yellow-50 text-gray-600"
-        }`}
+      className={`relative flex items-center py-2 px-3 my-1 font-medium rounded-md cursor-pointer transition-colors group ${active ? "bg-yellow-100 hover:bg-yellow-50 text-gray-400 dark:hover:bg-yellow-400 dark:bg-yellow-600 dark:text-gray-200" : "hover:bg-yellow-200 dark:hover:bg-yellow-600 text-gray-600 dark:text-gray-300"}`}
+
     >
       <MenuItem className="flex" href={link}>
         {icon}
