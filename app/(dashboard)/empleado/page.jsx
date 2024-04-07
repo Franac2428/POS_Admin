@@ -1,9 +1,9 @@
 'use client'
 
-import Agregar from "@/app/components/inventario/crearProducto";
+import Agregar from "@/app/components/empleado/crear";
 import { CirclePlus, FileUp, Pencil, SlidersHorizontal, Trash, Eye, SmilePlus } from "lucide-react";
 import { useState } from "react";
-import Eliminar from "../../components/inventario/eliminarProducto";
+import Eliminar from "../../components/empleado/eliminar";
 import Buscador from "../../components/pos/buscador";
 import Evaluar from "@/app/components/empleado/evaluar";
 import EvaluacionCard from "@/app/components/empleado/evaluar";
@@ -141,9 +141,6 @@ export default function empleado() {
                 <Eliminar open={open} onClose={() => setOpen(false)} />
                 <Agregar open={agregar} onClose={() => setAgregar(false)} />
                 <Evaluar show={evaluar} onClose={() => setEvaluar(false)} />
-
-
-
             </div>
         </>
     );

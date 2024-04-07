@@ -28,7 +28,7 @@ const BarChart = () => {
 
     useEffect(() => {
         setChartData({
-            labels: ['Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat', 'Sun'],
+            labels: ['L', 'K', 'M', 'J', 'V', 'S', 'D'],
             datasets: [
                 {
                     label: 'Ventas ₡',

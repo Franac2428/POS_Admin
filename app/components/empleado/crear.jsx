@@ -37,41 +37,46 @@ export default function Agregar({ open, onClose }) {
                             </div>
 
                             <div className="mb-4">
-                                <label htmlFor="tipo" className="block text-sm font-medium text-gray-700">Tipo</label>
-                                <input required type="text" id="tipo" name="tipo" className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
+                                <label htmlFor="cedula" className="block text-sm font-medium text-gray-700">Cedula</label>
+                                <input required type="text" id="cedula" name="cedula" className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
                             </div>
                             <div className="mb-4">
-                                <label htmlFor="precio" className="block text-sm font-medium text-gray-700">Precio</label>
-                                <input requiredmtype="number" id="precio" name="precio" className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
+                                <label htmlFor="fechaNacimiento" className="block text-sm font-medium text-gray-700">Fecha Nacimiento</label>
+                                <input required type="date" id="fechaNacimiento" name="fechaNacimiento" className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
                             </div>
                             <div className="mb-4">
-                                <label htmlFor="proveedor" className="block text-sm font-medium text-gray-700">Proveedor</label>
-                                <input required type="text" id="proveedor" name="proveedor" className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
+                                <label htmlFor="fechaContratacion" className="block text-sm font-medium text-gray-700">Fecha Contratacion</label>
+                                <input required type="date" id="fechaContratacion" name="fechaContratacion" className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
                             </div>
                             <div className="mb-4">
-                                <label htmlFor="estado" className="block text-sm font-medium text-gray-700">Estado</label>
-                                <select required id="estado" name="estado" className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
-                                    <option value="fresco">Fresco</option>
-                                    <option value="vigente">Vigente</option>
-                                    <option value="por_caducar">Por Caducar</option>
-                                    <option value="caducado">Caducado</option>
+                                <label htmlFor="horario" className="block text-sm font-medium text-gray-700">horario</label>
+                                <select required id="horario" name="horario" className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                                    <option value="cajas">Cajas</option>
+                                    <option value="jefe">Jefe</option>
+                                    <option value="cocina">Cocina</option>
+                                    <option value="repartidor">Repartidor</option>
                                 </select>
                             </div>
                             <div className="mb-4">
-                                <label htmlFor="fechaIngreso" className="block text-sm font-medium text-gray-700">Fecha de ingreso</label>
-                                <input required type="date" id="fechaIngreso" name="fechaIngreso" className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
+                                <label htmlFor="correo" className="block text-sm font-medium text-gray-700">Correo</label>
+                                <input required type="text" id="correo" name="correo" className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
                             </div>
                             <div className="mb-4">
-                                <label htmlFor="fechaCaducidad" className="block text-sm font-medium text-gray-700">Fecha de caducidad</label>
-                                <input required type="date" id="fechaCaducidad" name="fechaCaducidad" className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
+                                <label htmlFor="telefono" className="block text-sm font-medium text-gray-700">Telefono</label>
+                                <input required type="text" id="telefono" name="telefono" className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
                             </div>
                             <div className="mb-4">
-                                <label htmlFor="nivelMinimo" className="block text-sm font-medium text-gray-700">Nivel Mínimo</label>
-                                <input required type="number" id="nivelMinimo" name="nivelMinimo" className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
+                                <label htmlFor="salario" className="block text-sm font-medium text-gray-700">Salario x hora</label>
+                                <input required type="number" id="salario" name="salario" className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
                             </div>
                             <div className="mb-4">
-                                <label htmlFor="cantidad" className="block text-sm font-medium text-gray-700">Cantidad</label>
-                                <input required type="number" id="cantidad" name="cantidad" className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
+                                <label htmlFor="horario" className="block text-sm font-medium text-gray-700">Horario</label>
+                                <select required id="horario" name="horario" className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                                    <option value="completo">L-S 12md-6pm</option>
+                                    <option value="medio">L-S 12md-4pm</option>
+                                    <option value="fines">L-S 6pm-11pm</option>
+                                    <option value="entre">D-J 12md-7pm</option>
+                                </select>
                             </div>
                         </div>
                         <div className="mb-4 mr-5">
