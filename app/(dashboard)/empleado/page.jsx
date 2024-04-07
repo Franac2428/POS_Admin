@@ -7,6 +7,7 @@ import Eliminar from "../../components/empleado/eliminar";
 import Buscador from "../../components/pos/buscador";
 import Evaluar from "@/app/components/empleado/evaluar";
 import EvaluacionCard from "@/app/components/empleado/evaluar";
+import Ver from "@/app/components/empleado/ver";
 
 
 
@@ -141,6 +142,7 @@ export default function empleado() {
                 <Eliminar open={open} onClose={() => setOpen(false)} />
                 <Agregar open={agregar} onClose={() => setAgregar(false)} />
                 <Evaluar show={evaluar} onClose={() => setEvaluar(false)} />
+                <Ver open={ver} onClose={() => setVer(false)} />
             </div>
         </>
     );
