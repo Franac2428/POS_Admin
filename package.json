@@ -9,8 +9,10 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "flowbite": "^2.3.0",
     "lucide-react": "^0.364.0",
     "next": "^14.1.4",
+    "nextjs-toploader": "^1.6.11",
     "react": "^18.2.0",
     "react-dom": "^18",
     "react-hot-toast": "^2.4.1",
