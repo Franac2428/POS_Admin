@@ -5,7 +5,6 @@ import { createContext, useContext, useState } from "react";
 import { Warehouse, Utensils, FileLineChart, LockKeyhole, Flag, BriefcaseBusiness, LifeBuoy, Settings, BadgeCent, Truck } from "lucide-react";
 import ThemeButton from "./theme/ChangeTheme";
 
-import { Warehouse, Utensils, FileLineChart, LockKeyhole, Flag, BriefcaseBusiness, LifeBuoy, Settings, Truck } from "lucide-react";
 
 const SidebarContext = createContext();
 
@@ -14,10 +13,9 @@ export default function Sidebar() {
   const sidebarItems = [
     { icon: <Utensils size={20} />, text: "POS", link: "/menu" },
     { icon: <Warehouse size={20} />, text: "Inventario", link: "/inventario" },
-
-    { icon: <FileLineChart size={20} />, text: "Reportes", },
+    { icon: <FileLineChart size={20} />, text: "Reportes",  link: "/reporteria"},
     { icon: <BadgeCent size={20} />, text: "Transacciones", link: "/transacciones" },
-    { icon: <BriefcaseBusiness size={20} />, text: "Empleados" },
+    { icon: <BriefcaseBusiness size={20} />, text: "Empleados",  link: "/empleado"  },
     { icon: <LockKeyhole size={20} />, text: "Seguridad" },
     { icon: <Truck size={20} />, text: "Pedidos",link:"/pedido"  },
     { icon: <hr className="my-3" /> },
@@ -56,7 +54,7 @@ export default function Sidebar() {
               </div>
               <div className="flex flex-row space-x-2">
                 <ThemeButton />
-                <button class="inline-flex items-center p-2 text-sm font-medium text-gray-500 rounded-lg dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <button className="inline-flex items-center p-2 text-sm font-medium text-gray-500 rounded-lg dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-600">
                   <MoreVertical size={16} />
                 </button>
               </div>
