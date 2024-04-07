@@ -2,17 +2,17 @@
 import Link from "next/link";
 import { ChevronFirst, ChevronLast, MoreVertical } from "lucide-react";
 import { createContext, useContext, useState } from "react";
-import { Warehouse, Utensils, FileLineChart, LockKeyhole, Flag, BriefcaseBusiness, LifeBuoy, Settings,Truck} from "lucide-react";
+import { Warehouse, Utensils, FileLineChart, LockKeyhole, Flag, BriefcaseBusiness, LifeBuoy, Settings, Truck } from "lucide-react";
 
 const SidebarContext = createContext();
 
 export default function Sidebar() {
   const [expanded, setExpanded] = useState(true);
   const sidebarItems = [
-    { icon: <Utensils size={20} />, text: "POS",link:"/menu"  },
-    { icon: <Warehouse size={20} />, text: "Inventario",link:"/inventario"   },
-    { icon: <FileLineChart size={20} />, text: "Reportes", },
-    { icon: <BriefcaseBusiness size={20} />, text: "Empleados" },
+    { icon: <Utensils size={20} />, text: "POS", link: "/menu" },
+    { icon: <Warehouse size={20} />, text: "Inventario", link: "/inventario" },
+    { icon: <FileLineChart size={20} />, text: "Reportes", link: "/reporteria" },
+    { icon: <BriefcaseBusiness size={20} />, text: "Empleados", link: "/empleado" },
     { icon: <LockKeyhole size={20} />, text: "Seguridad" },
     { icon: <Truck size={20} />, text: "Pedidos",link:"/pedido"  },
     { icon: <hr className="my-3" /> },
@@ -27,9 +27,8 @@ export default function Sidebar() {
           <div className="p-4 pb-2 flex justify-between items-center bg-custom-yellow">
             <img
               src="/nombre.png"
-              className={`overflow-hidden transition-all ${
-                expanded ? "w-32" : "w-0"
-              }`}
+              className={`overflow-hidden transition-all ${expanded ? "w-32" : "w-0"
+                }`}
             />
 
             <button
@@ -50,9 +49,8 @@ export default function Sidebar() {
 
           <div className="border-t flex p-3">
             <div
-              className={`flex justify-between items-center overflow-hidden transition-all ${
-                expanded ? "w-52 ml-3" : "w-0"
-              }`}
+              className={`flex justify-between items-center overflow-hidden transition-all ${expanded ? "w-52 ml-3" : "w-0"
+                }`}
             >
               <div className="leading-4">
                 <h4 className="font-semibold">Grupo03</h4>
@@ -75,17 +73,16 @@ export function SidebarItem({ icon, text, active, link }) {
 
   return (
     <li
-      className={`relative flex items-center py-2 px-3 my-1 font-medium rounded-md cursor-pointer transition-colors group ${
-        active
-          ? "bg-gradient-to-tr from-yellow-200 to-yellow-100 text-yellow-800"
-          : "hover:bg-yellow-50 text-gray-600"
-      }`}
+      className={`relative flex items-center py-2 px-3 my-1 font-medium rounded-md cursor-pointer transition-colors group ${active
+        ? "bg-gradient-to-tr from-yellow-200 to-yellow-100 text-yellow-800"
+        : "hover:bg-yellow-50 text-gray-600"
+        }`}
     >
       <MenuItem className="flex" href={link}>
-          {icon}
-          <span className={`overflow-hidden transition-all ${expanded ? "ml-3" : "w-0"}`}>
-            {text}
-          </span>
+        {icon}
+        <span className={`overflow-hidden transition-all ${expanded ? "ml-3" : "w-0"}`}>
+          {text}
+        </span>
       </MenuItem>
 
       {!expanded && (
