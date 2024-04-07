@@ -49,8 +49,8 @@ export default function Agregar({ open, onClose }) {
                                 <input required type="date" id="fechaContratacion" name="fechaContratacion" className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
                             </div>
                             <div className="mb-4">
-                                <label htmlFor="horario" className="block text-sm font-medium text-gray-700">horario</label>
-                                <select required id="horario" name="horario" className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                                <label htmlFor="puesto" className="block text-sm font-medium text-gray-700">Puesto</label>
+                                <select required id="puesto" name="puesto" className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
                                     <option value="cajas">Cajas</option>
                                     <option value="jefe">Jefe</option>
                                     <option value="cocina">Cocina</option>
@@ -80,7 +80,7 @@ export default function Agregar({ open, onClose }) {
                             </div>
                         </div>
                         <div className="mb-4 mr-5">
-                            <label htmlFor="descripcion" className="block text-sm font-medium text-gray-700">Descripción</label>
+                            <label htmlFor="descripcion" className="block text-sm font-medium text-gray-700">Dirección</label>
                             <textarea required id="descripcion" name="descripcion" rows="3" className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"></textarea>
                         </div>
                         <div className="flex justify-end gap-4 mr-5 ">
