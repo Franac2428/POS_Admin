@@ -18,7 +18,7 @@ export default function inventario() {
     
     <div className="w-full ">  
         <div className="grid grid-cols-10 gap-4 max-w-7xl mx-auto">
-          <h1 className="font-semibold col-span-10 pt-4" style={{ fontSize: "28px" }}>Inventario</h1>                
+          <h1 className="font-semibold col-span-10 pt-4" style={{ fontSize: "28px" }}>Proveedores</h1>                
           <div className="col-span-3 flex ">
           <Buscador/>     
           </div>
