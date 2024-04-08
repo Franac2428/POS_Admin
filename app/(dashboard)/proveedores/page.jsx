@@ -1,30 +1,27 @@
 'use client';
 
 import Agregar from "@/app/components/inventario/crearProducto";
-import { CirclePlus, FileUp, Pencil, SlidersHorizontal, Trash } from "lucide-react";
-import { useState } from "react";
 import Eliminar from "../../components/inventario/eliminarProducto";
 import Buscador from "../../components/pos/buscador";
+import { CirclePlus, FileUp, Pencil, SlidersHorizontal, Trash } from "lucide-react";
+import { useState } from "react";
 import Filtro from "../../components/inventario/filtro";
-
 
 export default function Proveedores() {
   const [open, setOpen] = useState(false);
   const [agregar, setAgregar] = useState(false);
-  
 
   return (
     <>
-    
-    <div className="w-full">
-        <div className="grid grid-cols-10 gap-4 max-w-7xl mx-auto py-4">
-          <h1 className="font-semibold col-span-10 text-3xl text-gray-900 dark:text-gray-100">Inventario</h1>
-          <div className="col-span-3">
-            <Buscador />   
+      <div className="w-full">
+        <div className="md:grid  gap-4 max-w-7xl mx-auto py-4  md:w-auto flex flex-col md:grid-cols-10 mb-3 md:mb-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
+          <h1 className="font-semibold col-span-10 text-3xl text-gray-900 dark:text-gray-100">Proveedores</h1>
+          <div className=" col-span-3">
+            <Buscador />
           </div>
-          <div className="col-start-8 col-span-3">
-            <div className="flex justify-end gap-6">
-            <button className="transition-transform ease-in-out duration-75 hover:scale-105 active:scale-95 transform shadow-lg bg-white dark:bg-gray-700 px-3 py-2 rounded-lg">
+          <div className="col-start-8 space-x-4 col-span-3">
+            <div className=" sm:w-auto flex gap-4 flex-row mb-3 md:mb-0 md:items-center justify-end md:space-x-3 flex-shrink-06">
+              <button className="transition-transform ease-in-out duration-75 hover:scale-105 active:scale-95 transform shadow-lg bg-white dark:bg-gray-700 px-3 py-2 rounded-lg">
                 <SlidersHorizontal className="text-gray-500 dark:text-gray-400" />
               </button>
               <button className="flex items-center gap-3 shadow-lg active:scale-95 transition-transform ease-in-out duration-75 hover:scale-105 transform text-white font-semibold bg-green-500 dark:bg-green-600 px-4 py-2 rounded-lg" onClick={() => setAgregar(true)}>
@@ -34,14 +31,14 @@ export default function Proveedores() {
               <button className="flex gap-3 shadow-lg text-green-500 dark:text-green-400 font-semibold bg-white dark:bg-gray-700 px-4 py-2 active:scale-95 transition-transform ease-in-out duration-75 hover:scale-105 transform border border-green-500 dark:border-green-400 rounded-lg">
                 <FileUp className="text-green-500 dark:text-green-400" />
                 Exportar
-              </button>                
+              </button>
             </div>
           </div>
-          <div className="shadow-lg col-span-10 bg-white dark:bg-gray-700 px-5 py-4 rounded-lg">
+          <div className="shadow-lg col-span-10 overflow-x-auto bg-white dark:bg-gray-700 px-5 py-4 rounded-lg">
             <table className="w-full text-left">
               <thead>
                 <tr>
-                <th className="text-sm font-semibold text-gray-600 dark:text-gray-400 pb-4">Id</th>
+                  <th className="text-sm font-semibold text-gray-600 dark:text-gray-400 pb-4">Id</th>
                   <th className="text-sm font-semibold text-gray-600 dark:text-gray-400 pb-4">Nombre</th>
                   <th className="text-sm font-semibold text-gray-600 dark:text-gray-400 pb-4">Estado</th>
                   <th className="text-sm font-semibold text-gray-600 dark:text-gray-400 pb-4">Proveedor</th>
@@ -71,6 +68,8 @@ export default function Proveedores() {
                     </button>
                   </td>
                 </tr>
+
+
                 <tr className="border-b dark:border-gray-600">
                   <td className="text-sm text-gray-900 dark:text-gray-200 py-4">10002</td>
 
@@ -93,6 +92,7 @@ export default function Proveedores() {
                 </tr>
                 <tr className="border-b dark:border-gray-600">
                   <td className="text-sm text-gray-900 dark:text-gray-200 py-4">10003</td>
+
                   <td className="text-sm text-gray-700 dark:text-gray-200 whitespace-nowrap">Chicharrón de cerdo</td>
                   <td className="text-sm text-gray-700 dark:text-gray-200 whitespace-nowrap">
                     <span className="px-2 py-1 text-xs font-medium uppercase tracking-wider text-red-800 bg-red-200 dark:text-red-200 dark:bg-red-800 rounded-full">Caducado</span>
@@ -129,16 +129,15 @@ export default function Proveedores() {
                       <Trash size={18} strokeWidth={2} />
                     </button>
                   </td>
-                </tr>              
+                </tr>
+
               </tbody>
             </table>
           </div>
-        </div>  
-        <Eliminar open={open} onClose={() => setOpen(false)}/>
-        <Agregar open={agregar} onClose={() => setAgregar(false)}/>
-    
-      </div>      
+        </div>
+        <Eliminar open={open} onClose={() => setOpen(false)} />
+        <Agregar open={agregar} onClose={() => setAgregar(false)} />
+      </div>
     </>
   );
 }
-

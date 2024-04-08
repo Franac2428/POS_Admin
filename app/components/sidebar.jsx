@@ -4,12 +4,32 @@ import { ChevronFirst, ChevronLast, MoreVertical } from "lucide-react";
 import { createContext, useContext, useState } from "react";
 import { Warehouse, Utensils, FileLineChart, LockKeyhole, Flag, BriefcaseBusiness, LifeBuoy, Settings, BadgeCent, Truck } from "lucide-react";
 import ThemeButton from "./theme/ChangeTheme";
+import { useEffect } from "react";
+
 
 
 const SidebarContext = createContext();
 
 export default function Sidebar() {
   const [expanded, setExpanded] = useState(true);
+  const [isSmallScreen, setIsSmallScreen] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth <= 768) {
+        setIsSmallScreen(true);
+        setExpanded(false);
+      } else {
+        setIsSmallScreen(false);
+      }
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   const sidebarItems = [
     { icon: <Utensils size={20} />, text: "POS", link: "/menu" },
     { icon: <Warehouse size={20} />, text: "Inventario", link: "/inventario" },
@@ -25,8 +45,8 @@ export default function Sidebar() {
 
   return (
     <>
-      <aside className="h-screen">
-        <nav className="h-full flex flex-col bg-white dark:bg-gray-800 border-r shadow-sm">
+      <aside className={`h-screen ${isSmallScreen && expanded ? "fixed" : "static"} inset-y-0 left-0 z-50 transform transition-transform duration-200 ease-in-out"}`}>    
+          <nav className="h-full flex flex-col bg-white dark:bg-gray-800 border-r shadow-sm">
           <div className="p-4 pb-2 flex justify-between items-center bg-custom-yellow">
             <img src="/nombre.png" className={`overflow-hidden transition-all ${expanded ? "w-32" : "w-0"}`} />
 
@@ -62,6 +82,7 @@ export default function Sidebar() {
           </div>
         </nav>
       </aside>
+      {expanded && isSmallScreen && <div className="fixed inset-0 bg-black opacity-50 z-40"></div>}
     </>
   );
 }
