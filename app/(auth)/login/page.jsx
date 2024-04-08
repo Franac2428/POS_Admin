@@ -28,7 +28,7 @@ export default function login() {
 
                         </div>
                         <div className='flex flex-col mt-4'>
-                            <Link href="./menuEM" className='active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform py-4 bg-custom-yellow rounded-xl
+                            <Link href="./pos" className='active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform py-4 bg-custom-yellow rounded-xl
                          text-white font-bold text-center text-lg' >Ingresar empleado</Link>
 
                         </div>

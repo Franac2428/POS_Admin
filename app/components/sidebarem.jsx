@@ -13,9 +13,7 @@ export default function SidebarEm() {
     const sidebarItems = [
         { icon: <Utensils size={20} />, text: "POS", link: "/menu" },
         { icon: <Warehouse size={20} />, text: "Inventario", link: "/inventario" },
-        { icon: <FileLineChart size={20} />, text: "Reportes", link: "/reporteria" },
         { icon: <BadgeCent size={20} />, text: "Transacciones", link: "/transacciones" },
-        { icon: <BriefcaseBusiness size={20} />, text: "Empleados" },
         { icon: <BriefcaseBusiness size={20} />, text: "Metas", link: "/metas" },
         { icon: <Flag size={20} />, text: "Marcar Hora", link: "/marcar" },
         { icon: <Truck size={20} />, text: "Pedidos", link: "/pedido" },
