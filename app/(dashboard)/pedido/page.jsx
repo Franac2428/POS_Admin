@@ -6,7 +6,7 @@ import { useState } from "react";
 import Eliminar from "../../components/inventario/eliminarProducto";
 import React from 'react';
 import * as Tabs from '@radix-ui/react-tabs';
-import TabsDemo from "@/app/components/pedido/pedido";
+import TabsDemo from "../../components/pedido/contenido";
 import Filtro from "../../components/inventario/filtro";
 
 
@@ -16,7 +16,7 @@ export default function inventario() {
     <>    
     <div className="w-full ">  
         <div className="grid grid-cols-10 gap-4 max-w-7xl mx-auto">
-          <h1 className="font-semibold col-span-10 pt-4" style={{ fontSize: "28px" }}>Pedidos</h1>               
+          <h1 className="font-semibold col-span-10 dark:text-gray-100 pt-4  text-3xl" >Pedidos</h1>               
           <div className="col-start-8 col-span-3 ">
             <div className="flex justify-end gap-6">
             <div className="active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform shadow-sm bg-verde px-3 py-1 rounded-md">
