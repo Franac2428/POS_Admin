@@ -8,11 +8,12 @@ import Adjuntar from './adjuntar';
 import Eliminar from './eliminar';
 
 const TabsDemo = () => {
-  const [productos, setProductos] = useState([]);
   const [nombre, setNombre] = useState('');
   const [cantidad, setCantidad] = useState('');
-  const [open, setOpen] = useState(false);
+  const [productos, setProductos] = useState([]);
+  const [descripcion, setDescripcion] = useState('');
 
+  
 
   const handleNombreChange = (event) => {
     setNombre(event.target.value);
@@ -31,6 +32,14 @@ const TabsDemo = () => {
       alert('Por favor, ingrese un nombre y una cantidad válidos.');
     }
   };
+
+  const limpiarCampos = () => {
+    setNombre('');
+    setCantidad('');
+    setDescripcion('');
+    setProductos([]); 
+  };
+
   return(
     <>
     <Tabs.Root
@@ -76,82 +85,80 @@ const TabsDemo = () => {
             <AccordionTrigger>Realizar pedido</AccordionTrigger>
             <AccordionContent>
             <form  className="ml-5 my-4 w-full">
-
-      <div className="grid mr-5 gap-x-12 grid-cols-5">
-      <div className="mb-4 col-span-5">
-              <label htmlFor="estado" className="block text-sm font-medium text-gray-700 dark:text-gray-200">Proveedor</label>
-              <select required  id="estado" name="estado" className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
-                  <option value="fresco">Coca-cola</option>
-                  <option value="vigente">Pipsa</option>
-                  <option value="por_caducar">Mario Gomez</option>
-                  <option value="caducado">Caducado</option>
-              </select>                       
-              </div>         
-      <div className="mb-4 col-span-2">
-        <label htmlFor="nombre" className="block text-sm font-medium text-gray-700 dark:text-gray-200">
-          Nombre
-        </label>
-        <input
-          type="text"
-          id="nombre"
-          name="nombre"
-          value={nombre}
-          onChange={handleNombreChange}
-          className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-        />
-      </div>
-      <div className="mb-4 col-span-2">
-        <label htmlFor="cantidad" className="block text-sm font-medium text-gray-700 dark:text-gray-200">
-          Cantidad
-        </label>
-        <input
-          type="text"
-          id="cantidad"
-          name="cantidad"
-          value={cantidad}
-          onChange={handleCantidadChange}
-          className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-        />
-      </div>
-      <div className="flex items-center">
-      <button onClick={agregarProducto} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-        Agregar Producto
-      </button>
-      </div>        
-      <div className="shadow-lg col-span-5 overflow-x-auto bg-white dark:bg-gray-700 px-5 py-4 rounded-lg">
-      <table className="w-full text-left">
-        <thead>
-          <tr >
-            <th className="text-sm font-semibold text-gray-600 dark:text-gray-400 pb-4">Producto</th>
-            <th className="text-sm font-semibold text-gray-600 dark:text-gray-400 pb-4">Cantidad</th>
-            
-          </tr>
-        </thead>
-        <tbody>
-          {productos.map((producto, index) => (
-            <tr className="border-b dark:border-gray-600" key={index}>
-              <td className="text-sm text-gray-900 dark:text-gray-200">{producto.nombre}</td>
-              <td className="text-sm text-gray-900 dark:text-gray-200">{producto.cantidad}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      </div>
-    </div>
-          <div className="mb-4 mr-5">
-          <label htmlFor="Observaciones" className="block text-sm font-medium text-gray-700 dark:text-gray-200">Observaciones</label>
-          <textarea required id="descripcion" name="descripcion" rows="3" className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"></textarea>
-          </div>
-          <div className="flex justify-end gap-4 mr-5 ">
-          <button type="submit" className="bg-verde font-semibold rounded-md py-2 px-6 text-white">Agregar
-          </button>
-          <button type="button" 
-              className="bg-gray-400 font-semibold   rounded-md py-2 px-6"
-          >
-              Limpiar
-          </button>
-          </div>
-          </form>
+              <div className="grid mr-5 gap-x-12 grid-cols-5">
+              <div className="mb-4 col-span-5">
+                      <label htmlFor="estado" className="block text-sm font-medium text-gray-700 dark:text-gray-200">Proveedor</label>
+                      <select required  id="estado" name="estado" className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                          <option value="fresco">Coca-cola</option>
+                          <option value="vigente">Pipsa</option>
+                          <option value="por_caducar">Mario Gomez</option>
+                          <option value="caducado">Caducado</option>
+                      </select>                       
+              </div>  
+              <div className="grid gap-x-12 grid-cols-5 col-span-5">             
+                <div className="mb-4 col-span-2">
+                  <label htmlFor="nombre" className="block text-sm font-medium text-gray-700 dark:text-gray-200">
+                    Nombre
+                  </label>
+                <input
+                  type="text"
+                  id="nombre"
+                  name="nombre"
+                  value={nombre}
+                  onChange={handleNombreChange}
+                  className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                />
+              </div>
+              <div className="mb-4 col-span-2">
+                <label htmlFor="cantidad" className="block text-sm font-medium text-gray-700 dark:text-gray-200">
+                  Cantidad
+                </label>
+                <input
+                  type="text"
+                  id="cantidad"
+                  name="cantidad"
+                  value={cantidad}
+                  onChange={handleCantidadChange}
+                  className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                />
+                </div>
+                <div className="flex items-center">
+                <button type='button' onClick={agregarProducto} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                  Agregar Producto
+                </button>
+                </div>        
+                <div className="shadow-lg col-span-5 overflow-x-auto bg-white dark:bg-gray-700 px-5 py-4 rounded-lg">
+                <table className="w-full text-left">
+                  <thead>
+                    <tr >
+                      <th className="text-sm font-semibold text-gray-600 dark:text-gray-400 pb-4">Producto</th>
+                      <th className="text-sm font-semibold text-gray-600 dark:text-gray-400 pb-4">Cantidad</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {productos.map((producto, index) => (
+                      <tr className="border-b dark:border-gray-600" key={index}>
+                        <td className="text-sm text-gray-900 dark:text-gray-200">{producto.nombre}</td>
+                        <td className="text-sm text-gray-900 dark:text-gray-200">{producto.cantidad}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>  
+              </div>
+            </div>
+                  <div className="mb-4 mr-5">
+                  <label htmlFor="Observaciones" className="block text-sm font-medium text-gray-700 dark:text-gray-200">Observaciones</label>
+                  <textarea id="descripcion" name="descripcion" rows="3" className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"></textarea>
+                  </div>
+                  <div className="flex justify-end gap-4 mr-5 ">
+                  <button type="submit" className="bg-verde font-semibold rounded-md py-2 px-6 text-white">Agregar
+                  </button>
+                  <button type="button" className="bg-gray-400 font-semibold rounded-md py-2 px-6" onClick={limpiarCampos}>
+                  Limpiar
+                </button>
+                  </div>
+            </form>
             </AccordionContent>
             </AccordionItem>
         </Accordion.Root>     
