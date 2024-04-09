@@ -36,7 +36,7 @@ export default function Sidebar() {
     { icon: <FileLineChart size={20} />, text: "Reportes",  link: "/reporteria"},
     { icon: <BadgeCent size={20} />, text: "Transacciones", link: "/transacciones" },
     { icon: <BriefcaseBusiness size={20} />, text: "Empleados",  link: "/empleado"  },
-    { icon: <LockKeyhole size={20} />, text: "Seguridad" },
+    { icon: <LockKeyhole size={20} />, text: "Seguridad", link: "/seguridad" },
     { icon: <Truck size={20} />, text: "Pedidos",link:"/pedido"  },
     { icon: <hr className="my-3" /> },
     { icon: <Settings size={20} />, text: "Settings" },
