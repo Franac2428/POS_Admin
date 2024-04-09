@@ -5,11 +5,14 @@ import * as Accordion from '@radix-ui/react-accordion';
 import { ChevronDownIcon } from '@radix-ui/react-icons';
 import * as Tabs from '@radix-ui/react-tabs';
 import Adjuntar from './adjuntar';
+import Eliminar from './eliminar';
 
 const TabsDemo = () => {
   const [productos, setProductos] = useState([]);
   const [nombre, setNombre] = useState('');
   const [cantidad, setCantidad] = useState('');
+  const [open, setOpen] = useState(false);
+
 
   const handleNombreChange = (event) => {
     setNombre(event.target.value);
@@ -178,7 +181,7 @@ const TabsDemo = () => {
                   <td className="flex gap-2  my-2">
                     <Adjuntar/>
                     <button className="p-1.5 text-gray-900 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-yellow-600 bg-opacity-50 rounded-md" onClick={() => setEvaluar(true)}><ArrowDownToLine size={15} strokeWidth={2.2} /></button>
-                    <button className="p-1.5 text-gray-900 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-red-600 bg-opacity-50 rounded-md" onClick={() => setOpen(true)}><Trash size={15} strokeWidth={2.2} /> </button>
+                    <Eliminar/>
                   </td>
                 </tr>
                 <tr className="border-b dark:border-gray-600">
@@ -189,7 +192,9 @@ const TabsDemo = () => {
                   <td className="flex gap-2  my-2">
                   <Adjuntar/>
                     <button className="p-1.5 text-gray-900 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-yellow-600 bg-opacity-50 rounded-md" onClick={() => setEvaluar(true)}><ArrowDownToLine size={15} strokeWidth={2.2} /></button>
-                    <button className="p-1.5 text-gray-900 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-red-600 bg-opacity-50 rounded-md" onClick={() => setOpen(true)}><Trash size={15} strokeWidth={2.2} /> </button>                  </td>
+                    <Eliminar/>
+
+                     </td>
                 </tr>
                 <tr className="border-b dark:border-gray-600">
                   <td className="text-sm text-gray-9
@@ -200,10 +205,9 @@ const TabsDemo = () => {
                   <td className="flex gap-2  my-2">
                   <Adjuntar/>
                     <button className="p-1.5 text-gray-900 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-yellow-600 bg-opacity-50 rounded-md" onClick={() => setEvaluar(true)}><ArrowDownToLine size={15} strokeWidth={2.2} /></button>
-                    <button className="p-1.5 text-gray-900 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-red-600 bg-opacity-50 rounded-md" onClick={() => setOpen(true)}><Trash size={15} strokeWidth={2.2} /> </button>                  </td>
+                    <Eliminar/>
+                       </td>
                 </tr>
-
-
 
               </tbody>
             </table>
