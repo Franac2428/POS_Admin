@@ -16,9 +16,9 @@ export default function editar({ open, onClose }) {
         telefono: "800-SIEMPRE (743-6773)",
         fechaRegistro: "2024-01-16",
         tipo: "Bebidas",
+        direccion:"Santa Ana, San José, Costa Rica",
         correo: "comunicacion@femsa.com.cr",
-        descripcion:"Distribuidadora de Coca Cola Company en Costa Rica sus pedidos se hacen solamente desde la página"
-
+        descripcion:"Distribuidora de Coca Cola Company en Costa Rica sus pedidos se hacen solamente desde la página"
     };
 
 
@@ -43,10 +43,10 @@ export default function editar({ open, onClose }) {
                         <div className="mb-4">
                         <label htmlFor="estado" className="block text-sm font-medium text-gray-700 dark:text-gray-200">Tipo</label>
                         <select required  id="estado" name="estado" className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
-                            <option value="fresco">Fresco</option>
-                            <option value="vigente">Vigente</option>
-                            <option value="por_caducar">Por Caducar</option>
-                            <option value="caducado">Caducado</option>
+                            <option value="fresco">Bebidas</option>
+                            <option value="vigente">Carnes</option>
+                            <option value="por_caducar">Envases</option>
+                            <option value="caducado">Electrodomésticos</option>
                         </select>                       
                         </div>
                         <div className="mb-4">
