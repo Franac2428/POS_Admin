@@ -39,11 +39,11 @@ const TabsDemo = () => {
     setDescripcion('');
     setProductos([]); 
   };
-
+  
   return(
     <>
     <Tabs.Root
-    className="flex flex-col  "
+    className="flex flex-col"
     defaultValue="tab1"
   >
     <Tabs.List className="shrink-0 flex border-b  border-mauve6" aria-label="Manejp de pedidos">
@@ -149,7 +149,14 @@ const TabsDemo = () => {
             </div>
                   <div className="mb-4 mr-5">
                   <label htmlFor="Observaciones" className="block text-sm font-medium text-gray-700 dark:text-gray-200">Observaciones</label>
-                  <textarea id="descripcion" name="descripcion" rows="3" className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"></textarea>
+                  <textarea
+                    id="descripcion"
+                    name="descripcion"
+                    rows="3"
+                    value={descripcion} 
+                    onChange={(event) => setDescripcion(event.target.value)} 
+                    className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                  ></textarea>
                   </div>
                   <div className="flex justify-end gap-4 mr-5 ">
                   <button type="submit" className="bg-verde font-semibold rounded-md py-2 px-6 text-white">Agregar
