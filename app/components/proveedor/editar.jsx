@@ -68,7 +68,7 @@ export default function editar({ open, onClose }) {
                     </div>
                     <div className="mb-4 mr-5">
                     <label htmlFor="descripcion" className="block text-sm font-medium text-gray-700 dark:text-gray-200">Descripción</label>
-                    <textarea required id="descripcion" name="descripcion" defaultValue={proveedor.descripcion} rows="3" className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">{proveedor.de} </textarea>
+                    <textarea required id="descripcion" name="descripcion" defaultValue={proveedor.descripcion} rows="3" className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"></textarea>
                     </div>
                     <div className="flex justify-end gap-4 mr-5 ">
                     <button type="submit" className="bg-verde font-semibold rounded-md py-2 px-6 text-white">Guardar

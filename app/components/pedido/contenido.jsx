@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import {ScrollText } from "lucide-react";
+import {ScrollText,Trash,ArrowDownToLine } from "lucide-react";
 import classNames from 'classnames';
 import * as Accordion from '@radix-ui/react-accordion';
 import { ChevronDownIcon } from '@radix-ui/react-icons';
-
 import * as Tabs from '@radix-ui/react-tabs';
+import Adjuntar from './adjuntar';
 
 const TabsDemo = () => {
   const [productos, setProductos] = useState([]);
@@ -89,7 +89,6 @@ const TabsDemo = () => {
           Nombre
         </label>
         <input
-          required
           type="text"
           id="nombre"
           name="nombre"
@@ -103,7 +102,6 @@ const TabsDemo = () => {
           Cantidad
         </label>
         <input
-          required
           type="text"
           id="cantidad"
           name="cantidad"
@@ -160,67 +158,53 @@ const TabsDemo = () => {
       className="grow p-5  bg-white rounded-b-md outline-none focus:shadow-[0_0_0_2px] focus:shadow-black"
       value="tab2"
     >      
-      <fieldset className="mb-[15px] w-full flex flex-col justify-start">
-      <table className="w-full">
+      <fieldset className="mb-[15px] w-full flex flex-col justify-startshadow-lg col-span-10 overflow-x-auto bg-white dark:bg-gray-700 px-5 py-4 rounded-lg">
+            <table className="w-full text-left">
               <thead>
                 <tr>
-                  <th className="text-gray-600 text-sm front-semibold">  Id </th>
-                  <th className="text-sm text-gray-600 front-semibold">Nombre</th>
-                  <th className="text-sm text-gray-600 front-semibold"> Proveedor</th>
-                  <th className="text-sm text-gray-600 front-semibold">  Cantidad   </th>
-                  <th className="text-sm text-gray-600 front-semibold"> Fecha ingreso  </th>
-                  <th className="text-sm text-gray-600 front-semibold">  Factura   </th>
+                  <th className="text-sm font-semibold text-gray-600 dark:text-gray-400 pb-4">Id</th>
+                  <th className="text-sm font-semibold text-gray-600 dark:text-gray-400 pb-4">Proveedor</th>
+                  <th className="text-sm font-semibold text-gray-600 dark:text-gray-400 pb-4">Tipo</th>
+                  <th className="text-sm font-semibold text-gray-600 dark:text-gray-400 pb-4">Fecha</th>
+                  <th className="text-sm font-semibold text-gray-600 dark:text-gray-400 pb-4">Factura</th>
                 </tr>
               </thead>
-              <tbody className="">
-                <tr className="">
-                <td className=" text-center text-sm text-gray-900 whitespace-nowrap">
-                    <a href="#" className="font-bold text-blue-700 hover:underline">10001</a>
-                  </td>
-                  <td className=" text-center text-sm text-gray-900 whitespace-nowrap">Refresco Coca Cola 3L</td>
-                  <td className="p-3 text-center text-sm text-gray-900 whitespace-nowrap">Coca Cola</td>
-                  <td className="p-3 text-center text-sm text-gray-900 whitespace-nowrap">1000</td>
-                  <td className="p-3 text-center text-sm text-gray-900 whitespace-nowrap">16/10/2021</td>
-                  <td className=" text-center text-sm text-gray-900 whitespace-nowrap">
-                  <button className="p-1.5 text-gray-900 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-blue-600 bg-opacity-50 rounded-md " ><ScrollText size={15}  strokeWidth={2.2}/></button>
+              <tbody>
+                <tr className="border-b dark:border-gray-600">
+                  <td className="text-sm text-gray-900 dark:text-gray-200 py-4">PD1001</td>
+                  <td className="text-sm text-gray-900 dark:text-gray-200">Coca Cola</td>
+                  <td className="text-sm text-gray-900 dark:text-gray-200">Via web</td>
+                  <td className="text-sm text-gray-900 dark:text-gray-200">16/10/2021</td>
+                  <td className="flex gap-2  my-2">
+                    <Adjuntar/>
+                    <button className="p-1.5 text-gray-900 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-yellow-600 bg-opacity-50 rounded-md" onClick={() => setEvaluar(true)}><ArrowDownToLine size={15} strokeWidth={2.2} /></button>
+                    <button className="p-1.5 text-gray-900 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-red-600 bg-opacity-50 rounded-md" onClick={() => setOpen(true)}><Trash size={15} strokeWidth={2.2} /> </button>
                   </td>
                 </tr>
-                <tr className="">
-                <td className=" text-center text-sm text-gray-900 whitespace-nowrap">
-                    <a href="#" className="font-bold text-blue-700 hover:underline">10002</a>
-                  </td>
-                  <td className=" text-center text-sm text-gray-900 whitespace-nowrap">Cebolla morada</td>
-                  <td className="p-3 text-center text-sm text-gray-900 whitespace-nowrap">Q&T SA</td>
-                  <td className="p-3 text-center text-sm text-gray-900 whitespace-nowrap">299</td>
-                  <td className="p-3 text-center text-sm text-gray-900 whitespace-nowrap">16/10/2021</td>
-                  <td className=" text-center text-sm text-gray-900 whitespace-nowrap">
-                  <button className="p-1.5 text-gray-900 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-blue-600 bg-opacity-50 rounded-md " ><ScrollText size={15}  strokeWidth={2.2}/></button>
-                  </td>    
+                <tr className="border-b dark:border-gray-600">
+                  <td className="text-sm text-gray-900 dark:text-gray-200 py-4">PD1002</td>
+                  <td className="text-sm text-gray-900 dark:text-gray-200">Plastico</td>
+                  <td className="text-sm text-gray-900 dark:text-gray-200">Correo</td>
+                  <td className="text-sm text-gray-900 dark:text-gray-200">16/10/2021</td>
+                  <td className="flex gap-2  my-2">
+                  <Adjuntar/>
+                    <button className="p-1.5 text-gray-900 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-yellow-600 bg-opacity-50 rounded-md" onClick={() => setEvaluar(true)}><ArrowDownToLine size={15} strokeWidth={2.2} /></button>
+                    <button className="p-1.5 text-gray-900 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-red-600 bg-opacity-50 rounded-md" onClick={() => setOpen(true)}><Trash size={15} strokeWidth={2.2} /> </button>                  </td>
                 </tr>
-                <tr className="">
-                <td className=" text-center text-sm text-gray-700 whitespace-nowrap">
-                    <a href="#" className="font-bold text-blue-700 hover:underline">10003</a>
-                  </td>
-                  <td className=" text-center text-sm text-gray-700 whitespace-nowrap">Chicharrón de cerdo</td>
-                  <td className="p-3 text-center text-sm text-gray-900 whitespace-nowrap">Carnicería Juan</td>
-                  <td className="p-3 text-center text-sm text-gray-900 whitespace-nowrap">10</td>
-                  <td className="p-3 text-center text-sm text-gray-900 whitespace-nowrap">16/10/2021</td>
-                  <td className=" text-center text-sm text-gray-900 whitespace-nowrap">
-                  <button className="p-1.5 text-gray-900 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-blue-600 bg-opacity-50 rounded-md " ><ScrollText size={15}  strokeWidth={2.2}/></button>
-                  </td>  
+                <tr className="border-b dark:border-gray-600">
+                  <td className="text-sm text-gray-9
+                  00 dark:text-gray-200 py-4">PD1003</td>
+                  <td className="text-sm text-gray-900 dark:text-gray-200">Coca Cola</td>
+                  <td className="text-sm text-gray-900 dark:text-gray-200">Via web</td>
+                  <td className="text-sm text-gray-900 dark:text-gray-200">16/10/2021</td>
+                  <td className="flex gap-2  my-2">
+                  <Adjuntar/>
+                    <button className="p-1.5 text-gray-900 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-yellow-600 bg-opacity-50 rounded-md" onClick={() => setEvaluar(true)}><ArrowDownToLine size={15} strokeWidth={2.2} /></button>
+                    <button className="p-1.5 text-gray-900 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-red-600 bg-opacity-50 rounded-md" onClick={() => setOpen(true)}><Trash size={15} strokeWidth={2.2} /> </button>                  </td>
                 </tr>
-                <tr className="">
-                <td className=" text-center text-sm text-gray-900 whitespace-nowrap">
-                    <a href="#" className="font-bold text-blue-700 hover:underline">10004</a>
-                  </td>
-                  <td className=" text-center text-sm text-gray-900 whitespace-nowrap">Pechuga de pollo</td>
-                  <td className="p-3 text-center text-sm text-gray-900 whitespace-nowrap">Pipasa</td>
-                  <td className="p-3 text-center text-sm text-gray-900 whitespace-nowrap">394</td>
-                  <td className="p-3 text-center text-sm text-gray-900 whitespace-nowrap">16/10/2021</td>
-                  <td className=" text-center text-sm text-gray-900 whitespace-nowrap">
-                  <button className="p-1.5 text-gray-900 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-blue-600 bg-opacity-50 rounded-md " ><ScrollText size={15}  strokeWidth={2.2}/></button>
-                  </td>  
-                </tr>              
+
+
+
               </tbody>
             </table>
       </fieldset>     

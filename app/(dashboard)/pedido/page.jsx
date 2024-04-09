@@ -1,17 +1,13 @@
 'use client';
 
-import Agregar from "@/app/components/inventario/crearProducto";
 import { Users, FileUp, Pencil, SlidersHorizontal, Trash } from "lucide-react";
-import { useState } from "react";
-import Eliminar from "../../components/inventario/eliminarProducto";
 import React from 'react';
-import * as Tabs from '@radix-ui/react-tabs';
 import TabsDemo from "../../components/pedido/contenido";
-import Filtro from "../../components/inventario/filtro";
 
 
 
-export default function inventario() {
+export default function Pedido() {
+
   return (
     <>    
     <div className="w-full ">  
@@ -36,9 +32,8 @@ export default function inventario() {
             <TabsDemo/>
             
           </div>
-        </div>  
-      
-      </div>      
+        </div>     
+      </div> 
     </>
   );
 }
