@@ -1,12 +1,11 @@
 import React from 'react';
-import {Trash} from "lucide-react";
 
 import * as AlertDialog from '@radix-ui/react-alert-dialog';
 
-const Eliminar = () => (
+const Cancelar = () => (
   <AlertDialog.Root>
     <AlertDialog.Trigger asChild>
-    <button className="p-1.5 text-gray-900 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-red-600 bg-opacity-50 rounded-md"><Trash size={15} strokeWidth={2.2}/></button>
+    <button className="p-1.5 text-gray-900 dark:text-gray-200 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-red-600 bg-opacity-50 rounded-md">Cancelar</button>
     </AlertDialog.Trigger>
     <AlertDialog.Portal>
       <AlertDialog.Overlay className="bg-blackA6 data-[state=open]:animate-overlayShow fixed inset-0" />
@@ -15,7 +14,7 @@ const Eliminar = () => (
           ¿Está seguro?
         </AlertDialog.Title>
         <AlertDialog.Description className="text-mauve11 mt-4 mb-5 text-[15px] leading-normal">
-          Esta acción elimina la factura de la base de datos, y posteriormete no se podría recuperar
+          Esta acción cancela la realización del registro de este pedido
         </AlertDialog.Description>
         <div className="flex justify-end gap-[25px]">
           <AlertDialog.Cancel asChild>
@@ -25,7 +24,7 @@ const Eliminar = () => (
           </AlertDialog.Cancel>
           <AlertDialog.Action asChild>
             <button className="text-white bg-red-500 inline-flex h-[35px] items-center justify-center rounded-[4px] px-[15px] font-medium leading-none outline-none focus:shadow-[0_0_0_2px]">
-              Sí, eliminar factura
+              Sí, descartar pedido
             </button>
           </AlertDialog.Action>
         </div>
@@ -34,4 +33,4 @@ const Eliminar = () => (
   </AlertDialog.Root>
 );
 
-export default Eliminar;
+export default Cancelar;
