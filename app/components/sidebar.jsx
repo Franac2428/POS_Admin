@@ -29,11 +29,17 @@ export default function Sidebar() {
     { icon: <Warehouse size={20} />, text: "Inventario", link: "/inventario" },
     { icon: <FileLineChart size={20} />, text: "Reportes", link: "/reporteria" },
     { icon: <BadgeCent size={20} />, text: "Transacciones", link: "/transacciones" },
+
     { icon: <BriefcaseBusiness size={20} />, text: "Empleados", link: "/empleado" },
     { icon: <LockKeyhole size={20} />, text: "Seguridad" },
     { icon: <CircleUser size={20} />, text: "Clientes", link: "/clientes" },
     { icon: <Truck size={20} />, text: "Pedidos", link: "/pedido" },
     { icon: <AlarmClock size={20} />, text: "Monitorizar horarios", link: "/horas" },
+
+    { icon: <BriefcaseBusiness size={20} />, text: "Empleados",  link: "/empleado"  },
+    { icon: <LockKeyhole size={20} />, text: "Seguridad", link: "/seguridad" },
+    { icon: <Truck size={20} />, text: "Pedidos",link:"/pedido"  },
+
     { icon: <hr className="my-3" /> },
     { icon: <LogOut size={20} />, text: "Cerrar Sesión", link:"/login" },
   ];

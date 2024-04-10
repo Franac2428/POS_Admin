@@ -1,10 +1,13 @@
-'use client';
+'use client'
 
 import { useEffect, useState, createContext, useContext } from 'react';
 import { initFlowbite } from 'flowbite'
-import DrawerTransacciones from "../../components/transacciones/drawerTransacciones";
+import Actualizar from '@/app/components/transacciones/actualizarTransaccion';
+import Eliminar from '@/app/components/transacciones/borrarTransaccion';
 
 export default function RegistroTransaciones({ transaction, article, paytype, price, status }) {
+    const [open, setOpen] = useState(false);
+    const [actualizar, SetActualizar] = useState(false);
     useEffect(() => {
         initFlowbite()
     }, [])
@@ -15,7 +18,7 @@ export default function RegistroTransaciones({ transaction, article, paytype, pr
                     <input
                         id="checkbox-table-search-1"
                         type="checkbox"
-                        onClick="event.stopPropagation()"
+                        onclick="event.stopPropagation()"
                         className="w-4 h-4 text-primary-600 bg-gray-100 rounded border-gray-300 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                     />
                     <label htmlFor="checkbox-table-search-1" className="sr-only">
@@ -75,29 +78,34 @@ export default function RegistroTransaciones({ transaction, article, paytype, pr
                     >
                         <li>
                             <button
-                                data-drawer-target="drawer-read-product-advanced"
-                                data-drawer-show="drawer-read-product-advanced"
-                                aria-controls="drawer-read-product-advanced"
+                                className="block py-2 px-4 w-full text-left hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                                onClick={() => SetActualizar(true)}
+                            >
+                                Edit
+                            </button>
+                        </li>
+                        <li>
+                            <button
                                 className="block py-2 px-4 w-full text-left hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                             >
                                 Show
                             </button>
                         </li>
 
-                        
+
                     </ul>
                     <div className="py-1">
                         <button
-                            data-drawer-target="delete-modal"
-                            data-drawer-show="delete-modal"
-                            aria-controls="delete-modal"
                             className="block py-2 px-4 w-full text-left hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                            onClick={() => setOpen(true)}
                         >
                             Borrar
                         </button>
                     </div>
                 </div>
             </td>
+            <Eliminar open={open} onClose={() => setOpen(false)} />
+            <Actualizar open={actualizar} onClose={() => SetActualizar(false)} />
         </tr>
     )
 }
