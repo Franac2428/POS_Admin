@@ -1,10 +1,8 @@
 'use client';
+import { AlarmClock, BadgeCent, BriefcaseBusiness, ChevronFirst, ChevronLast, CircleUser, FileLineChart, LockKeyhole, LogOut, MoreVertical, Truck, Utensils, Warehouse } from "lucide-react";
 import Link from "next/link";
-import { ChevronFirst, ChevronLast, MoreVertical } from "lucide-react";
-import { createContext, useContext, useState } from "react";
-import { Warehouse, Utensils, FileLineChart, LockKeyhole, Flag, BriefcaseBusiness, LifeBuoy, Settings, BadgeCent, Truck, CircleUser, AlarmClock } from "lucide-react";
+import { useEffect, useState } from "react";
 import ThemeButton from "./theme/ChangeTheme";
-import { useEffect } from "react";
 
 export default function Sidebar() {
   const [expanded, setExpanded] = useState(true);
@@ -31,19 +29,20 @@ export default function Sidebar() {
     { icon: <Warehouse size={20} />, text: "Inventario", link: "/inventario" },
     { icon: <FileLineChart size={20} />, text: "Reportes", link: "/reporteria" },
     { icon: <BadgeCent size={20} />, text: "Transacciones", link: "/transacciones" },
+
     { icon: <BriefcaseBusiness size={20} />, text: "Empleados", link: "/empleado" },
     { icon: <LockKeyhole size={20} />, text: "Seguridad" },
     { icon: <CircleUser size={20} />, text: "Clientes", link: "/clientes" },
     { icon: <Truck size={20} />, text: "Pedidos", link: "/pedido" },
     { icon: <AlarmClock size={20} />, text: "Monitorizar horarios", link: "/horas" },
+
     { icon: <hr className="my-3" /> },
-    { icon: <Settings size={20} />, text: "Settings" },
-    { icon: <LifeBuoy size={20} />, text: "Help" },
+    { icon: <LogOut size={20} />, text: "Cerrar Sesión", link: "/login" },
   ];
   return (
     <>
-      <aside className={`h-screen ${isSmallScreen && expanded ? "fixed" : "static"} inset-y-0 left-0 z-50 transform transition-transform duration-200 ease-in-out"}`}>    
-          <nav className="h-full flex flex-col bg-white dark:bg-gray-800 border-r shadow-sm">
+      <aside className={`h-screen ${isSmallScreen && expanded ? "fixed" : "static"} inset-y-0 left-0 z-50 transform transition-transform duration-200 ease-in-out"}`}>
+        <nav className="h-full flex flex-col bg-white dark:bg-gray-800 border-r shadow-sm">
           <div className="p-4 pb-2 flex justify-between items-center bg-custom-yellow">
             <img src="/nombre.png" className={`overflow-hidden transition-all ${expanded ? "w-32" : "w-0"}`} />
             <button
