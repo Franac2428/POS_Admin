@@ -30,10 +30,10 @@ export default function Agregar({ open, onClose }) {
                         <div className="mb-4">
                         <label htmlFor="estado" className="block text-sm font-medium text-gray-700 dark:text-gray-200">Tipo</label>
                         <select required  id="estado" name="estado" className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
-                            <option value="fresco">Fresco</option>
-                            <option value="vigente">Vigente</option>
-                            <option value="por_caducar">Por Caducar</option>
-                            <option value="caducado">Caducado</option>
+                            <option value="fresco">Bebidas</option>
+                            <option value="vigente">Carnes</option>
+                            <option value="por_caducar">Envases</option>
+                            <option value="caducado">Electrodomésticos</option>
                         </select>                       
                         </div>
                         <div className="mb-4">
@@ -47,6 +47,10 @@ export default function Agregar({ open, onClose }) {
                     </div>                                          
                     <div className="mb-4 mr-5">
                         <label htmlFor="correo" className="block text-sm font-medium text-gray-700 dark:text-gray-200">Correo</label>
+                        <input required type="text" id="tipo" name="tipo" className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
+                    </div>
+                    <div className="mb-4 mr-5">
+                        <label htmlFor="correo" className="block text-sm font-medium text-gray-700 dark:text-gray-200">Dirección</label>
                         <input required type="text" id="tipo" name="tipo" className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
                     </div>
                     <div className="mb-4 mr-5">

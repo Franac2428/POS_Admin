@@ -6,7 +6,7 @@ import { useState } from "react";
 import Eliminar from "../../components/empleado/eliminar";
 import Buscador from "../../components/pos/buscador";
 import Evaluar from "@/app/components/empleado/evaluar";
-import EvaluacionCard from "@/app/components/empleado/evaluar";
+import Editar from "@/app/components/empleado/editar";
 import Ver from "@/app/components/empleado/ver";
 
 
@@ -16,33 +16,36 @@ export default function empleado() {
     const [open, setOpen] = useState(false);
     const [agregar, setAgregar] = useState(false);
     const [ver, setVer] = useState(false);
+    const [editar, setEditar] = useState(false);
     const [evaluar, setEvaluar] = useState(false);
 
 
 
     return (
         <>
-            <div className="w-full ">
-                <div className="grid grid-cols-10 gap-4 max-w-7xl mx-auto">
-                    <h1 className="font-semibold col-span-10 text-gray-900 dark:text-gray-100" style={{ fontSize: "28px" }}>Empleados</h1>
-                    <div className="col-span-3 flex ">
+            <div className="w-full">
+                <div className="grid grid-cols-10 gap-4 max-w-7xl mx-auto py-4">
+                    <h1 className="font-semibold col-span-10 text-3xl text-gray-900 dark:text-gray-100">Empleados</h1>
+                    <div className="col-span-3">
                         <Buscador />
                     </div>
-                    <div className="col-start-8 col-span-3 ">
+                    <div className="col-start-8 col-span-3">
                         <div className="flex justify-end gap-6">
-                            <button className="active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform shadow-sm bg-white dark:bg-gray-700 px-3 py-1 rounded-md"><SlidersHorizontal /></button>
-                            <button className="flex items-center gap-4 shadow-sm active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform
-                 text-white font-semibold bg-green-500 dark:bg-green-600 px-4 py-1 rounded-md relative flex-1" onClick={() => setAgregar(true)} >
+
+                            <button className="transition-transform ease-in-out duration-75 hover:scale-105 active:scale-95 transform shadow-lg bg-white dark:bg-gray-700 px-3 py-2 rounded-lg">
+                                <SlidersHorizontal className="text-gray-500 dark:text-gray-400" />
+                            </button>
+                            <button className="flex items-center gap-3 shadow-lg active:scale-95 transition-transform ease-in-out duration-75 hover:scale-105 transform text-white font-semibold bg-green-500 dark:bg-green-600 px-4 py-2 rounded-lg" onClick={() => setAgregar(true)}>
                                 <CirclePlus className="text-white" />
-                                <div className="">Agregar</div>
+                                Agregar
                             </button>
                             <button className="flex gap-3 shadow-lg text-green-500 dark:text-green-400 font-semibold bg-white dark:bg-gray-700 px-4 py-2 active:scale-95 transition-transform ease-in-out duration-75 hover:scale-105 transform border border-green-500 dark:border-green-400 rounded-lg">
-                                <FileUp className="text-green-500 dark:text-green-4000" />
-                                <div className="">Exportar</div>
+                                <FileUp className="text-green-500 dark:text-green-400" />
+                                Exportar
                             </button>
                         </div>
                     </div>
-                    <div className="shadow-sm col-span-10 dark:bg-gray-700 bg-white px-3 py-2 rounded-md">
+                    <div className="shadow-lg col-span-10 bg-white dark:bg-gray-700 px-5 py-4 rounded-lg">
                         <table className="w-full">
                             <thead>
                                 <tr>
@@ -56,7 +59,7 @@ export default function empleado() {
                                     <th className="text-sm font-semibold text-gray-600 dark:text-gray-400 pb-4"> Acciones  </th>
                                 </tr>
                             </thead>
-                            <tbody className="">
+                            <tbody>
                                 <tr className="border-b dark:border-gray-600">
                                     <td className=" text-center text-sm text-gray-900 whitespace-nowrap">
                                         <a href="#" className="font-bold text-blue-700 hover:underline">EM10102</a>
@@ -70,7 +73,7 @@ export default function empleado() {
                                     <td className="text-center text-sm text-gray-900 dark:text-gray-200">josue@gmail.com</td>
                                     <td className="text-center text-sm text-gray-900 dark:text-gray-200">72094668</td>
                                     <td className=" flex gap-1 justify-evenly my-1 whitespace-nowrap">
-                                        <button className="p-1.5 text-gray-900 dark:text-gray-200 dark:text-gray-200 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-blue-600 bg-opacity-50 rounded-md " onClick={() => setAgregar(true)}><Pencil size={15} strokeWidth={2.2} /></button>
+                                        <button className="p-1.5 text-gray-900 dark:text-gray-200 dark:text-gray-200 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-blue-600 bg-opacity-50 rounded-md " onClick={() => setEditar(true)}><Pencil size={15} strokeWidth={2.2} /></button>
                                         <button className="p-1.5 text-gray-900 dark:text-gray-200 dark:text-gray-200 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-green-600 bg-opacity-50 rounded-md" onClick={() => setVer(true)}><Eye size={15} strokeWidth={2.2} /> </button>
                                         <button className="p-1.5 text-gray-900 dark:text-gray-200 dark:text-gray-200 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-yellow-600 bg-opacity-50 rounded-md" onClick={() => setEvaluar(true)}><SmilePlus size={15} strokeWidth={2.2} /></button>
                                         <button className="p-1.5 text-gray-900 dark:text-gray-200 dark:text-gray-200 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-red-600 bg-opacity-50 rounded-md" onClick={() => setOpen(true)}><Trash size={15} strokeWidth={2.2} /> </button>
@@ -89,7 +92,7 @@ export default function empleado() {
                                     <td className="text-center text-sm text-gray-900 dark:text-gray-200">yaritza@gmail.com</td>
                                     <td className="text-center text-sm text-gray-900 dark:text-gray-200">87456128</td>
                                     <td className=" flex gap-1 justify-evenly my-1 whitespace-nowrap">
-                                        <button className="p-1.5 text-gray-900 dark:text-gray-200 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-blue-600 bg-opacity-50 rounded-md " onClick={() => setAgregar(true)}><Pencil size={15} strokeWidth={2.2} /></button>
+                                        <button className="p-1.5 text-gray-900 dark:text-gray-200 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-blue-600 bg-opacity-50 rounded-md " onClick={() => setEditar(true)}><Pencil size={15} strokeWidth={2.2} /></button>
                                         <button className="p-1.5 text-gray-900 dark:text-gray-200 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-green-600 bg-opacity-50 rounded-md" onClick={() => setVer(true)}><Eye size={15} strokeWidth={2.2} /> </button>
                                         <button className="p-1.5 text-gray-900 dark:text-gray-200 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-yellow-600 bg-opacity-50 rounded-md" onClick={() => setEvaluar(true)}><SmilePlus size={15} strokeWidth={2.2} /></button>
                                         <button className="p-1.5 text-gray-900 dark:text-gray-200 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-red-600 bg-opacity-50 rounded-md" onClick={() => setOpen(true)}><Trash size={15} strokeWidth={2.2} /> </button>
@@ -108,7 +111,7 @@ export default function empleado() {
                                     <td className="text-center text-sm text-gray-900 dark:text-gray-200">francisco@gmail.com</td>
                                     <td className="text-center text-sm text-gray-900 dark:text-gray-200">61198211</td>
                                     <td className=" flex gap-1 justify-evenly my-1 whitespace-nowrap">
-                                        <button className="p-1.5 text-gray-900 dark:text-gray-200 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-blue-600 bg-opacity-50 rounded-md " onClick={() => setAgregar(true)}><Pencil size={15} strokeWidth={2.2} /></button>
+                                        <button className="p-1.5 text-gray-900 dark:text-gray-200 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-blue-600 bg-opacity-50 rounded-md " onClick={() => setEditar(true)}><Pencil size={15} strokeWidth={2.2} /></button>
                                         <button className="p-1.5 text-gray-900 dark:text-gray-200 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-green-600 bg-opacity-50 rounded-md" onClick={() => setVer(true)}><Eye size={15} strokeWidth={2.2} /> </button>
                                         <button className="p-1.5 text-gray-900 dark:text-gray-200 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-yellow-600 bg-opacity-50 rounded-md" onClick={() => setEvaluar(true)}><SmilePlus size={15} strokeWidth={2.2} /></button>
                                         <button className="p-1.5 text-gray-900 dark:text-gray-200 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-red-600 bg-opacity-50 rounded-md" onClick={() => setOpen(true)}><Trash size={15} strokeWidth={2.2} /> </button>
@@ -127,7 +130,7 @@ export default function empleado() {
                                     <td className="text-center text-sm text-gray-900 dark:text-gray-200">manfred@gmail.com</td>
                                     <td className="text-center text-sm text-gray-900 dark:text-gray-200">65907621</td>
                                     <td className=" flex gap-1 justify-evenly my-1 whitespace-nowrap">
-                                        <button className="p-1.5 text-gray-900 dark:text-gray-200 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-blue-600 bg-opacity-50 rounded-md " onClick={() => setAgregar(true)}><Pencil size={15} strokeWidth={2.2} /></button>
+                                        <button className="p-1.5 text-gray-900 dark:text-gray-200 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-blue-600 bg-opacity-50 rounded-md " onClick={() => setEditar(true)}><Pencil size={15} strokeWidth={2.2} /></button>
                                         <button className="p-1.5 text-gray-900 dark:text-gray-200 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-green-600 bg-opacity-50 rounded-md" onClick={() => setVer(true)}><Eye size={15} strokeWidth={2.2} /> </button>
                                         <button className="p-1.5 text-gray-900 dark:text-gray-200 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-yellow-600 bg-opacity-50 rounded-md" onClick={() => setEvaluar(true)}><SmilePlus size={15} strokeWidth={2.2} /></button>
                                         <button className="p-1.5 text-gray-900 dark:text-gray-200 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-red-600 bg-opacity-50 rounded-md" onClick={() => setOpen(true)}><Trash size={15} strokeWidth={2.2} /> </button>
@@ -140,6 +143,7 @@ export default function empleado() {
                 <Eliminar open={open} onClose={() => setOpen(false)} />
                 <Agregar open={agregar} onClose={() => setAgregar(false)} />
                 <Evaluar show={evaluar} onClose={() => setEvaluar(false)} />
+                <Editar open={editar} onClose={() => setEditar(false)} />
                 <Ver open={ver} onClose={() => setVer(false)} />
             </div>
         </>

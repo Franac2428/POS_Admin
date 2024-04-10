@@ -1,14 +1,8 @@
 'use client';
+import { AlarmClock, BadgeCent, BriefcaseBusiness, ChevronFirst, ChevronLast, CircleUser, FileLineChart, LockKeyhole, LogOut, MoreVertical, Truck, Utensils, Warehouse } from "lucide-react";
 import Link from "next/link";
-import { ChevronFirst, ChevronLast, MoreVertical } from "lucide-react";
-import { createContext, useContext, useState } from "react";
-import { Warehouse, Utensils, FileLineChart, LockKeyhole, Flag, BriefcaseBusiness, LifeBuoy, Settings, BadgeCent, Truck } from "lucide-react";
+import { useEffect, useState } from "react";
 import ThemeButton from "./theme/ChangeTheme";
-import { useEffect } from "react";
-
-
-
-const SidebarContext = createContext();
 
 export default function Sidebar() {
   const [expanded, setExpanded] = useState(true);
@@ -33,23 +27,28 @@ export default function Sidebar() {
   const sidebarItems = [
     { icon: <Utensils size={20} />, text: "POS", link: "/menu" },
     { icon: <Warehouse size={20} />, text: "Inventario", link: "/inventario" },
-    { icon: <FileLineChart size={20} />, text: "Reportes",  link: "/reporteria"},
+    { icon: <FileLineChart size={20} />, text: "Reportes", link: "/reporteria" },
     { icon: <BadgeCent size={20} />, text: "Transacciones", link: "/transacciones" },
+
+    { icon: <BriefcaseBusiness size={20} />, text: "Empleados", link: "/empleado" },
+    { icon: <LockKeyhole size={20} />, text: "Seguridad" },
+    { icon: <CircleUser size={20} />, text: "Clientes", link: "/clientes" },
+    { icon: <Truck size={20} />, text: "Pedidos", link: "/pedido" },
+    { icon: <AlarmClock size={20} />, text: "Monitorizar horarios", link: "/horas" },
+
     { icon: <BriefcaseBusiness size={20} />, text: "Empleados",  link: "/empleado"  },
     { icon: <LockKeyhole size={20} />, text: "Seguridad", link: "/seguridad" },
     { icon: <Truck size={20} />, text: "Pedidos",link:"/pedido"  },
-    { icon: <hr className="my-3" /> },
-    { icon: <Settings size={20} />, text: "Settings" },
-    { icon: <LifeBuoy size={20} />, text: "Help" },
-  ];
 
+    { icon: <hr className="my-3" /> },
+    { icon: <LogOut size={20} />, text: "Cerrar Sesión", link:"/login" },
+  ];
   return (
     <>
       <aside className={`h-screen ${isSmallScreen && expanded ? "fixed" : "static"} inset-y-0 left-0 z-50 transform transition-transform duration-200 ease-in-out"}`}>    
           <nav className="h-full flex flex-col bg-white dark:bg-gray-800 border-r shadow-sm">
           <div className="p-4 pb-2 flex justify-between items-center bg-custom-yellow">
             <img src="/nombre.png" className={`overflow-hidden transition-all ${expanded ? "w-32" : "w-0"}`} />
-
             <button
               onClick={() => setExpanded(!expanded)}
               className="p-1.5 rounded-lg bg-custom-yellow hover:bg-yellow-600"
@@ -57,13 +56,11 @@ export default function Sidebar() {
               {expanded ? <ChevronFirst /> : <ChevronLast />}
             </button>
           </div>
-
           <ul className="flex-1 px-3">
             {sidebarItems.map((item, index) => (
               <SidebarItem key={index} expanded={expanded} {...item} />
             ))}
           </ul>
-
           <div className="border-t border-gray-400 dark:border-gray-200  flex p-3">
             <div className={`flex justify-between items-center overflow-hidden transition-all ${expanded ? "w-52 ml-3" : "w-0"}`}>
               <div className="leading-4 text-gray-700 dark:text-white">

@@ -55,7 +55,7 @@ export default function Proveedores() {
               </thead>
               <tbody>
                 <tr className="border-b dark:border-gray-600">
-                  <td className="text-sm text-gray-900 dark:text-gray-200 py-4">PR1001</td>
+                  <td className="text-sm font-bold text-blue-700 hover:underline py-4">PR1001</td>
                   <td className="text-sm text-gray-900 dark:text-gray-200">Coca Cola</td>
                   <td className="text-sm text-gray-900 dark:text-gray-200">800-SIEMPRE (743-6773)</td>
                   <td className="text-sm text-gray-900 dark:text-gray-200">Bebidas</td>
@@ -67,7 +67,7 @@ export default function Proveedores() {
                   </td>
                 </tr>
                 <tr className="border-b dark:border-gray-600">
-                  <td className="text-sm text-gray-900 dark:text-gray-200 py-4">PR1002</td>
+                  <td className="text-sm  font-bold text-blue-700 hover:underline py-4">PR1002</td>
                   <td className="text-sm text-gray-900 dark:text-gray-200">PepsiCo</td>
                   <td className="text-sm text-gray-900 dark:text-gray-200">800-PEPSICO</td>
                   <td className="text-sm text-gray-900 dark:text-gray-200">Bebidas</td>
@@ -80,7 +80,7 @@ export default function Proveedores() {
                 </tr>
 
                 <tr className="border-b dark:border-gray-600">
-                  <td className="text-sm text-gray-900 dark:text-gray-200 py-4">PR1003</td>
+                  <td className="text-sm font-bold text-blue-700 hover:underline py-4">PR1003</td>
                   <td className="text-sm text-gray-900 dark:text-gray-200">Nestlé</td>
                   <td className="text-sm text-gray-900 dark:text-gray-200">800-NESTLE</td>
                   <td className="text-sm text-gray-900 dark:text-gray-200">Alimentos</td>
@@ -92,7 +92,7 @@ export default function Proveedores() {
                   </td>
                 </tr>
                 <tr className="border-b dark:border-gray-600">
-                  <td className="text-sm text-gray-900 dark:text-gray-200 py-4">PR1004</td>
+                  <td className="text-sm font-bold text-blue-700 hover:underline py-4">PR1004</td>
                   <td className="text-sm text-gray-900 dark:text-gray-200">Envases Universales</td>
                   <td className="text-sm text-gray-900 dark:text-gray-200">800-ENVASES</td>
                   <td className="text-sm text-gray-900 dark:text-gray-200">Envases</td>
@@ -105,7 +105,7 @@ export default function Proveedores() {
                 </tr>
 
                 <tr className="border-b dark:border-gray-600">
-                  <td className="text-sm text-gray-900 dark:text-gray-200 py-4">PR1005</td>
+                  <td className="text-sm  font-bold text-blue-700 hover:underline py-4">PR1005</td>
                   <td className="text-sm text-gray-900 dark:text-gray-200">Verduras Frescas S.A.</td>
                   <td className="text-sm text-gray-900 dark:text-gray-200">800-VERDURAS</td>
                   <td className="text-sm text-gray-900 dark:text-gray-200">Verduras</td>

@@ -17,8 +17,9 @@ export default function Ver({ open, onClose }) {
         telefono: "800-SIEMPRE (743-6773)",
         fechaRegistro: "2024-01-16",
         tipo: "Bebidas",
+        direccion:"Santa Ana, San José, Costa Rica",
         correo: "comunicacion@femsa.com.cr",
-        descripcion:"Distribuidadora de Coca Cola Company en Costa Rica sus pedidos se hacen solamente desde la página"
+        descripcion:"Distribuidora de Coca Cola Company en Costa Rica sus pedidos se hacen solamente desde la página"
     
     };
 
@@ -66,6 +67,10 @@ export default function Ver({ open, onClose }) {
                                 <div className="mb-4">
                                     <dt className="text-sm font-medium text-gray-700 dark:text-gray-200 ">Correo</dt>
                                     <dd className="mt-1 text-sm text-gray-900  dark:text-gray-200">{proveedor.correo}</dd>
+                                </div>
+                                <div className="mb-4">
+                                    <dt className="text-sm font-medium text-gray-700 dark:text-gray-200 ">Correo</dt>
+                                    <dd className="mt-1 text-sm text-gray-900  dark:text-gray-200">{proveedor.direccion}</dd>
                                 </div>
                                 <div className="mb-4">
                                     <dt className="text-sm font-medium text-gray-700 dark:text-gray-200 ">Descripción</dt>
