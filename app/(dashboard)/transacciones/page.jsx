@@ -44,14 +44,14 @@ export default function Transaccion() {
                                                 type="search"
                                                 id="default-search"
                                                 className="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                                placeholder="Search..."
+                                                placeholder="Buscar..."
                                                 required=""
                                             />
                                             <button
                                                 type="submit"
                                                 className="text-white absolute right-0 bottom-0 top-0 bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-r-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
                                             >
-                                                Search
+                                                Buscar
                                             </button>
                                         </div>
                                     </form>
@@ -232,12 +232,6 @@ export default function Transaccion() {
                                     </div>
                                 </div>
                                 <div className="w-full md:w-auto flex flex-col md:flex-row mb-3 md:mb-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
-                                    <button
-                                        type="button"
-                                        className="flex-shrink-0 flex items-center justify-center py-2 px-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-                                    >
-                                        View JSON
-                                    </button>
                                     <button
                                         type="button"
                                         className="flex-shrink-0 flex items-center justify-center py-2 px-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
@@ -434,13 +428,7 @@ export default function Transaccion() {
                             <div className="text-xs flex items-center space-x-5">
                                 <div>
                                     <div className="text-gray-500 dark:text-gray-400 mb-1">
-                                        Purchase price
-                                    </div>
-                                    <div className="dark:text-white font-medium">$ 3,567,890</div>
-                                </div>
-                                <div>
-                                    <div className="text-gray-500 dark:text-gray-400 mb-1">
-                                        Total selling price
+                                        Precio de venta total
                                     </div>
                                     <div className="dark:text-white font-medium">$ 8,489,400</div>
                                 </div>

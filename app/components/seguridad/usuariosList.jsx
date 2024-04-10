@@ -1,5 +1,14 @@
+'use client'
+import { useEffect, useState, createContext, useContext } from 'react';
+import { initFlowbite } from 'flowbite'
+import UpdateUser from '@/app/components/seguridad/updateUser';
 
 export default function UsuariosLista({ name, role, status, contact, schedule, lastlogin }) {
+    const [open, setOpen] = useState(false);
+    const [updateUser, SetUpdateUser] = useState(false);
+    useEffect(() => {
+        initFlowbite()
+    }, [])
     return (
         <>
             <tr className="border-b dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700">
@@ -58,7 +67,7 @@ export default function UsuariosLista({ name, role, status, contact, schedule, l
                     <div className="flex items-center space-x-1.5">
                         <a
                             className="transition hover:text-gray-900 dark:hover:text-white"
-                            href="#"
+                            href={contact}
                         >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -96,9 +105,9 @@ export default function UsuariosLista({ name, role, status, contact, schedule, l
                 <td className="px-4 py-2">{lastlogin}</td>
                 <td className="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                     <button
-                        id="dropdown-button-0"
+                        id={`${contact}-dropdown-button`} // Cambiado para usar `contact` en el id
                         type="button"
-                        data-dropdown-toggle="dropdown-0"
+                        data-dropdown-toggle={`${contact}-dropdown`} // Asegúrate de que coincida con el id del contenedor del dropdown
                         className="inline-flex items-center p-1 text-sm font-medium text-center text-gray-500 rounded-lg hover:text-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none dark:text-gray-400 dark:hover:text-gray-100"
                     >
                         <svg
@@ -112,39 +121,27 @@ export default function UsuariosLista({ name, role, status, contact, schedule, l
                         </svg>
                     </button>
                     <div
-                        id="dropdown-0"
+                        id={`${contact}-dropdown`} // Id actualizado para coincidir con `contact`
                         className="z-10 hidden bg-white divide-y divide-gray-100 rounded shadow w-44 dark:bg-gray-700 dark:divide-gray-600"
+                        aria-labelledby={`${contact}-dropdown-button`} // Actualizado para mejorar la accesibilidad
                     >
                         <ul
                             className="py-1 text-sm text-gray-700 dark:text-gray-200"
-                            aria-labelledby="dropdown-button-0"
                         >
                             <li>
-                                <a
-                                    href="#"
-                                    className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                                >
-                                    Show
-                                </a>
-                            </li>
-                            <li>
-                                <a
-                                    href="#"
-                                    className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                                <button
+                                    type='button'
+                                    data-modal-target="updateUserModal"
+                                    data-modal-toggle="updateUserModal"
+                                    className="block py-2 px-4 w-full text-left hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                                /* onClick={() => SetUpdateUser(true)} */
                                 >
                                     Edit
-                                </a>
+                                </button>
                             </li>
                         </ul>
-                        <div className="py-1">
-                            <a
-                                href="#"
-                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-                            >
-                                Delete
-                            </a>
-                        </div>
                     </div>
+                    <UpdateUser open={updateUser} onClose={() => SetUpdateUser(false)} />
                 </td>
             </tr>
         </>

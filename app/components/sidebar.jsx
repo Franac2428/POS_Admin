@@ -35,9 +35,9 @@ export default function Sidebar() {
     { icon: <Warehouse size={20} />, text: "Inventario", link: "/inventario" },
     { icon: <FileLineChart size={20} />, text: "Reportes",  link: "/reporteria"},
     { icon: <BadgeCent size={20} />, text: "Transacciones", link: "/transacciones" },
-    { icon: <BriefcaseBusiness size={20} />, text: "Empleados",  link: "/empleado"  },
-    { icon: <LockKeyhole size={20} />, text: "Seguridad", link: "/seguridad" },
-    { icon: <Truck size={20} />, text: "Pedidos",link:"/pedido"  },
+    { icon: <BriefcaseBusiness size={20} />, text: "Empleados", link: "/empleado" },
+    { icon: <LockKeyhole size={20} />, text: "Seguridad", link: "/seguridad", subItems : [{ text: "Configuracion", link:"/seguridad"}, { text: "Auditoria", link:"/auditoria"}] },
+    { icon: <Truck size={20} />, text: "Pedidos", link: "/pedido" },
     { icon: <hr className="my-3" /> },
     { icon: <Settings size={20} />, text: "Settings" },
     { icon: <LifeBuoy size={20} />, text: "Help" },
@@ -45,8 +45,8 @@ export default function Sidebar() {
 
   return (
     <>
-      <aside className={`h-screen ${isSmallScreen && expanded ? "fixed" : "static"} inset-y-0 left-0 z-50 transform transition-transform duration-200 ease-in-out"}`}>    
-          <nav className="h-full flex flex-col bg-white dark:bg-gray-800 border-r shadow-sm">
+      <aside className={`h-screen ${isSmallScreen && expanded ? "fixed" : "static"} inset-y-0 left-0 z-50 transform transition-transform duration-200 ease-in-out"}`}>
+        <nav className="h-full flex flex-col bg-white dark:bg-gray-800 border-r shadow-sm">
           <div className="p-4 pb-2 flex justify-between items-center bg-custom-yellow">
             <img src="/nombre.png" className={`overflow-hidden transition-all ${expanded ? "w-32" : "w-0"}`} />
 
@@ -87,28 +87,56 @@ export default function Sidebar() {
   );
 }
 
-export function SidebarItem({ icon, text, active, link, expanded }) {
+export function SidebarItem({ icon, text, active, link, expanded, subItems }) {
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+
   const MenuItem = link ? Link : 'div';
+  const handleDropdownClick = () => setDropdownOpen(!dropdownOpen);
+
+  if (subItems && subItems.length > 0) {
+    return (
+<li className={`relative my-1 ${!expanded ? 'hidden' : ''}`}>
+    <button
+      type="button"
+      className="flex items-center p-2 w-full text-base font-medium text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+      aria-expanded={dropdownOpen ? "true" : "false"}
+      onClick={handleDropdownClick}
+    >
+      {icon}
+      <span className="flex-1 ml-3 text-left whitespace-nowrap">{text}</span>
+      {subItems && subItems.length > 0 && (
+        <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+          <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd"></path>
+        </svg>
+      )}
+    </button>
+    {subItems && subItems.length > 0 && (
+      <ul className={`py-2 space-y-2 ${dropdownOpen ? "block" : "hidden"}`}>
+        {subItems.map((item, index) => (
+          <li key={index}>
+            <a href={item.link} className="flex items-center p-2 pl-11 w-full text-base font-medium text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
+              {item.text}
+            </a>
+          </li>
+        ))}
+      </ul>
+    )}
+  </li>
+    );
+  }
 
   return (
-    <li
-      className={`relative flex items-center py-2 px-3 my-1 font-medium rounded-md cursor-pointer transition-colors group ${active ? "bg-yellow-100 hover:bg-yellow-50 text-gray-400 dark:hover:bg-yellow-400 dark:bg-yellow-600 dark:text-gray-200" : "hover:bg-yellow-200 dark:hover:bg-yellow-600 text-gray-600 dark:text-gray-300"}`}
-
-    >
+    <li className={`relative flex items-center py-2 px-3 my-1 font-medium rounded-md cursor-pointer transition-colors group ${active ? "bg-yellow-100 hover:bg-yellow-50 text-gray-400 dark:hover:bg-yellow-400 dark:bg-yellow-600 dark:text-gray-200" : "hover:bg-yellow-200 dark:hover:bg-yellow-600 text-gray-600 dark:text-gray-300"}`}>
       <MenuItem className="flex" href={link}>
         {icon}
-        <span className={`overflow-hidden transition-all ${expanded ? "ml-3" : "w-0"}`}>
-          {text}
-        </span>
+        <span className={`overflow-hidden transition-all ${expanded ? "ml-3" : "w-0"}`}>{text}</span>
       </MenuItem>
-
       {!expanded && (
-        <div
-          className={`absolute left-full rounded-md px-2 py-1 ml-6 bg-yellow-100 text-yellow-800 text-sm invisible opacity-20 -translate-x-3 transition-all group-hover:visible group-hover:opacity-100 group-hover:translate-x-0`}
-        >
+        <div className={`absolute left-full rounded-md px-2 py-1 ml-6 bg-yellow-100 text-yellow-800 text-sm invisible opacity-20 -translate-x-3 transition-all group-hover:visible group-hover:opacity-100 group-hover:translate-x-0`}>
           {text}
         </div>
       )}
     </li>
   );
 }
+
