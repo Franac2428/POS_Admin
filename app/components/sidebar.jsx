@@ -36,17 +36,13 @@ export default function Sidebar() {
     { icon: <Truck size={20} />, text: "Pedidos", link: "/pedido" },
     { icon: <AlarmClock size={20} />, text: "Monitorizar horarios", link: "/horas" },
 
-    { icon: <BriefcaseBusiness size={20} />, text: "Empleados",  link: "/empleado"  },
-    { icon: <LockKeyhole size={20} />, text: "Seguridad", link: "/seguridad" },
-    { icon: <Truck size={20} />, text: "Pedidos",link:"/pedido"  },
-
     { icon: <hr className="my-3" /> },
-    { icon: <LogOut size={20} />, text: "Cerrar Sesión", link:"/login" },
+    { icon: <LogOut size={20} />, text: "Cerrar Sesión", link: "/login" },
   ];
   return (
     <>
-      <aside className={`h-screen ${isSmallScreen && expanded ? "fixed" : "static"} inset-y-0 left-0 z-50 transform transition-transform duration-200 ease-in-out"}`}>    
-          <nav className="h-full flex flex-col bg-white dark:bg-gray-800 border-r shadow-sm">
+      <aside className={`h-screen ${isSmallScreen && expanded ? "fixed" : "static"} inset-y-0 left-0 z-50 transform transition-transform duration-200 ease-in-out"}`}>
+        <nav className="h-full flex flex-col bg-white dark:bg-gray-800 border-r shadow-sm">
           <div className="p-4 pb-2 flex justify-between items-center bg-custom-yellow">
             <img src="/nombre.png" className={`overflow-hidden transition-all ${expanded ? "w-32" : "w-0"}`} />
             <button
