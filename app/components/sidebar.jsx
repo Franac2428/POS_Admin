@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { ChevronFirst, ChevronLast, MoreVertical } from "lucide-react";
 import { createContext, useContext, useState } from "react";
-import { Warehouse, Utensils, FileLineChart, LockKeyhole, Flag, BriefcaseBusiness, LifeBuoy, Settings, BadgeCent, Truck } from "lucide-react";
+import { Warehouse, Utensils, FileLineChart, LockKeyhole, Flag, BriefcaseBusiness, LifeBuoy, Settings, BadgeCent, Truck, CircleUser, AlarmClock } from "lucide-react";
 import ThemeButton from "./theme/ChangeTheme";
 
 
@@ -13,11 +13,13 @@ export default function Sidebar() {
   const sidebarItems = [
     { icon: <Utensils size={20} />, text: "POS", link: "/menu" },
     { icon: <Warehouse size={20} />, text: "Inventario", link: "/inventario" },
-    { icon: <FileLineChart size={20} />, text: "Reportes",  link: "/reporteria"},
+    { icon: <FileLineChart size={20} />, text: "Reportes", link: "/reporteria" },
     { icon: <BadgeCent size={20} />, text: "Transacciones", link: "/transacciones" },
-    { icon: <BriefcaseBusiness size={20} />, text: "Empleados",  link: "/empleado"  },
+    { icon: <BriefcaseBusiness size={20} />, text: "Empleados", link: "/empleado" },
     { icon: <LockKeyhole size={20} />, text: "Seguridad" },
-    { icon: <Truck size={20} />, text: "Pedidos",link:"/pedido"  },
+    { icon: <CircleUser size={20} />, text: "Clientes", link: "/clientes" },
+    { icon: <Truck size={20} />, text: "Pedidos", link: "/pedido" },
+    { icon: <AlarmClock size={20} />, text: "Monitorizar horarios", link: "/horas" },
     { icon: <hr className="my-3" /> },
     { icon: <Settings size={20} />, text: "Settings" },
     { icon: <LifeBuoy size={20} />, text: "Help" },
