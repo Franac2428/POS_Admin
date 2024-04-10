@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { ChevronFirst, ChevronLast, MoreVertical } from "lucide-react";
 import { createContext, useContext, useState } from "react";
-import { Warehouse, Utensils, FileLineChart, LockKeyhole, Flag, BriefcaseBusiness, LifeBuoy, LogOut, BadgeCent, Truck, AlarmClock } from "lucide-react";
+import { Warehouse, Utensils, FileLineChart, LockKeyhole, BookUser, BriefcaseBusiness, LifeBuoy, LogOut, BadgeCent, Truck, AlarmClock } from "lucide-react";
 import ThemeButton from "./theme/ChangeTheme";
 import { useEffect } from "react";
 
@@ -36,6 +36,7 @@ export default function Sidebar() {
     { icon: <FileLineChart size={20} />, text: "Reportes", link: "/reporteria" },
     { icon: <BadgeCent size={20} />, text: "Transacciones", link: "/transacciones" },
     { icon: <BriefcaseBusiness size={20} />, text: "Empleados", link: "/empleado" },
+    { icon: <BookUser size={20} />, text: "Clientes", link: "/clientes" },
     { icon: <LockKeyhole size={20} />, text: "Seguridad", link: "/seguridad", subItems: [{ text: "Usuarios", link: "/seguridad" }, { text: "Auditoria", link: "/auditoria" }] },
     { icon: <Truck size={20} />, text: "Pedidos", link: "/pedido" },
     { icon: <AlarmClock size={20} />, text: "Monitorizar horarios", link: "/horas" },
