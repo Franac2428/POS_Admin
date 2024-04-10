@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { ChevronFirst, ChevronLast, MoreVertical } from "lucide-react";
 import { createContext, useContext, useState } from "react";
-import { Warehouse, Utensils, FileLineChart, LockKeyhole, Flag, BriefcaseBusiness, LogOut, Settings, BadgeCent, Truck } from "lucide-react";
+import { Warehouse, Utensils, BookUser, Flag, BriefcaseBusiness, LogOut, BadgeCent, Truck } from "lucide-react";
 import ThemeButton from "./theme/ChangeTheme";
 
 
@@ -14,6 +14,7 @@ export default function SidebarEm() {
         { icon: <Utensils size={20} />, text: "POS", link: "/pos" },
         { icon: <Warehouse size={20} />, text: "Inventario", link: "/inventarioEM" },
         { icon: <BadgeCent size={20} />, text: "Transacciones", link: "/transaccionesEM" },
+        { icon: <BookUser size={20} />, text: "Clientes", link: "/clientesEM" },
         { icon: <BriefcaseBusiness size={20} />, text: "Metas", link: "/metas" },
         { icon: <Flag size={20} />, text: "Marcar Hora", link: "/marcar" },
         { icon: <Truck size={20} />, text: "Pedidos", link: "/pedidoEM" },
