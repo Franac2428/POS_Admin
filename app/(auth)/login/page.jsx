@@ -1,6 +1,15 @@
+"use client"
+
+import CambioClave from "@/app/(auth)/olvidoClave";
 import Image from "next/image";
-import Link from "next/link"
+import Link from "next/link";
+import { useState } from "react";
+
+
 export default function login() {
+
+    const [cambioClave, setCambioClave] = useState(false);
+
     return (
         <div className="flex w-full h-screen">
             <div className="w-full flex items-center justify-center lg:w-1/2">
@@ -33,8 +42,7 @@ export default function login() {
 
                         </div>
                         <div className='mt-4'>
-                            <button className='font-medium text-base text-custom-yellow'>¿Olvidaste tu contraseña?</button>
-
+                            <button type="button" onClick={() => setCambioClave(true)} className='font-medium text-base text-custom-yellow'>¿Olvidaste tu contraseña?</button>
                         </div>
 
                     </div>
@@ -46,6 +54,7 @@ export default function login() {
 
                 </div>
             </div>
+            <CambioClave open={cambioClave} onClose={() => setCambioClave(false)} />
         </div>
     );
 
