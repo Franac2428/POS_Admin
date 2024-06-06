@@ -8,6 +8,7 @@ import Ver from "../../components/inventario/ver";
 
 import Buscador from "../../components/pos/buscador";
 import { CirclePlus, FileUp, Pencil, SlidersHorizontal, Trash, Eye } from "lucide-react";
+
 import { useState } from "react";
 import Filtro from "../../components/inventario/filtro";
 
@@ -65,6 +66,7 @@ export default function Inventario() {
                   <td className="text-sm text-gray-900 dark:text-gray-200">Bebidas</td>
                   <td className="flex gap-2 justify-center my-2">
                     <button className="p-1.5 text-gray-900 dark:text-gray-200 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-blue-600 bg-opacity-50 rounded-md " onClick={() => setEditar(true)}><Pencil size={15} strokeWidth={2.2} /></button>
+
                     <button className="p-1.5 text-gray-900 dark:text-gray-200 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-green-600 bg-opacity-50 rounded-md" onClick={() => setVer(true)}><Eye size={15} strokeWidth={2.2} /> </button>
                     <button className="p-1.5 text-gray-900 dark:text-gray-200 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-red-600 bg-opacity-50 rounded-md" onClick={() => setOpen(true)}><Trash size={15} strokeWidth={2.2} /> </button>
                   </td>
@@ -116,6 +118,7 @@ export default function Inventario() {
                   <td className="text-sm text-gray-900 dark:text-gray-200">Carnes</td>
                   <td className="flex gap-2 justify-center my-2">
                     <button className="p-1.5 text-gray-900 dark:text-gray-200 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-blue-600 bg-opacity-50 rounded-md " onClick={() => setEditar(true)}><Pencil size={15} strokeWidth={2.2} /></button>
+
                     <button className="p-1.5 text-gray-900 dark:text-gray-200 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-green-600 bg-opacity-50 rounded-md" onClick={() => setVer(true)}><Eye size={15} strokeWidth={2.2} /> </button>
                     <button className="p-1.5 text-gray-900 dark:text-gray-200 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-red-600 bg-opacity-50 rounded-md" onClick={() => setOpen(true)}><Trash size={15} strokeWidth={2.2} /> </button>
                   </td>
