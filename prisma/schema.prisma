@@ -18,4 +18,10 @@ model Usuarios{
   apellido String
   telefono String
   direccion String
+
+  resetPasswordToken String? @unique
+  resetPasswordTokenExpiry DateTime?
+
+  emailVerified Boolean @default(false)
+  emailVerificationToken String? @unique
 }
