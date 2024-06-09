@@ -1,12 +1,27 @@
 import { X, CircleAlert } from "lucide-react";
-import { Toaster, toast } from 'sonner'
+import { Toaster, toast } from 'sonner';
+import useSWR, { mutate } from 'swr';
 
-export default function Eliminar({ open, onClose }) {
-    const handleEliminar = () => {
-        toast.success('Acción realizada con éxito');
-        setTimeout(() => {
-            onClose();
-        }, 1500);
+export default function Eliminar({ open, onClose, empleado }) {
+    const handleEliminar = async () => {
+        try {
+            const response = await fetch(`http://localhost:3000/api/empleado/${empleado.Id}`, {
+                method: 'DELETE',
+            });
+
+            if (!response.ok) {
+                throw new Error('Error al eliminar el empleado');
+            }
+
+            toast.success('Empleado eliminado con éxito');
+            // Actualiza la lista de empleados después de la eliminación
+            mutate('http://localhost:3000/api/empleado');
+            setTimeout(() => {
+                onClose();
+            }, 1500);
+        } catch (error) {
+            toast.error('Error al eliminar el empleado');
+        }
     };
 
     return (
@@ -27,62 +42,49 @@ export default function Eliminar({ open, onClose }) {
                     </div>
                     <div className="mx-5 my-4 w-full">
                         <div className="flex gap-2">
-                            <p className="text-gray-800 text-md font-bold">  Id: </p>
-                            <p className="text-gray-800 text-md"> EM10102 </p>
+                            <p className="text-gray-800 text-md font-bold">Id:</p>
+                            <p className="text-gray-800 text-md">{empleado.Id}</p>
                         </div>
                         <div className="flex gap-2">
                             <p className="text-md text-gray-800 font-bold">Cedula:</p>
-                            <p className="text-gray-800 text-md"> 305440618 </p>
-
+                            <p className="text-gray-800 text-md">Hola</p>
                         </div>
                         <div className="flex gap-2">
                             <p className="text-md text-gray-800 font-bold">Nombre:</p>
-                            <p className="text-gray-800 text-md"> Josué </p>
-
+                            <p className="text-gray-800 text-md">{empleado.nombre}</p>
                         </div>
                         <div className="flex gap-2">
-                            <p className="text-md text-gray-800 font-bold"> Apellidos:</p>
-                            <p className="text-gray-800 text-md"> Bonilla Soto </p>
-
+                            <p className="text-md text-gray-800 font-bold">Apellidos:</p>
+                            <p className="text-gray-800 text-md">{empleado.apellido}</p>
                         </div>
                         <div className="flex gap-2">
-                            <p className="text-md text-gray-800 font-bold"> Puesto</p>
-                            <p className="text-gray-800 text-md"> Cajas </p>
-
+                            <p className="text-md text-gray-800 font-bold">Puesto:</p>
+                            <p className="text-gray-800 text-md">hola</p>
                         </div>
                         <div className="flex gap-2">
-                            <p className="text-md text-gray-800 font-bold">  Correo  </p>
-                            <p className="text-gray-800 text-md"> josue@gmail.com </p>
-
+                            <p className="text-md text-gray-800 font-bold">Correo:</p>
+                            <p className="text-gray-800 text-md">{empleado.email}</p>
                         </div>
                         <div className="flex gap-2">
-                            <p className="text-md text-gray-800 font-bold"> # Telefono  </p>
-                            <p className="text-gray-800 text-md"> 72094668 </p>
-
+                            <p className="text-md text-gray-800 font-bold"># Telefono:</p>
+                            <p className="text-gray-800 text-md">{empleado.telefono}</p>
                         </div>
                         <div className="flex gap-2">
-                            <p className="text-md text-gray-800 font-bold">  Fecha Contratacion   </p>
-                            <p className="text-gray-800 text-md"> 16-01-2024 </p>
+                            <p className="text-md text-gray-800 font-bold">Fecha Contratacion:</p>
+                            <p className="text-gray-800 text-md">hola</p>
                         </div>
                         <div className="flex gap-2">
-                            <p className="text-md text-gray-800 font-bold">  Fecha Nacimiento  </p>
-                            <p className="text-gray-800 text-md"> 19-03-2003 </p>
+                            <p className="text-md text-gray-800 font-bold">Fecha Nacimiento:</p>
+                            <p className="text-gray-800 text-md">hola</p>
                         </div>
                     </div>
                     <div className="flex justify-end gap-4 ">
-                        <button className="bg-red-600 font-semibold rounded-md py-2 px-6 text-white" onClick={handleEliminar}>Eliminar
-                        </button>
-                        <button
-                            className="bg-gray-400 font-semibold   rounded-md py-2 px-6"
-                            onClick={onClose}
-                        >
-                            Cancelar
-                        </button>
+                        <button className="bg-red-600 font-semibold rounded-md py-2 px-6 text-white" onClick={handleEliminar}>Eliminar</button>
+                        <button className="bg-gray-400 font-semibold rounded-md py-2 px-6" onClick={onClose}>Cancelar</button>
                     </div>
                 </div>
             </div>
             <Toaster richColors />
-
         </div>
     );
 }

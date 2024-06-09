@@ -8,7 +8,7 @@ import Buscador from "../../components/pos/buscador";
 import Evaluar from "@/app/components/empleado/evaluar";
 import Editar from "@/app/components/empleado/editar";
 import Ver from "@/app/components/empleado/ver";
-
+import useSWR from 'swr';
 
 
 
@@ -18,8 +18,15 @@ export default function empleado() {
     const [ver, setVer] = useState(false);
     const [editar, setEditar] = useState(false);
     const [evaluar, setEvaluar] = useState(false);
-
-
+    const { data, error } = useSWR('http://localhost:3000/api/empleado', async (url) => {
+        const response = await fetch(url);
+        const data = await response.json();
+        return data;
+      });
+    
+      if (error) return <div>Error al cargar los datos</div>;
+      if (!data) return <div>Cargando...</div>;
+      if (!data || !Array.isArray(data)) return <div>No hay datos disponibles</div>; 
 
     return (
         <>
@@ -60,56 +67,19 @@ export default function empleado() {
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr className="border-b dark:border-gray-600">
-                                    <td className=" text-center text-sm text-gray-900 whitespace-nowrap">
-                                        <a href="#" className="font-bold text-blue-700 hover:underline">EM10102</a>
-                                    </td>
-                                    <td className="text-center text-sm text-gray-900 dark:text-gray-200 py-4">305440618</td>
-                                    <td className="text-center text-sm text-gray-900 dark:text-gray-200">Josue</td>
-                                    <td className="text-center text-sm text-gray-900 dark:text-gray-200">Bonilla Soto</td>
-                                    <td className="text-center text-sm text-gray-900 dark:text-gray-200">
-                                        <span className="p-1.5 text-xs font-medium uppercase tracking-wider text-gray-800 bg-yellow-200 dark:text-yellow-200 dark:bg-yellow-800 rounded-lg bg-opacity-50">Cajas</span>
-                                    </td>
-                                    <td className="text-center text-sm text-gray-900 dark:text-gray-200">josue@gmail.com</td>
-                                    <td className="text-center text-sm text-gray-900 dark:text-gray-200">72094668</td>
-                                    <td className=" flex gap-1 justify-evenly my-1 whitespace-nowrap">
-                                        <button className="p-1.5 text-gray-900 dark:text-gray-200 dark:text-gray-200 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-blue-600 bg-opacity-50 rounded-md " onClick={() => setEditar(true)}><Pencil size={15} strokeWidth={2.2} /></button>
-                                        <button className="p-1.5 text-gray-900 dark:text-gray-200 dark:text-gray-200 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-green-600 bg-opacity-50 rounded-md" onClick={() => setVer(true)}><Eye size={15} strokeWidth={2.2} /> </button>
-                                        <button className="p-1.5 text-gray-900 dark:text-gray-200 dark:text-gray-200 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-yellow-600 bg-opacity-50 rounded-md" onClick={() => setEvaluar(true)}><SmilePlus size={15} strokeWidth={2.2} /></button>
-                                        <button className="p-1.5 text-gray-900 dark:text-gray-200 dark:text-gray-200 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-red-600 bg-opacity-50 rounded-md" onClick={() => setOpen(true)}><Trash size={15} strokeWidth={2.2} /> </button>
-                                    </td>
-                                </tr>
-                                <tr className="border-b dark:border-gray-600">
-                                    <td className=" text-center text-sm text-gray-900 whitespace-nowrap">
-                                        <a href="#" className="font-bold text-blue-700 hover:underline">EM20203</a>
-                                    </td>
-                                    <td className="text-center text-sm text-gray-900 dark:text-gray-200 py-4">1234567689</td>
-                                    <td className="text-center text-sm text-gray-900 dark:text-gray-200">Yaritza</td>
-                                    <td className="text-center text-sm text-gray-900 dark:text-gray-200">Macotelo Menocal</td>
-                                    <td className=" text-center text-sm text-gray-900 whitespace-nowrap">
-                                        <span className="p-1.5 text-xs font-medium uppercase tracking-wider text-gray-800 bg-green-200 dark:text-green-200 dark:bg-green-800 rounded-lg bg-opacity-50">Jefe</span>
-                                    </td>
-                                    <td className="text-center text-sm text-gray-900 dark:text-gray-200">yaritza@gmail.com</td>
-                                    <td className="text-center text-sm text-gray-900 dark:text-gray-200">87456128</td>
-                                    <td className=" flex gap-1 justify-evenly my-1 whitespace-nowrap">
-                                        <button className="p-1.5 text-gray-900 dark:text-gray-200 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-blue-600 bg-opacity-50 rounded-md " onClick={() => setEditar(true)}><Pencil size={15} strokeWidth={2.2} /></button>
-                                        <button className="p-1.5 text-gray-900 dark:text-gray-200 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-green-600 bg-opacity-50 rounded-md" onClick={() => setVer(true)}><Eye size={15} strokeWidth={2.2} /> </button>
-                                        <button className="p-1.5 text-gray-900 dark:text-gray-200 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-yellow-600 bg-opacity-50 rounded-md" onClick={() => setEvaluar(true)}><SmilePlus size={15} strokeWidth={2.2} /></button>
-                                        <button className="p-1.5 text-gray-900 dark:text-gray-200 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-red-600 bg-opacity-50 rounded-md" onClick={() => setOpen(true)}><Trash size={15} strokeWidth={2.2} /> </button>
-                                    </td>
-                                </tr>
-                                <tr className="">
+                            {data.map((empleado) => (
+                                <tr className="" key={empleado.id}>
                                     <td className=" text-center text-sm text-gray-700 whitespace-nowrap">
-                                        <a href="#" className="font-bold text-blue-700 hover:underline">EM30304</a>
+                                        <a href="#" className="font-bold text-blue-700 hover:underline"> {empleado.Id}</a>
                                     </td>
                                     <td className="text-center text-sm text-gray-900 dark:text-gray-200 py-4">78930292</td>
-                                    <td className="text-center text-sm text-gray-900 dark:text-gray-200">Francisco</td>
-                                    <td className="text-center text-sm text-gray-900 dark:text-gray-200">Araya Carvajal</td>
+                                    <td className="text-center text-sm text-gray-900 dark:text-gray-200"> {empleado.nombre}</td>
+                                    <td className="text-center text-sm text-gray-900 dark:text-gray-200"> {empleado.apellido}</td>
                                     <td className=" text-center text-sm text-gray-700 whitespace-nowrap">
                                         <span className="p-1.5 text-xs font-medium uppercase tracking-wider text-gray-800 bg-red-200 dark:text-red-200 dark:bg-red-800 rounded-lg bg-opacity-50">Cocina</span>
                                     </td>
-                                    <td className="text-center text-sm text-gray-900 dark:text-gray-200">francisco@gmail.com</td>
-                                    <td className="text-center text-sm text-gray-900 dark:text-gray-200">61198211</td>
+                                    <td className="text-center text-sm text-gray-900 dark:text-gray-200"> {empleado.email}</td>
+                                    <td className="text-center text-sm text-gray-900 dark:text-gray-200"> {empleado.telefono}</td>
                                     <td className=" flex gap-1 justify-evenly my-1 whitespace-nowrap">
                                         <button className="p-1.5 text-gray-900 dark:text-gray-200 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-blue-600 bg-opacity-50 rounded-md " onClick={() => setEditar(true)}><Pencil size={15} strokeWidth={2.2} /></button>
                                         <button className="p-1.5 text-gray-900 dark:text-gray-200 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-green-600 bg-opacity-50 rounded-md" onClick={() => setVer(true)}><Eye size={15} strokeWidth={2.2} /> </button>
@@ -117,25 +87,8 @@ export default function empleado() {
                                         <button className="p-1.5 text-gray-900 dark:text-gray-200 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-red-600 bg-opacity-50 rounded-md" onClick={() => setOpen(true)}><Trash size={15} strokeWidth={2.2} /> </button>
                                     </td>
                                 </tr>
-                                <tr className="">
-                                    <td className=" text-center text-sm text-gray-900 whitespace-nowrap">
-                                        <a href="#" className="font-bold text-blue-700 hover:underline">EM40405</a>
-                                    </td>
-                                    <td className="text-center text-sm text-gray-900 dark:text-gray-200 py-4">52981198</td>
-                                    <td className="text-center text-sm text-gray-900 dark:text-gray-200">Manfred</td>
-                                    <td className="text-center text-sm text-gray-900 dark:text-gray-200">Villegas Lopez</td>
-                                    <td className=" text-center text-sm text-gray-900 whitespace-nowrap">
-                                        <span className="p-1.5 text-xs font-medium uppercase tracking-wider text-gray-800 bg-blue-200 dark:text-blue-200 dark:bg-blue-800 rounded-lg bg-opacity-50">Repartidor</span>
-                                    </td>
-                                    <td className="text-center text-sm text-gray-900 dark:text-gray-200">manfred@gmail.com</td>
-                                    <td className="text-center text-sm text-gray-900 dark:text-gray-200">65907621</td>
-                                    <td className=" flex gap-1 justify-evenly my-1 whitespace-nowrap">
-                                        <button className="p-1.5 text-gray-900 dark:text-gray-200 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-blue-600 bg-opacity-50 rounded-md " onClick={() => setEditar(true)}><Pencil size={15} strokeWidth={2.2} /></button>
-                                        <button className="p-1.5 text-gray-900 dark:text-gray-200 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-green-600 bg-opacity-50 rounded-md" onClick={() => setVer(true)}><Eye size={15} strokeWidth={2.2} /> </button>
-                                        <button className="p-1.5 text-gray-900 dark:text-gray-200 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-yellow-600 bg-opacity-50 rounded-md" onClick={() => setEvaluar(true)}><SmilePlus size={15} strokeWidth={2.2} /></button>
-                                        <button className="p-1.5 text-gray-900 dark:text-gray-200 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-red-600 bg-opacity-50 rounded-md" onClick={() => setOpen(true)}><Trash size={15} strokeWidth={2.2} /> </button>
-                                    </td>
-                                </tr>
+                                        ))}
+
                             </tbody>
                         </table>
                     </div>
