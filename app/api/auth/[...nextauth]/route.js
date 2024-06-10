@@ -16,47 +16,42 @@ const authOptions = {
             },
             async authorize(credentials, req) {
                 //Id:1 Se inserta la auditoría como status pendiente
-                scopeIdAuditoria = await auditRegister(credentials.email,credentials.password,1,'Ingreso de credenciales');
-                
+                scopeIdAuditoria = await auditRegister(credentials.email, credentials.password, 1, 'Ingreso de credenciales');
+
                 const userFound = await db.usuarios.findUnique({
                     where: {
                         email: credentials.email
                     }
-                })
+                });
 
-                if (!userFound){
+                if (!userFound) {
                     //Id 4: No existe el usuario
-                    auditUpdate(scopeIdAuditoria,4,'Usuario no existe');
+                    await auditUpdate(scopeIdAuditoria, 4, 'Usuario no existe');
                     throw new Error(JSON.stringify({
                         message: 'Email no encontrado',
                         ok: false,
                     }));
                 }
-               
 
-                const matchPassword = await bcrypt.compare(credentials.password, userFound.password)
+                const matchPassword = await bcrypt.compare(credentials.password, userFound.password);
 
-                if (!matchPassword){
+                if (!matchPassword) {
                     //Id 2: Clave incorrecta
-                    auditUpdate(scopeIdAuditoria,2,'Clave Incorrecta');
-
+                    await auditUpdate(scopeIdAuditoria, 2, 'Clave Incorrecta');
                     throw new Error(JSON.stringify({
                         message: 'La contraseña es incorrecta',
                         ok: false,
                     }));
-                } 
-                else{
+                } else {
                     //Id 3: Ingreso satisfactorio
-                    auditUpdate(scopeIdAuditoria,3,'Ingreso satisfactorio');
-
-                return {
-                    id: userFound.id,
-                    name: userFound.nombre,
-                    email: userFound.email,
-                    role: userFound.role ?? 'admin',// Asegúrate de incluir el rol
+                    await auditUpdate(scopeIdAuditoria, 3, 'Ingreso satisfactorio');
+                    return {
+                        id: userFound.id,
+                        name: userFound.nombre,
+                        email: userFound.email,
+                        role: userFound.role ?? 'admin', // Asegúrate de incluir el rol
+                    };
                 }
-
-                
             },
         }),
     ],
@@ -76,47 +71,45 @@ const authOptions = {
     }
 };
 
-async function auditRegister(usuario,clave,idStatus,mensaje){
-    try{
+async function auditRegister(usuario, clave, idStatus, mensaje) {
+    try {
         const newAudit = await db.auditoriaLogin.create({
-            data:{
-                Usuario:usuario,
-                Clave:clave,
+            data: {
+                Usuario: usuario,
+                Clave: clave,
                 IdStatusAuditoriaLogin: idStatus,
-                FechaEstadoActualizado:null,
-                Mensaje:mensaje
+                FechaEstadoActualizado: null,
+                Mensaje: mensaje
             }
         });
-        //Devuelve el identity insertado
+        // Devuelve el identity insertado
         return parseInt(newAudit.IdAuditoriaLogin);
 
-    }
-    catch(error){
+    } catch (error) {
         console.error("Error insertando la auditoría: " + error);
     }
 }
 
-async function auditUpdate(idAudit,idStatus,mensaje){
-    try{
+async function auditUpdate(idAudit, idStatus, mensaje) {
+    try {
         const dataToUpdate = {
             IdStatusAuditoriaLogin: idStatus,
-            FechaEstadoActualizado:new Date(),
+            FechaEstadoActualizado: new Date(),
             Mensaje: mensaje
-        }
+        };
 
-        //Si el ingreso es correcto, no envía la clave correcta
-        if(idStatus == 3){
+        // Si el ingreso es correcto, no envía la clave correcta
+        if (idStatus === 3) {
             dataToUpdate.Clave = "";
         }
 
         const newAudit = await db.auditoriaLogin.update({
-            where:{
-                IdAuditoriaLogin:idAudit
+            where: {
+                IdAuditoriaLogin: idAudit
             },
-            data:dataToUpdate
+            data: dataToUpdate
         });
-    }
-    catch(error){
+    } catch (error) {
         console.error("Error actualizando la auditoría: " + error);
     }
 }
@@ -124,4 +117,3 @@ async function auditUpdate(idAudit,idStatus,mensaje){
 const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };
-
