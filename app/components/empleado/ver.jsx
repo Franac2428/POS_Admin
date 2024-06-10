@@ -1,28 +1,28 @@
 import { X, CircleAlert } from "lucide-react";
 import { Toaster, toast } from 'sonner';
+import { useState, useEffect } from 'react';
 
-export default function Ver({ open, onClose }) {
-    const handleVer = () => {
-        toast.success('Acción realizada con éxito');
-        setTimeout(() => {
-            onClose();
-        }, 1500);
-    };
 
-    // Aquí puedes reemplazar los datos de ejemplo con los datos reales del empleado
-    const empleado = {
-        nombre: "Josué",
-        apellidos: "Bonilla Soto",
-        cedula: "305440618",
-        fechaNacimiento: "2003-19-03",
-        fechaContratacion: "2024-01-16",
-        puesto: "Cajas",
-        correo: "josue@gmail.com",
-        telefono: "72094668",
-        salario: 4000.0,
-        horario: "L-S 12md-6pm",
-        descripcion: "San José, Costa Rica",
-    };
+export default function Ver({ open, onClose,employeeId }) {
+    const [empleado, setempleado] = useState(null);
+    useEffect(() => {
+        const fetchEmpleado = async () => {
+            if (employeeId) {
+                try {
+                    const response = await fetch(`http://localhost:3000/api/empleado/${employeeId}`);
+                    const result = await response.json();
+                    if (response.ok) {
+                        setempleado(result);
+                    } else {
+                        toast.error('Error al obtener los datos del empleado');
+                    }
+                } catch (error) {
+                    toast.error('Error al obtener los datos del empleado');
+                }
+            }
+        };
+        fetchEmpleado();
+    }, [employeeId]);
 
     return (
         <>
@@ -36,6 +36,7 @@ export default function Ver({ open, onClose }) {
                             <h2 className="text-2xl font-bold flex gap-3 text-center text-gray-900">Ver empleado</h2>
                             <hr className="my-3 mr-7 py-0.2 border border-black" />
                         </div>
+                        {empleado && (                            
                         <div className="ml-5 my-4 w-full">
                             <dl className="grid grid-cols-2 gap-x-4">
                                 <div className="mb-4">
@@ -44,46 +45,33 @@ export default function Ver({ open, onClose }) {
                                 </div>
                                 <div className="mb-4">
                                     <dt className="text-sm font-medium text-gray-700">Apellidos</dt>
-                                    <dd className="mt-1 text-sm text-gray-900">{empleado.apellidos}</dd>
+                                    <dd className="mt-1 text-sm text-gray-900">{empleado.apellido}</dd>
                                 </div>
                                 <div className="mb-4">
-                                    <dt className="text-sm font-medium text-gray-700">Cedula</dt>
-                                    <dd className="mt-1 text-sm text-gray-900">{empleado.cedula}</dd>
-                                </div>
+                                    <dt className="text-sm font-medium text-gray-700">Fecha de Contratación</dt>
+                                    <dd className="mt-1 text-sm text-gray-900">{empleado.createdAt}</dd>
+                                </div>    
                                 <div className="mb-4">
-                                    <dt className="text-sm font-medium text-gray-700">Fecha Nacimiento</dt>
-                                    <dd className="mt-1 text-sm text-gray-900">{empleado.fechaNacimiento}</dd>
-                                </div>
-                                <div className="mb-4">
-                                    <dt className="text-sm font-medium text-gray-700">Fecha Contratación</dt>
-                                    <dd className="mt-1 text-sm text-gray-900">{empleado.fechaContratacion}</dd>
-                                </div>
-                                <div className="mb-4">
-                                    <dt className="text-sm font-medium text-gray-700">Puesto</dt>
-                                    <dd className="mt-1 text-sm text-gray-900">{empleado.puesto}</dd>
-                                </div>
+                                    <dt className="text-sm font-medium text-gray-700">Última Actualización</dt>
+                                    <dd className="mt-1 text-sm text-gray-900">{empleado.updatedAt}</dd>
+                                </div>                       
                                 <div className="mb-4">
                                     <dt className="text-sm font-medium text-gray-700">Correo</dt>
-                                    <dd className="mt-1 text-sm text-gray-900">{empleado.correo}</dd>
+                                    <dd className="mt-1 text-sm text-gray-900">{empleado.email}</dd>
                                 </div>
                                 <div className="mb-4">
                                     <dt className="text-sm font-medium text-gray-700">Telefono</dt>
                                     <dd className="mt-1 text-sm text-gray-900">{empleado.telefono}</dd>
                                 </div>
-                                <div className="mb-4">
-                                    <dt className="text-sm font-medium text-gray-700">Salario x hora</dt>
-                                    <dd className="mt-1 text-sm text-gray-900">{empleado.salario}</dd>
-                                </div>
-                                <div className="mb-4">
-                                    <dt className="text-sm font-medium text-gray-700">Horario</dt>
-                                    <dd className="mt-1 text-sm text-gray-900">{empleado.horario}</dd>
-                                </div>
+                                
                                 <div className="mb-4 col-span-2">
                                     <dt className="text-sm font-medium text-gray-700">Dirección</dt>
-                                    <dd className="mt-1 text-sm text-gray-900">{empleado.descripcion}</dd>
+                                    <dd className="mt-1 text-sm text-gray-900">{empleado.direccion}</dd>
                                 </div>
                             </dl>
                         </div>
+                        )}
+                        
                         <div className="flex justify-end gap-4 mr-5">
                             <button type="button" className="bg-gray-400 font-semibold rounded-md py-2 px-6" onClick={onClose}>
                                 Cerrar
