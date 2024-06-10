@@ -1,15 +1,14 @@
-"use client"
+"use client";
 import { useState } from 'react';
 
 export default function RegistroAuditoria() {
     const [error, setError] = useState(null);
 
-    function RespaldarBase(){
+    function RespaldarBase() {
         let url = "http://localhost:3001/backups";
         window.location.href = url;
     }
 
-export default function RegistroAuditoria() {
     return (
         <>
             <section className="bg-gray-50 dark:bg-gray-900 p-3 sm:p-5">
@@ -188,12 +187,46 @@ export default function RegistroAuditoria() {
                                                     htmlFor="benq"
                                                     className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100"
                                                 >
-                                                    Usuario eliminado (2)
+                                                    Fecha modifi (23)
+                                                </label>
+                                            </li>
+                                            <li className="flex items-center">
+                                                <input
+                                                    id="dell"
+                                                    type="checkbox"
+                                                    defaultValue=""
+                                                    className="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                                                />
+                                                <label
+                                                    htmlFor="dell"
+                                                    className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100"
+                                                >
+                                                    Curso creado (15)
                                                 </label>
                                             </li>
                                         </ul>
                                     </div>
                                 </div>
+                                <button
+                                    type="button"
+                                    onClick={RespaldarBase}
+                                    className="w-full md:w-auto flex items-center justify-center py-2 px-4 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                                >
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        aria-hidden="true"
+                                        className="mr-2 w-5 h-5 text-gray-400"
+                                        viewBox="0 0 20 20"
+                                        fill="currentColor"
+                                    >
+                                        <path
+                                            fillRule="evenodd"
+                                            d="M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V15a1 1 0 01-.293.707l-2 2A1 1 0 018 17v-5.586L3.293 6.707A1 1 0 013 6V3z"
+                                            clipRule="evenodd"
+                                        />
+                                    </svg>
+                                    Respaldo
+                                </button>
                             </div>
                         </div>
                         <div className="overflow-x-auto">
@@ -201,19 +234,19 @@ export default function RegistroAuditoria() {
                                 <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                     <tr>
                                         <th scope="col" className="px-4 py-3">
-                                            Usuario
-                                        </th>
-                                        <th scope="col" className="px-4 py-3">
-                                            Fecha y Hora
+                                            ID
                                         </th>
                                         <th scope="col" className="px-4 py-3">
                                             Accion
                                         </th>
                                         <th scope="col" className="px-4 py-3">
-                                            Description
+                                            Fecha
                                         </th>
                                         <th scope="col" className="px-4 py-3">
-                                            Categoria
+                                            Hora
+                                        </th>
+                                        <th scope="col" className="px-4 py-3">
+                                            Usuario
                                         </th>
                                     </tr>
                                 </thead>
@@ -223,179 +256,55 @@ export default function RegistroAuditoria() {
                                             scope="row"
                                             className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                                         >
-                                            Francisco
+                                            1
                                         </th>
-                                        <td className="px-4 py-3">2/04/2024</td>
-                                        <td className="px-4 py-3">Inicio Sesion</td>
-                                        <td className="px-4 py-3">Ingreso al sistema</td>
-                                        <td className="px-4 py-3">Auditoria</td>
-                                        
+                                        <td className="px-4 py-3">Logout</td>
+                                        <td className="px-4 py-3">01/01/2023</td>
+                                        <td className="px-4 py-3">13:23</td>
+                                        <td className="px-4 py-3">gvega</td>
                                     </tr>
                                     <tr className="border-b dark:border-gray-700">
                                         <th
                                             scope="row"
                                             className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                                         >
-                                            Francisco
+                                            2
                                         </th>
-                                        <td className="px-4 py-3">2/04/2024</td>
-                                        <td className="px-4 py-3">Inicio Sesion</td>
-                                        <td className="px-4 py-3">Ingreso al sistema</td>
-                                        <td className="px-4 py-3">Auditoria</td>
-                                        
+                                        <td className="px-4 py-3">Login</td>
+                                        <td className="px-4 py-3">01/01/2023</td>
+                                        <td className="px-4 py-3">11:11</td>
+                                        <td className="px-4 py-3">gvega</td>
                                     </tr>
                                     <tr className="border-b dark:border-gray-700">
                                         <th
                                             scope="row"
                                             className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                                         >
-                                            Francisco
+                                            3
                                         </th>
-                                        <td className="px-4 py-3">2/04/2024</td>
-                                        <td className="px-4 py-3">Inicio Sesion</td>
-                                        <td className="px-4 py-3">Ingreso al sistema</td>
-                                        <td className="px-4 py-3">Auditoria</td>
-                                        
+                                        <td className="px-4 py-3">Cambio de contraseña</td>
+                                        <td className="px-4 py-3">03/01/2023</td>
+                                        <td className="px-4 py-3">16:35</td>
+                                        <td className="px-4 py-3">gvega</td>
                                     </tr>
-                                    <tr className="border-b dark:border-gray-700">
+                                    <tr>
                                         <th
                                             scope="row"
                                             className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                                         >
-                                            Francisco
+                                            4
                                         </th>
-                                        <td className="px-4 py-3">2/04/2024</td>
-                                        <td className="px-4 py-3">Inicio Sesion</td>
-                                        <td className="px-4 py-3">Ingreso al sistema</td>
-                                        <td className="px-4 py-3">Auditoria</td>
-                                        
-                                    </tr>
-                                    <tr className="border-b dark:border-gray-700">
-                                        <th
-                                            scope="row"
-                                            className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                                        >
-                                            Francisco
-                                        </th>
-                                        <td className="px-4 py-3">2/04/2024</td>
-                                        <td className="px-4 py-3">Inicio Sesion</td>
-                                        <td className="px-4 py-3">Ingreso al sistema</td>
-                                        <td className="px-4 py-3">Auditoria</td>
-                                        
+                                        <td className="px-4 py-3">Apertura de reporte</td>
+                                        <td className="px-4 py-3">11/01/2023</td>
+                                        <td className="px-4 py-3">09:15</td>
+                                        <td className="px-4 py-3">vcastro</td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
-                        <nav
-                            className="flex flex-col md:flex-row justify-between items-start md:items-center space-y-3 md:space-y-0 p-4"
-                            aria-label="Table navigation"
-                        >
-                            <span className="text-sm font-normal text-gray-500 dark:text-gray-400">
-                                Showing
-                                <span className="font-semibold text-gray-900 dark:text-white">
-                                    1-10
-                                </span>
-                                of
-                                <span className="font-semibold text-gray-900 dark:text-white">
-                                    1000
-                                </span>
-                            </span>
-                            <ul className="inline-flex items-stretch -space-x-px">
-                                <li>
-                                    <a
-                                        href="#"
-                                        className="flex items-center justify-center h-full py-1.5 px-3 ml-0 text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                                    >
-                                        <span className="sr-only">Previous</span>
-                                        <svg
-                                            className="w-5 h-5"
-                                            aria-hidden="true"
-                                            fill="currentColor"
-                                            viewBox="0 0 20 20"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                        >
-                                            <path
-                                                fillRule="evenodd"
-                                                d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                                                clipRule="evenodd"
-                                            />
-                                        </svg>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a
-                                        href="#"
-                                        className="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                                    >
-                                        1
-                                    </a>
-                                </li>
-                                <li>
-                                    <a
-                                        href="#"
-                                        className="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                                    >
-                                        2
-                                    </a>
-                                </li>
-                                <li>
-                                    <a
-                                        href="#"
-                                        aria-current="page"
-                                        className="flex items-center justify-center text-sm z-10 py-2 px-3 leading-tight text-primary-600 bg-primary-50 border border-primary-300 hover:bg-primary-100 hover:text-primary-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white"
-                                    >
-                                        3
-                                    </a>
-                                </li>
-                                <li>
-                                    <a
-                                        href="#"
-                                        className="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                                    >
-                                        ...
-                                    </a>
-                                </li>
-                                <li>
-                                    <a
-                                        href="#"
-                                        className="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                                    >
-                                        100
-                                    </a>
-                                </li>
-                                <li>
-                                    <a
-                                        href="#"
-                                        className="flex items-center justify-center h-full py-1.5 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                                    >
-                                        <span className="sr-only">Next</span>
-                                        <svg
-                                            className="w-5 h-5"
-                                            aria-hidden="true"
-                                            fill="currentColor"
-                                            viewBox="0 0 20 20"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                        >
-                                            <path
-                                                fillRule="evenodd"
-                                                d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                                                clipRule="evenodd"
-                                            />
-                                        </svg>
-                                    </a>
-                                </li>
-                            </ul>
-                        </nav>
                     </div>
                 </div>
             </section>
-            <div className="flex justify-start space-x-2">
-                <button onClick={RespaldarBase} type="button" className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-900 rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-500 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-200">
-                    Generar Respaldo
-                </button>
-            </div>
-            {error && <p>Error: {error}</p>}
-
         </>
-    )
+    );
 }
