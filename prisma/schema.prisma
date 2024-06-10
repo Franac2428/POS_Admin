@@ -27,3 +27,22 @@ model Usuarios {
 
   role String
 }
+
+model StatusAuditoriaLogin {
+  IdStatusAuditoriaLogin Int    @id @default(autoincrement())
+  Status                 String
+
+  auditoriaLogins AuditoriaLogin[]
+}
+
+model AuditoriaLogin {
+  IdAuditoriaLogin       Int       @id @default(autoincrement())
+  FechaLogin             DateTime  @default(now())
+  Usuario                String
+  Clave                  String?
+  IdStatusAuditoriaLogin Int
+  FechaEstadoActualizado DateTime?
+  Mensaje                String?
+
+  fk_StatusAuditoria StatusAuditoriaLogin @relation(fields: [IdStatusAuditoriaLogin], references: [IdStatusAuditoriaLogin])
+}
