@@ -7,21 +7,23 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Usuarios{
-  Id Int @id @default(autoincrement())
-  email String @unique
-  username String @unique
-  password String
+model Usuarios {
+  Id        Int      @id @default(autoincrement())
+  email     String   @unique
+  username  String   @unique
+  password  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  nombre String
-  apellido String
-  telefono String
+  nombre    String
+  apellido  String
+  telefono  String
   direccion String
 
-  resetPasswordToken String? @unique
+  resetPasswordToken       String?   @unique
   resetPasswordTokenExpiry DateTime?
 
-  emailVerified Boolean @default(false)
+  emailVerified          Boolean @default(false)
   emailVerificationToken String? @unique
+
+  role String
 }
