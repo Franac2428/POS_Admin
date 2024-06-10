@@ -1,9 +1,7 @@
-import { NextResponse } from 'next/server';
+import db from '@/app/lib/db';
 import bcrypt from 'bcrypt';
 import crypto from 'crypto';
-import db from '@/app/lib/db';
-import { VerifyEmailTemplate } from '@/app/template/verify-email';
-import { sendEmail } from '@/app/api/emails/sendEmail'; // Asegúrate de que la ruta sea correcta
+import { NextResponse } from 'next/server';
 
 export async function POST(request) {
     try {
