@@ -1,4 +1,13 @@
+"use client"
+import { useState } from 'react';
 
+export default function RegistroAuditoria() {
+    const [error, setError] = useState(null);
+
+    function RespaldarBase(){
+        let url = "http://localhost:3001/backups";
+        window.location.href = url;
+    }
 
 export default function RegistroAuditoria() {
     return (
@@ -380,6 +389,12 @@ export default function RegistroAuditoria() {
                     </div>
                 </div>
             </section>
+            <div className="flex justify-start space-x-2">
+                <button onClick={RespaldarBase} type="button" className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-900 rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-500 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-200">
+                    Generar Respaldo
+                </button>
+            </div>
+            {error && <p>Error: {error}</p>}
 
         </>
     )
