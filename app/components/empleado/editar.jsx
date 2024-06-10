@@ -1,9 +1,12 @@
 import { X } from "lucide-react";
 import { Toaster, toast } from 'sonner';
 import { useState, useEffect, useRef } from 'react';
+import { useForm } from "react-hook-form";
+
 
 export default function Editar({ open, onClose, employeeId, mutate }) {
     const [empleado, setEmpleado] = useState(null);
+    const { reset } = useForm();
 
     const nombreRef = useRef();
     const apellidoRef = useRef();
@@ -11,23 +14,23 @@ export default function Editar({ open, onClose, employeeId, mutate }) {
     const telefonoRef = useRef();
     const direccionRef = useRef();
 
-    useEffect(() => {
-        const fetchEmpleado = async () => {
-            if (employeeId) {
-                try {
-                    const response = await fetch(`http://localhost:3000/api/empleado/${employeeId}`);
-                    const result = await response.json();
-                    if (response.ok) {
-                        setEmpleado(result);
-                    } else {
-                        toast.error('Error al obtener los datos del empleado');
-                    }
-                } catch (error) {
+    const fetchEmpleado = async () => {
+        if (employeeId) {
+            try {
+                const response = await fetch(`http://localhost:3000/api/empleado/${employeeId}`);
+                const result = await response.json();
+                if (response.ok) {
+                    setEmpleado(result);
+                } else {
                     toast.error('Error al obtener los datos del empleado');
                 }
+            } catch (error) {
+                toast.error('Error al obtener los datos del empleado');
             }
-        };
+        }
+    };
 
+    useEffect(() => {
         fetchEmpleado();
     }, [employeeId]);
 
@@ -61,7 +64,7 @@ export default function Editar({ open, onClose, employeeId, mutate }) {
             if (response.ok) {
                 const empleadoActualizado = await response.json();
                 toast.success('Usuario editado con éxito');
-                mutate(currentData => currentData.map(emp => emp.id === employeeId ? empleadoActualizado : emp), false);
+                mutate();  // Revalidate the cache
                 setTimeout(() => {
                     onClose();
                 }, 500);
@@ -74,10 +77,15 @@ export default function Editar({ open, onClose, employeeId, mutate }) {
         }
     };
 
+    const handleCancel = () => {
+        fetchEmpleado();  // Reload the original data
+        onClose();
+    }
+
     return (
-        <div onClick={onClose} className={`fixed inset-0 flex justify-center items-center transition-opacity ${open ? "visible bg-black bg-opacity-20 dark:bg-opacity-30" : "invisible"}`}>
+        <div onClick={handleCancel} className={`fixed inset-0 flex justify-center items-center transition-opacity ${open ? "visible bg-black bg-opacity-20 dark:bg-opacity-30" : "invisible"}`}>
             <div onClick={(e) => e.stopPropagation()} className={`bg-white dark:bg-gray-800 rounded-xl shadow p-6 transition-all ${open ? "scale-100 opacity-100" : "scale-125 opacity-0"} m-auto`}>
-                <button onClick={onClose} className="absolute top-2 right-2 p-1 rounded-lg text-gray-400 hover:bg-gray-50 hover:text-gray-600 dark:hover:bg-gray-700 dark:hover:text-gray-300">
+                <button onClick={handleCancel} className="absolute top-2 right-2 p-1 rounded-lg text-gray-400 hover:bg-gray-50 hover:text-gray-600 dark:hover:bg-gray-700 dark:hover:text-gray-300">
                     <X size={18} strokeWidth={2} />
                 </button>
                 {empleado && (
@@ -111,7 +119,7 @@ export default function Editar({ open, onClose, employeeId, mutate }) {
                             </div>
                             <div className="flex justify-end gap-4 mr-5">
                                 <button type="submit" className="bg-verde font-semibold rounded-md py-2 px-6 text-white">Guardar</button>
-                                <button type="button" className="bg-gray-400 font-semibold rounded-md py-2 px-6" onClick={onClose}>Cancelar</button>
+                                <button type="button" className="bg-gray-400 font-semibold rounded-md py-2 px-6" onClick={handleCancel}>Cancelar</button>
                             </div>
                         </form>
                     </div>

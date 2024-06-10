@@ -108,7 +108,7 @@ export default function Empleado() {
                 <Eliminar open={open} onClose={() => setOpen(false)} employeeId={selectedEmployeeId} onEliminar={eliminarEmpleado} />
                 <Agregar open={agregar} onClose={() => setAgregar(false)} mutate={mutate} />
                 <Evaluar show={evaluar} onClose={() => setEvaluar(false)} />
-                <Editar open={editar} onClose={() => setEditar(false)} employeeId={selectedEmployeeId}  mutate={mutate}  />
+                <Editar open={editar} onClose={() => setEditar(false)} employeeId={selectedEmployeeId} mutate={mutate} />
                 <Ver open={ver} onClose={() => setVer(false)} employeeId={selectedEmployeeId} />
             </div>
         </>
