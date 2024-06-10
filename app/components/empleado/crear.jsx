@@ -1,9 +1,9 @@
 import { useForm } from "react-hook-form";
-import { X, CircleAlert } from "lucide-react";
+import { X } from "lucide-react";
 import { Toaster, toast } from 'sonner';
 
 export default function Agregar({ open, onClose, mutate }) {
-    const { register, handleSubmit, formState: { errors } } = useForm();
+    const { register, handleSubmit, formState: { errors }, reset } = useForm();
 
     const handleAgregar = handleSubmit(async (data) => {
         try {
@@ -21,6 +21,7 @@ export default function Agregar({ open, onClose, mutate }) {
                 mutate(currentData => [...currentData, newEmployee], false); 
                 setTimeout(() => {
                     onClose();
+                    reset();
                 }, 500);
             } else {
                 const errorData = await res.json();
@@ -32,10 +33,15 @@ export default function Agregar({ open, onClose, mutate }) {
         }
     });
 
+    const handleCancel = () => {
+        onClose();
+        reset(); 
+    }
+
     return (
-        <div onClick={onClose} className={`fixed inset-0 justify-center items-center grid grid-cols-8 transition-opacity ${open ? "visible bg-black bg-opacity-20" : "invisible"}`}>
+        <div onClick={handleCancel} className={`fixed inset-0 justify-center items-center grid grid-cols-8 transition-opacity ${open ? "visible bg-black bg-opacity-20" : "invisible"}`}>
             <div onClick={(e) => e.stopPropagation()} className={`bg-white rounded-xl shadow p-6 transition-all col-span-4 col-start-3 ${open ? "scale-100 opacity-100" : "scale-125 opacity-0"}`}>
-                <button onClick={onClose} className="absolute top-2 right-2 p-1 rounded-lg text-gray-400 bg-white hover:bg-gray-50 hover:text-gray-600">
+                <button onClick={handleCancel} className="absolute top-2 right-2 p-1 rounded-lg text-gray-400 bg-white hover:bg-gray-50 hover:text-gray-600">
                     <X />
                 </button>
                 <div className="w-full">
@@ -98,7 +104,7 @@ export default function Agregar({ open, onClose, mutate }) {
                         </div>
                         <div className="flex justify-end gap-4 mr-5">
                             <button type="submit" className="bg-verde font-semibold rounded-md py-2 px-6 text-white">Agregar</button>
-                            <button type="button" className="bg-gray-400 font-semibold rounded-md py-2 px-6" onClick={onClose}>Cancelar</button>
+                            <button type="button" className="bg-gray-400 font-semibold rounded-md py-2 px-6" onClick={handleCancel}>Cancelar</button>
                         </div>
                     </form>
                 </div>

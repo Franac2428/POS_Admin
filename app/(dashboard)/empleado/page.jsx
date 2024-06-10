@@ -85,7 +85,10 @@ export default function Empleado() {
                                         <td className="text-center text-sm text-gray-900 dark:text-gray-200"> {empleado.email}</td>
                                         <td className="text-center text-sm text-gray-900 dark:text-gray-200"> {empleado.telefono}</td>
                                         <td className=" flex gap-1 justify-evenly my-1 whitespace-nowrap">
-                                            <button className="p-1.5 text-gray-900 dark:text-gray-200 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-blue-600 bg-opacity-50 rounded-md " onClick={() => setEditar(true)}><Pencil size={15} strokeWidth={2.2} /></button>
+                                            <button className="p-1.5 text-gray-900 dark:text-gray-200 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-blue-600 bg-opacity-50 rounded-md " onClick={() => {
+                                                setSelectedEmployeeId(empleado.Id);
+                                                setEditar(true)
+                                                }}><Pencil size={15} strokeWidth={2.2} /></button>
                                             <button className="p-1.5 text-gray-900 dark:text-gray-200 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-green-600 bg-opacity-50 rounded-md" onClick={() => setVer(true)}><Eye size={15} strokeWidth={2.2} /> </button>
                                             <button className="p-1.5 text-gray-900 dark:text-gray-200 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-yellow-600 bg-opacity-50 rounded-md" onClick={() => setEvaluar(true)}><SmilePlus size={15} strokeWidth={2.2} /></button>
                                             <button className="p-1.5 text-gray-900 dark:text-gray-200 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-red-600 bg-opacity-50 rounded-md" onClick={() => {
@@ -102,7 +105,7 @@ export default function Empleado() {
                 <Eliminar open={open} onClose={() => setOpen(false)} employeeId={selectedEmployeeId} onEliminar={eliminarEmpleado} />
                 <Agregar open={agregar} onClose={() => setAgregar(false)} mutate={mutate} />
                 <Evaluar show={evaluar} onClose={() => setEvaluar(false)} />
-                <Editar open={editar} onClose={() => setEditar(false)} />
+                <Editar open={editar} onClose={() => setEditar(false)} employeeId={selectedEmployeeId}  mutate={mutate}  />
                 <Ver open={ver} onClose={() => setVer(false)} />
             </div>
         </>
