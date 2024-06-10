@@ -37,6 +37,10 @@ export async function POST(request) {
         }
 
         const hashedPassword = await bcrypt.hash(data.password, 10);
+
+        // Asignar el rol, puedes definir un rol predeterminado o usar el que venga en la solicitud
+        const role = data.role || 'admin';
+
         const newUser = await db.usuarios.create({
             data: {
                 username: data.username,
@@ -45,7 +49,8 @@ export async function POST(request) {
                 nombre: data.nombre,
                 apellido: data.apellido,
                 direccion: data.direccion,
-                telefono: data.telefono
+                telefono: data.telefono,
+                role: role // Asignar el rol
             },
         });
 
@@ -62,7 +67,7 @@ export async function POST(request) {
 
         // Enviar el correo electrónico con el token de verificación
         await sendEmail({
-            from: "Acme <onboarding@resend.dev>",
+            from: "Petote <onboarding@resend.dev>",
             to: [newUser.email], // Usar el email del nuevo usuario
             subject: "Verifique su email",
             react: VerifyEmailTemplate({ email: newUser.email, emailVerificationToken }) // Usar el token de verificación correcto

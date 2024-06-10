@@ -9,7 +9,7 @@ export default function RegistroAuditoria() {
         window.location.href = url;
     }
 
-
+export default function RegistroAuditoria() {
     return (
         <>
             <section className="bg-gray-50 dark:bg-gray-900 p-3 sm:p-5">
@@ -395,6 +395,7 @@ export default function RegistroAuditoria() {
                 </button>
             </div>
             {error && <p>Error: {error}</p>}
+
         </>
     )
 }

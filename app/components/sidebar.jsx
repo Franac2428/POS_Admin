@@ -33,15 +33,15 @@ export default function Sidebar() {
 
 
   const sidebarItems = [
-    { icon: <Utensils size={20} />, text: "POS", link: "/dashboard/menu" },
-    { icon: <Warehouse size={20} />, text: "Inventario", link: "/dashboard/inventario" },
-    { icon: <FileLineChart size={20} />, text: "Reportes", link: "/dashboard/reporteria" },
-    { icon: <BadgeCent size={20} />, text: "Transacciones", link: "/dashboard/transacciones" },
-    { icon: <BriefcaseBusiness size={20} />, text: "Empleados", link: "/dashboard/empleado" },
-    { icon: <BookUser size={20} />, text: "Clientes", link: "/dashboard/clientes" },
-    { icon: <LockKeyhole size={20} />, text: "Seguridad", link: "/dashboard/seguridad", subItems: [{ text: "Usuarios", link: "/dashboard/seguridad" }, { text: "Auditoria", link: "/dashboard/auditoria" }] },
-    { icon: <Truck size={20} />, text: "Pedidos", link: "/dashboard/pedido" },
-    { icon: <AlarmClock size={20} />, text: "Monitorizar horarios", link: "/dashboard/horas" },
+    { icon: <Utensils size={20} />, text: "POS", link: "/menu" },
+    { icon: <Warehouse size={20} />, text: "Inventario", link: "/inventario" },
+    { icon: <FileLineChart size={20} />, text: "Reportes", link: "/reporteria" },
+    { icon: <BadgeCent size={20} />, text: "Transacciones", link: "/transacciones" },
+    { icon: <BriefcaseBusiness size={20} />, text: "Empleados", link: "/empleado" },
+    { icon: <BookUser size={20} />, text: "Clientes", link: "/clientes" },
+    { icon: <LockKeyhole size={20} />, text: "Seguridad", link: "/seguridad", subItems: [{ text: "Usuarios", link: "/seguridad" }, { text: "Auditoria", link: "/auditoria" }] },
+    { icon: <Truck size={20} />, text: "Pedidos", link: "/pedido" },
+    { icon: <AlarmClock size={20} />, text: "Monitorizar horarios", link: "/horas" },
     { icon: <hr className="my-3" /> },
     { icon: <LogOut size={20} />, text: "Cerrar Sesión", link: "/api/auth/signout" },
   ];

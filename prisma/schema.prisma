@@ -7,40 +7,43 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Usuarios{
-  Id Int @id @default(autoincrement())
-  email String @unique
-  username String @unique
-  password String
+model Usuarios {
+  Id        Int      @id @default(autoincrement())
+  email     String   @unique
+  username  String   @unique
+  password  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  nombre String
-  apellido String
-  telefono String
+  nombre    String
+  apellido  String
+  telefono  String
   direccion String
 
-  resetPasswordToken String? @unique
+  resetPasswordToken       String?   @unique
   resetPasswordTokenExpiry DateTime?
 
-  emailVerified Boolean @default(false)
+  emailVerified          Boolean @default(false)
   emailVerificationToken String? @unique
+
+  role String
 }
 
 model StatusAuditoriaLogin {
-  IdStatusAuditoriaLogin Int @id @default(autoincrement())
+  IdStatusAuditoriaLogin Int    @id @default(autoincrement())
   Status                 String
 
-  auditoriaLogins        AuditoriaLogin[]
+  auditoriaLogins AuditoriaLogin[]
 }
 
 model AuditoriaLogin {
-  IdAuditoriaLogin Int @id @default(autoincrement())
-  FechaLogin DateTime @default(now())
-  Usuario String
-  Clave String?
+  IdAuditoriaLogin       Int       @id @default(autoincrement())
+  FechaLogin             DateTime  @default(now())
+  Usuario                String
+  Clave                  String?
   IdStatusAuditoriaLogin Int
   FechaEstadoActualizado DateTime?
-  Mensaje String?
+  Mensaje                String?
 
   fk_StatusAuditoria StatusAuditoriaLogin @relation(fields: [IdStatusAuditoriaLogin], references: [IdStatusAuditoriaLogin])
 }
+

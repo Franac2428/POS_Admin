@@ -49,18 +49,31 @@ const authOptions = {
                     //Id 3: Ingreso satisfactorio
                     auditUpdate(scopeIdAuditoria,3,'Ingreso satisfactorio');
 
-                    return {
-                        id: userFound.id,
-                        name: userFound.nombre,
-                        email: userFound.email,
-                    }
+                return {
+                    id: userFound.id,
+                    name: userFound.nombre,
+                    email: userFound.email,
+                    role: userFound.role ?? 'admin',// Asegúrate de incluir el rol
                 }
 
                 
             },
         }),
     ],
-
+    callbacks: {
+        async jwt({ token, user }) {
+            if (user) {
+                token.role = user.role;
+            }
+            return token;
+        },
+        async session({ session, token }) {
+            if (token) {
+                session.user.role = token.role;
+            }
+            return session;
+        }
+    }
 };
 
 async function auditRegister(usuario,clave,idStatus,mensaje){
