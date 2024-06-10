@@ -46,3 +46,4 @@ model AuditoriaLogin {
 
   fk_StatusAuditoria StatusAuditoriaLogin @relation(fields: [IdStatusAuditoriaLogin], references: [IdStatusAuditoriaLogin])
 }
+
