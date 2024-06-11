@@ -1,4 +1,6 @@
+import { sendEmail } from '@/app/api/emails/sendEmail';
 import db from '@/app/lib/db';
+import { VerifyEmailTemplate } from '@/app/template/verify-email';
 import bcrypt from 'bcrypt';
 import crypto from 'crypto';
 import { NextResponse } from 'next/server';
