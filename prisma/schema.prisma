@@ -26,6 +26,7 @@ model Usuarios {
   emailVerificationToken String? @unique
 
   role String
+  usuarioRoles UsuarioRole[]
 }
 
 model StatusAuditoriaLogin {
@@ -47,3 +48,35 @@ model AuditoriaLogin {
   fk_StatusAuditoria StatusAuditoriaLogin @relation(fields: [IdStatusAuditoriaLogin], references: [IdStatusAuditoriaLogin])
 }
 
+model Role {
+  id          Int           @id @default(autoincrement())
+  roleName    String        @unique
+  description String?
+  usuarios    UsuarioRole[]
+  permisos    RolPermiso[]
+}
+
+model Permiso {
+  id             Int          @id @default(autoincrement())
+  permissionName String       @unique
+  description    String?
+  roles          RolPermiso[]
+}
+
+model UsuarioRole {
+  usuarioId Int
+  roleId    Int
+  role      Role     @relation(fields: [roleId], references: [id])
+  usuario   Usuarios @relation(fields: [usuarioId], references: [Id])
+
+  @@id([usuarioId, roleId])
+}
+
+model RolPermiso {
+  roleId       Int
+  permissionId Int
+  role         Role    @relation(fields: [roleId], references: [id])
+  permiso      Permiso @relation(fields: [permissionId], references: [id])
+
+  @@id([roleId, permissionId])
+}
