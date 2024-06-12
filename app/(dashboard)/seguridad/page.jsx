@@ -1,4 +1,3 @@
-
 import UsuariosLista from "../../components/seguridad/usuariosList";
 
 export default function SeguridadGeneral() {

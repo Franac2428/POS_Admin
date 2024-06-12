@@ -29,16 +29,6 @@ export default function RootLayout({ children }) {
         <Toaster richColors />
       </body>
     </ThemeProvider>
-    <html lang="en">
-      <body className={roboto.className}>
-        <main className="flex">
-          <Sidebar />
-          {children}
-
-        </main>
-        <Footer />
-
-      </body>
 
   );
 }
