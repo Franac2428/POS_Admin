@@ -19,12 +19,14 @@
     "@radix-ui/react-tabs": "^1.0.4",
     "bcrypt": "^5.1.1",
     "chart.js": "^4.4.2",
+    "child_process": "^1.0.2",
     "classnames": "^2.5.1",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "flowbite": "^2.3.0",
     "lucide-react": "^0.364.0",
     "mysql2": "^3.10.0",
+    "mysqldump": "^3.2.0",
     "next": "^14.1.4",
     "next-auth": "^4.24.7",
     "nextjs-toploader": "^1.6.11",
@@ -35,9 +37,9 @@
     "react-hot-toast": "^2.4.1",
     "react-icons": "^5.0.1",
     "react-select": "^5.8.0",
+    "resend": "^3.2.0",
     "sonner": "^1.4.41",
-    "swr": "^2.2.5",
-    "resend": "^3.2.0"
+    "swr": "^2.2.5"
   },
   "devDependencies": {
     "autoprefixer": "^10.0.1",

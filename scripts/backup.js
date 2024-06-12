@@ -1,11 +1,11 @@
 const express = require('express');
-const { exec } = require('child_process');
+const mysqldump = require('mysqldump');
 const path = require('path');
 require('dotenv').config();
 
 const app = express();
 
-app.get('/backups', (req, res) => {
+app.get('/backups', async (req, res) => {
     const user = process.env.MYSQL_USER;
     const password = process.env.MYSQL_PASSWORD;
     const database = process.env.MYSQL_DATABASE;
@@ -13,22 +13,27 @@ app.get('/backups', (req, res) => {
     const fileName = `${database}-backup.sql`;
     const filePath = path.join(backupPath, fileName);
 
-    const command = `mysqldump -u ${user} -p${password} ${database} > ${filePath}`;
+    try {
+        await mysqldump({
+            connection: {
+                host: 'localhost',
+                user: user,
+                password: password,
+                database: database,
+            },
+            dumpToFile: filePath,
+        });
 
-    exec(command, (error, stdout, stderr) => {
-        if (error) {
-            console.error(`Error al generar el respaldo: ${error.message}`);
-            return res.status(500).send('Error al generar el respaldo');
-        }
-        
         res.download(filePath, fileName, (err) => {
             if (err) {
                 console.error(`Error al descargar el respaldo: ${err.message}`);
                 return res.status(500).send('Error al descargar el respaldo');
             }
-
         });
-    });
+    } catch (error) {
+        console.error(`Error al generar el respaldo: ${error.message}`);
+        res.status(500).send('Error al generar el respaldo');
+    }
 });
 
 app.listen(3001, () => {
