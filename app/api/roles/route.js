@@ -1,9 +1,9 @@
+import db from '@/app/lib/db';
 import { NextResponse } from 'next/server';
-import db from '@/app/lib/db'
 
 export async function GET() {
     try {
-      const roles = await db.roles.findMany();
+      const roles = await db.role.findMany();
       return NextResponse.json(roles);
     } catch (error) {
       return NextResponse.json({ error: 'Error al obtener los roles' }, { status: 500 });
