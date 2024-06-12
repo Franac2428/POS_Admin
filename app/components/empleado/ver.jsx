@@ -39,6 +39,10 @@ export default function Ver({ open, onClose,employeeId }) {
                         {empleado && (                            
                         <div className="ml-5 my-4 w-full">
                             <dl className="grid grid-cols-2 gap-x-4">
+                            <div className="mb-4">
+                                    <dt className="text-sm font-medium text-gray-700">Username</dt>
+                                    <dd className="mt-1 text-sm text-gray-900">{empleado.username}</dd>
+                                </div>
                                 <div className="mb-4">
                                     <dt className="text-sm font-medium text-gray-700">Nombre</dt>
                                     <dd className="mt-1 text-sm text-gray-900">{empleado.nombre}</dd>
