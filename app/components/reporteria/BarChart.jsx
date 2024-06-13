@@ -45,7 +45,7 @@ const BarChart = () => {
                 },
                 title: {
                     display: true,
-                    text: 'Daily Revenue'
+                    text: 'Ventas diarias semanales'
                 }
             },
             maintainAspectRatio: false,
