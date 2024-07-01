@@ -15,7 +15,7 @@ export async function POST(request) {
     const { roleName, description } = data;
   
     try {
-      const newRole = await db.roles.create({
+      const newRole = await db.role.create({
         data: {
           roleName,
           description,

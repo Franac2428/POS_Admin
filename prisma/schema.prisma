@@ -32,8 +32,7 @@ model Usuarios {
 model StatusAuditoriaLogin {
   IdStatusAuditoriaLogin Int    @id @default(autoincrement())
   Status                 String
-
-  auditoriaLogins AuditoriaLogin[]
+  auditoriaLogins        AuditoriaLogin[]
 }
 
 model AuditoriaLogin {
@@ -45,8 +44,9 @@ model AuditoriaLogin {
   FechaEstadoActualizado DateTime?
   Mensaje                String?
 
-  fk_StatusAuditoria StatusAuditoriaLogin @relation(fields: [IdStatusAuditoriaLogin], references: [IdStatusAuditoriaLogin])
+  fk_StatusAuditoria     StatusAuditoriaLogin @relation(fields: [IdStatusAuditoriaLogin], references: [IdStatusAuditoriaLogin])
 }
+
 
 model Role {
   id          Int           @id @default(autoincrement())
@@ -79,4 +79,63 @@ model RolPermiso {
   permiso      Permiso @relation(fields: [permissionId], references: [id])
 
   @@id([roleId, permissionId])
+}
+
+model Proveedores {
+  ProveedorID   Int             @id @default(autoincrement())
+  Nombre        String
+  Tipo          String   @default("Desconocido")
+  Direccion     String?
+  Telefono      String?
+  Email         String          @unique
+  Contacto      String?
+  Pedidos       Pedidos[]
+  Productos     Productos[]
+}
+
+model Pedidos {
+  PedidoID       Int             @id @default(autoincrement())
+  ProveedorID    Int
+  FechaEmision   DateTime
+  FechaRecepcion DateTime?
+  Estado         String
+  Observaciones  String?
+  Proveedor      Proveedores     @relation(fields: [ProveedorID], references: [ProveedorID])
+  Detalles       DetallesPedido[]
+}
+
+model DetallesPedido {
+  DetallePedidoID Int             @id @default(autoincrement())
+  PedidoID        Int
+  ProductoID      Int
+  Cantidad        Int
+  PrecioUnitario  Float
+  IVA             Float
+  Total           Float
+  Pedido          Pedidos         @relation(fields: [PedidoID], references: [PedidoID])
+  Producto        Productos       @relation(fields: [ProductoID], references: [ProductoID])
+}
+
+model Productos {
+  ProductoID      Int             @id @default(autoincrement())
+  Nombre          String
+  Descripcion     String?
+  PrecioCompra    Float
+  PrecioVenta     Float
+  Stock           Int
+  CategoriaID     Int
+  ProveedorID     Int
+  FechaIngreso    DateTime
+  FechaCaducidad  DateTime?
+  Estado          String
+  Categoria       CategoriasProducto @relation(fields: [CategoriaID], references: [CategoriaProductoID])
+  Proveedor       Proveedores        @relation(fields: [ProveedorID], references: [ProveedorID])
+  DetallesPedidos DetallesPedido[]
+}
+
+model CategoriasProducto {
+  CategoriaProductoID Int             @id @default(autoincrement())
+  NombreCategoria     String
+  Descripcion         String?
+  Productos           Productos[]
 }

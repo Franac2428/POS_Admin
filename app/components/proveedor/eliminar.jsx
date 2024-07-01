@@ -1,24 +1,44 @@
+import { useState, useEffect } from 'react';
 import { X, CircleAlert } from "lucide-react";
 import { Toaster, toast } from 'sonner';
 
-export default function Eliminar({ open, onClose }) {
-  const handleEliminar = () => {
-    toast.success('Acción realizada con éxito');
-    setTimeout(() => {
-      onClose(); 
-    }, 1500);
-  };
-  const proveedor = {
-    id: "PR1001",
-    nombre: "Coca Cola",
-    sitioWeb: "https://coca-colafemsa.com/noticias/presencia/coca-cola-femsa-costa-rica/",
-    WhatsApp: "8888-8888",
-    telefono: "800-SIEMPRE (743-6773)",
-    fechaRegistro: "2024-01-16",
-    tipo: "Bebidas",
-    correo: "comunicacion@femsa.com.cr",
+export default function Eliminar({ open, onClose, proveedorId, mutate }) {
+  const [proveedor, setProveedor] = useState(null);
 
-};
+  useEffect(() => {
+    if (proveedorId) {
+      fetch(`http://localhost:3000/api/proveedor/${proveedorId}`)
+        .then(response => response.json())
+        .then(data => setProveedor(data))
+        .catch(error => {
+          console.error('Error fetching proveedor:', error);
+          toast.error('Error al cargar los datos del proveedor');
+        });
+    }
+  }, [proveedorId]);
+
+  const handleEliminar = async () => {
+    try {
+      const response = await fetch(`http://localhost:3000/api/proveedor/${proveedorId}`, {
+        method: 'DELETE',
+      });
+
+      if (response.ok) {
+        toast.success('Proveedor eliminado con éxito');
+        mutate();  // Refresca los datos
+        setTimeout(() => {
+          onClose();
+        }, 1500);
+      } else {
+        const result = await response.json();
+        toast.error(result.error || 'Error al eliminar el proveedor');
+      }
+    } catch (error) {
+      toast.error('Error al conectar con el servidor');
+    }
+  };
+
+  if (!proveedor) return null;
 
   return (
     <div onClick={onClose} className={`fixed inset-0 flex justify-center items-center transition-opacity ${open ? "visible bg-black bg-opacity-20 dark:bg-opacity-30" : "invisible"}`}>
@@ -36,41 +56,36 @@ export default function Eliminar({ open, onClose }) {
           </p>
           <div className="ml-5 my-4 w-full">
             <dl className="grid grid-cols-2 gap-x-4">
-                <div className="mb-4">
-                    <dt className="text-sm font-medium dark:text-gray-200  text-gray-700">id</dt>
-                    <dd className="mt-1 text-sm text-gray-900 dark:text-gray-200 ">{proveedor.id}</dd>
-                </div>
-                <div className="mb-4">
-                    <dt className="text-sm font-medium text-gray-700 dark:text-gray-200 ">Nombre</dt>
-                    <dd className="mt-1 text-sm text-gray-900 dark:text-gray-200 ">{proveedor.nombre}</dd>
-                </div>
-                <div className="mb-4">
-                    <dt className="text-sm font-medium text-gray-700 dark:text-gray-200 ">Sitio Web</dt>
-                    <dd className="mt-1 text-sm text-gray-900 dark:text-gray-200 ">{proveedor.sitioWeb}</dd>
-                </div>
-                <div className="mb-4">
-                    <dt className="text-sm font-medium text-gray-700 dark:text-gray-200 ">WhatsApp</dt>
-                    <dd className="mt-1 text-sm text-gray-900 dark:text-gray-200 ">{proveedor.WhatsApp}</dd>
-                </div>
-                <div className="mb-4">
-                    <dt className="text-sm font-medium text-gray-700 dark:text-gray-200 ">Teléfono</dt>
-                    <dd className="mt-1 text-sm text-gray-900 dark:text-gray-200 ">{proveedor.telefono}</dd>
-                </div>
-                <div className="mb-4">
-                    <dt className="text-sm font-medium text-gray-700 dark:text-gray-200 ">Fecha Registro</dt>
-                    <dd className="mt-1 text-sm text-gray-900  dark:text-gray-200">{proveedor.fechaRegistro}</dd>
-                </div>
-                <div className="mb-4">
-                    <dt className="text-sm font-medium text-gray-700 dark:text-gray-200 ">Tipo</dt>
-                    <dd className="mt-1 text-sm text-gray-900  dark:text-gray-200">{proveedor.tipo}</dd>
-                </div>
-                <div className="mb-4">
-                    <dt className="text-sm font-medium text-gray-700 dark:text-gray-200 ">Correo</dt>
-                    <dd className="mt-1 text-sm text-gray-900  dark:text-gray-200">{proveedor.correo}</dd>
-                </div>
-                
+              <div className="mb-4">
+                <dt className="text-sm font-medium dark:text-gray-200 text-gray-700">ID</dt>
+                <dd className="mt-1 text-sm text-gray-900 dark:text-gray-200">{proveedor.ProveedorID}</dd>
+              </div>
+              <div className="mb-4">
+                <dt className="text-sm font-medium text-gray-700 dark:text-gray-200">Nombre</dt>
+                <dd className="mt-1 text-sm text-gray-900 dark:text-gray-200">{proveedor.Nombre}</dd>
+              </div>
+              <div className="mb-4">
+                <dt className="text-sm font-medium text-gray-700 dark:text-gray-200">Sitio Web</dt>
+                <dd className="mt-1 text-sm text-gray-900 dark:text-gray-200">{proveedor.Contacto}</dd>
+              </div>
+              <div className="mb-4">
+                <dt className="text-sm font-medium text-gray-700 dark:text-gray-200">Teléfono</dt>
+                <dd className="mt-1 text-sm text-gray-900 dark:text-gray-200">{proveedor.Telefono}</dd>
+              </div>
+              <div className="mb-4">
+                <dt className="text-sm font-medium text-gray-700 dark:text-gray-200">Tipo</dt>
+                <dd className="mt-1 text-sm text-gray-900 dark:text-gray-200">{proveedor.Tipo}</dd>
+              </div>
+              <div className="mb-4">
+                <dt className="text-sm font-medium text-gray-700 dark:text-gray-200">Correo</dt>
+                <dd className="mt-1 text-sm text-gray-900 dark:text-gray-200">{proveedor.Email}</dd>
+              </div>
+              <div className="mb-4">
+                <dt className="text-sm font-medium text-gray-700 dark:text-gray-200">Dirección</dt>
+                <dd className="mt-1 text-sm text-gray-900 dark:text-gray-200">{proveedor.Direccion}</dd>
+              </div>
             </dl>
-        </div>
+          </div>
           <div className="flex justify-end gap-4 w-full mt-4">
             <button className="bg-red-600 text-white font-semibold rounded-md py-2 px-6 hover:bg-red-700 dark:hover:bg-red-800" onClick={handleEliminar}>
               Eliminar
@@ -81,6 +96,7 @@ export default function Eliminar({ open, onClose }) {
           </div>
         </div>
       </div>
+      <Toaster richColors />
     </div>
   );
 }
