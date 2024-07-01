@@ -2,9 +2,10 @@
 import Link from "next/link";
 import { ChevronFirst, ChevronLast, MoreVertical } from "lucide-react";
 import { createContext, useContext, useState } from "react";
-import { Warehouse, Utensils, FileLineChart, LockKeyhole, BookUser, BriefcaseBusiness, LifeBuoy, LogOut, BadgeCent, Truck, AlarmClock } from "lucide-react";
+import { Warehouse, Utensils, FileLineChart, LockKeyhole, BookUser, BriefcaseBusiness, LifeBuoy, LogOut, BadgeCent, Truck, AlarmClock, Flag } from "lucide-react";
 import ThemeButton from "./theme/ChangeTheme";
 import { useEffect } from "react";
+import { useSession } from "next-auth/react";
 
 
 
@@ -14,6 +15,8 @@ const SidebarContext = createContext();
 export default function Sidebar() {
   const [expanded, setExpanded] = useState(true);
   const [isSmallScreen, setIsSmallScreen] = useState(false);
+
+  const session = useSession();
 
   useEffect(() => {
     const handleResize = () => {
@@ -31,19 +34,30 @@ export default function Sidebar() {
     };
   }, []);
 
-
+  const sidebarEmItems = [
+    { icon: <Utensils size={20} />, text: "POS", link: "/pos" },
+    { icon: <Warehouse size={20} />, text: "Inventario", link: "/inventarioEM" },
+    { icon: <BadgeCent size={20} />, text: "Transacciones", link: "/transaccionesEM" },
+    { icon: <BookUser size={20} />, text: "Clientes", link: "/clientesEM" },
+    { icon: <BriefcaseBusiness size={20} />, text: "Metas", link: "/metas" },
+    { icon: <Flag size={20} />, text: "Marcar Hora", link: "/marcar" },
+    { icon: <Truck size={20} />, text: "Pedidos", link: "/pedidoEM" },
+    { icon: <hr className="my-3" /> },
+    { icon: <LogOut size={20} />, text: "Cerrar Sesión", link: "/login" },
+  ];
   const sidebarItems = [
-    { icon: <Utensils size={20} />, text: "POS", link: "/menu" },
-    { icon: <Warehouse size={20} />, text: "Inventario", link: "/inventario" },
-    { icon: <FileLineChart size={20} />, text: "Reportes", link: "/reporteria" },
-    { icon: <BadgeCent size={20} />, text: "Transacciones", link: "/transacciones" },
-    { icon: <BriefcaseBusiness size={20} />, text: "Empleados", link: "/empleado" },
-    { icon: <BookUser size={20} />, text: "Clientes", link: "/clientes" },
-    { icon: <LockKeyhole size={20} />, text: "Seguridad", link: "/seguridad", subItems: [{ text: "Usuarios", link: "/seguridad" }, { text: "Auditoria", link: "/auditoria" }] },
-    { icon: <Truck size={20} />, text: "Pedidos", link: "/pedido" },
-    { icon: <AlarmClock size={20} />, text: "Monitorizar horarios", link: "/horas" },
+    { icon: <Utensils size={20} />, text: "POS", link: "menu" },
+    { icon: <Warehouse size={20} />, text: "Inventario", link: "inventario" },
+    { icon: <FileLineChart size={20} />, text: "Reportes", link: "reporteria" },
+    { icon: <BadgeCent size={20} />, text: "Transacciones", link: "transacciones" },
+    { icon: <BriefcaseBusiness size={20} />, text: "Empleados", link: "empleado" },
+    { icon: <BookUser size={20} />, text: "Clientes", link: "clientes" },
+    { icon: <LockKeyhole size={20} />, text: "Seguridad", link: "seguridad", subItems: [{ text: "Usuarios", link: "seguridad" }, { text: "Auditoria", link: "auditoria" }] },
+    { icon: <Truck size={20} />, text: "Pedidos", link: "pedido" },
+    { icon: <AlarmClock size={20} />, text: "Monitorizar horarios", link: "horas" },
     { icon: <hr className="my-3" /> },
     { icon: <LogOut size={20} />, text: "Cerrar Sesión", link: "/api/auth/signout" },
+    { icon: <LogOut size={20} />, text: "Admin", link: "/dashboard" },
   ];
 
   return (

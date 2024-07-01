@@ -11,18 +11,18 @@ export const changePassword = async (resetPasswordToken, password) => {
     })
 
     if (!user) {
-        throw new Error("User not found")
+        throw new Error("Usuario no encontrado")
     }
 
     const resetPasswordTokenExpiry = user.resetPasswordTokenExpiry
     if (!resetPasswordTokenExpiry) {
-        throw new Error("Token expired")
+        throw new Error("Token expiró")
     }
 
     const today = new Date()
 
     if (today > resetPasswordTokenExpiry) {
-        throw new Error("Token expired")
+        throw new Error("Token expiró")
     }
 
     const passwordHash = bcrypt.hashSync(password, 10)
@@ -38,5 +38,5 @@ export const changePassword = async (resetPasswordToken, password) => {
         }
     })
 
-    return "Password changed successfully"
+    return "Contraseña cambiada exitosamente"
 }

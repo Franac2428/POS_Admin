@@ -3,9 +3,9 @@ import { Toaster, toast } from 'sonner';
 import { useState, useEffect, useRef } from 'react';
 import { useForm } from "react-hook-form";
 
-
 export default function Editar({ open, onClose, employeeId, mutate }) {
     const [empleado, setEmpleado] = useState(null);
+    const [roles, setRoles] = useState([]);
     const { reset } = useForm();
 
     const nombreRef = useRef();
@@ -13,11 +13,12 @@ export default function Editar({ open, onClose, employeeId, mutate }) {
     const correoRef = useRef();
     const telefonoRef = useRef();
     const direccionRef = useRef();
+    const rolRef = useRef();
 
     const fetchEmpleado = async () => {
         if (employeeId) {
             try {
-                const response = await fetch(`http://localhost:3000/api/empleado/${employeeId}`);
+                const response = await fetch(`/api/empleado/${employeeId}`);
                 const result = await response.json();
                 if (response.ok) {
                     setEmpleado(result);
@@ -30,8 +31,23 @@ export default function Editar({ open, onClose, employeeId, mutate }) {
         }
     };
 
+    const fetchRoles = async () => {
+        try {
+            const response = await fetch('/api/role'); // Asegúrate de que la ruta sea correcta
+            const result = await response.json();
+            if (response.ok) {
+                setRoles(result);
+            } else {
+                toast.error('Error al obtener los roles');
+            }
+        } catch (error) {
+            toast.error('Error al obtener los roles');
+        }
+    };
+
     useEffect(() => {
         fetchEmpleado();
+        fetchRoles();
     }, [employeeId]);
 
     useEffect(() => {
@@ -41,13 +57,14 @@ export default function Editar({ open, onClose, employeeId, mutate }) {
             correoRef.current.value = empleado.email;
             telefonoRef.current.value = empleado.telefono;
             direccionRef.current.value = empleado.direccion;
+            rolRef.current.value = empleado.roleId || "";  // Asigna el rol actual del empleado
         }
     }, [empleado]);
 
     const handleEditar = async (event) => {
         event.preventDefault();
         try {
-            const response = await fetch(`http://localhost:3000/api/empleado/${employeeId}`, {
+            const response = await fetch(`/api/empleado/${employeeId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -58,6 +75,7 @@ export default function Editar({ open, onClose, employeeId, mutate }) {
                     email: correoRef.current.value,
                     telefono: telefonoRef.current.value,
                     direccion: direccionRef.current.value,
+                    roleId: rolRef.current.value,  // Añadir el rol al payload
                 }),
             });
 
@@ -91,7 +109,7 @@ export default function Editar({ open, onClose, employeeId, mutate }) {
                 {empleado && (
                     <div className="flex flex-col items-center">
                         <h2 className="text-xl font-bold flex items-center gap-3 text-gray-900 dark:text-gray-100 my-4">
-                            Editar empleado ID : {empleado.id}
+                            Editar empleado ID : {empleado.Id}
                         </h2>
                         <hr className="w-full border-t border-gray-300 dark:border-gray-600"></hr>
                         <form onSubmit={handleEditar} className="ml-5 my-4 w-full">
@@ -112,6 +130,16 @@ export default function Editar({ open, onClose, employeeId, mutate }) {
                                     <label htmlFor="telefono" className="block text-sm font-medium text-gray-700 dark:text-gray-200">Telefono</label>
                                     <input required type="number" id="telefono" name="telefono" ref={telefonoRef} className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
                                 </div>
+                                <div className="mb-4">
+                                    <label htmlFor="rol" className="block text-sm font-medium text-gray-700 dark:text-gray-200">Rol</label>
+                                    <select id="rol" name="rol" ref={rolRef} className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                                        {roles.map((rol) => (
+                                            <option key={rol.IdRole} value={rol.IdRole}>
+                                                {rol.Descripcion}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
                             </div>
                             <div className="mb-4 mr-5">
                                 <label htmlFor="direccion" className="block text-sm font-medium text-gray-700 dark:text-gray-200">Descripción</label>
@@ -119,13 +147,12 @@ export default function Editar({ open, onClose, employeeId, mutate }) {
                             </div>
                             <div className="flex justify-end gap-4 mr-5">
                                 <button type="submit" className="bg-verde font-semibold rounded-md py-2 px-6 text-white">Guardar</button>
-                                <button type="button" className="bg-gray-400 font-semibold rounded-md py-2 px-6" onClick={handleCancel}>Cancelar</button>
+                                <button type="button" className="bg-gray-400 font-semibold rounded-md py-2 px-6 text-white" onClick={handleCancel}>Cancelar</button>
                             </div>
                         </form>
                     </div>
                 )}
             </div>
-            <Toaster richColors />
         </div>
     );
 }

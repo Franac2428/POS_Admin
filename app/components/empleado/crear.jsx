@@ -9,7 +9,10 @@ export default function Agregar({ open, onClose, mutate }) {
         try {
             const res = await fetch('/api/auth/register', {
                 method: 'POST',
-                body: JSON.stringify(data),
+                body: JSON.stringify({
+                    ...data,
+                    roleId: parseInt(data.roleId)
+                }),
                 headers: {
                     'Content-Type': 'application/json'
                 }
@@ -18,7 +21,7 @@ export default function Agregar({ open, onClose, mutate }) {
             if (res.ok) {
                 const newEmployee = await res.json();
                 toast.success('Nuevo usuario guardado con éxito');
-                mutate(currentData => [...currentData, newEmployee], false); 
+                mutate(currentData => [...currentData, newEmployee], false);
                 setTimeout(() => {
                     onClose();
                     reset();
@@ -35,7 +38,7 @@ export default function Agregar({ open, onClose, mutate }) {
 
     const handleCancel = () => {
         onClose();
-        reset(); 
+        reset();
     }
 
     return (
@@ -95,6 +98,16 @@ export default function Agregar({ open, onClose, mutate }) {
                                     <option value="entre">D-J 12md-7pm</option>
                                 </select>
                                 {errors.horario && <span className="text-red-500">{errors.horario.message}</span>}
+                            </div>
+                            <div className="mb-4">
+                                <label htmlFor="roleId" className="block text-sm font-medium text-gray-700">Rol</label>
+                                <select required id="roleId" name="roleId" className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" {...register("roleId", { required: { value: true, message: 'El rol es requerido' } })}>
+                                    <option value="3">Empleado</option>
+                                    <option value="2">Administrador</option>
+                                    <option value="1">Cocina</option>
+                                    {/* Agrega más opciones según los roles disponibles */}
+                                </select>
+                                {errors.roleId && <span className="text-red-500">{errors.roleId.message}</span>}
                             </div>
                         </div>
                         <div className="mb-4 mr-5">

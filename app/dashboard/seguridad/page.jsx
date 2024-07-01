@@ -181,7 +181,7 @@ export default function SeguridadGeneral() {
                         <div className="rounded-lg dark:border-gray-600 h-48 lg:h-72">
                             <HorariosList />
                         </div>
-                        
+
                         {/* <div className="border-2 border-dashed border-gray-300 rounded-lg dark:border-gray-600 h-48 lg:h-72"></div> */}
                         {/* <div className="border-2 border-dashed border-gray-300 rounded-lg dark:border-gray-600 h-48 lg:h-72"></div> */}
                     </div>

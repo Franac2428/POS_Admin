@@ -3,15 +3,15 @@ import * as React from "react"
 export const ResetPasswordEmailTemplate = ({ email, resetPasswordToken }) => (
     <div>
         <h1>
-            Reset password for <b>{email}</b>
+            Reiniciar la contraseña para: <b>{email}</b>
         </h1>
         <p>
-            To reset your password, click on this link and follow the instructions:
+            Para reiniciar su contraseña, haga clic en este link y siga las instrucciones:
         </p>
         <a
             href={`http://localhost:3000/auth/reset?token=${resetPasswordToken}`}
         >
-            Click here to reset password
+            Clic aquí para reasignar la contraseña
         </a>
     </div>
 )
