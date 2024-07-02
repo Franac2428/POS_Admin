@@ -2,12 +2,26 @@
 import { useEffect, useState, createContext, useContext } from 'react';
 import HorariosLista from "./horariosList"
 import AddHorario from "./addHorario"
+import useSWR from 'swr';
+
 
 export default function HorariosList() {
     const [addHorario, SetAddHorario] = useState(false);
     useEffect(() => {
         initFlowbite(); // Inicializamos Flowbite una vez que el componente se ha montado
     }, []);
+    
+
+    
+    const { data, error, mutate } = useSWR('http://localhost:3000/api/horario', async (url) => {
+        const response = await fetch(url);
+        const data = await response.json();
+        return data;
+    });
+    if (error) return <div>Error al cargar los datos</div>;
+    if (!data) return <div>Cargando...</div>;
+    if (!data || !Array.isArray(data)) return <div>No hay datos disponibles</div>;
+
     return (
         <>
             <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -34,7 +48,7 @@ export default function HorariosList() {
                             </svg>
                             Agregar
                         </button>
-                        <AddHorario open={addHorario} onClose={() => SetAddHorario(false)} />
+                        <AddHorario open={addHorario} onClose={() => SetAddHorario(false)}  mutate={mutate} />
                     </caption>
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
@@ -48,24 +62,21 @@ export default function HorariosList() {
                                 Hora Salida
                             </th>
                             <th scope="col" className="px-6 py-3">
-                                Fecha Importante
-                            </th>
-                            <th scope="col" className="px-6 py-3">
-                                Estado
-                            </th>
-                            <th scope="col" className="px-6 py-3">
                                 <span className="sr-only">Edit</span>
                             </th>
+                            
                         </tr>
                     </thead>
                     <tbody>
-                        <HorariosLista days="Lunes" entryhours="9:00" exithours="20:00" importDate="Vacio" status="Laboral" />
-                        <HorariosLista days="Martes" entryhours="9:00" exithours="20:00" importDate="25/04/2024" status="No Laboral" />
-                        <HorariosLista days="Miercoles" entryhours="9:00" exithours="20:00" importDate="Vacio" status="Laboral" />
-                        <HorariosLista days="Jueves" entryhours="9:00" exithours="20:00" importDate="Vacio" status="Laboral" />
-                        <HorariosLista days="Viernes" entryhours="9:00" exithours="20:00" importDate="Vacio" status="Laboral" />
-                        <HorariosLista days="Sabado" entryhours="9:00" exithours="20:00" importDate="Vacio" status="Laboral" />
-                        <HorariosLista days="Domingo" entryhours="9:00" exithours="20:00" importDate="Vacio" status="Laboral" />
+                        {data.map((horario) => (
+                            <HorariosLista
+                                key={horario.Id}
+                                horarioId ={horario.Id}
+                                days={horario.Dia}
+                                entryhours={horario.HoraInicio}
+                                exithours={horario.HoraFin}
+                            />
+                        ))}
                     </tbody>
                 </table>
             </div >

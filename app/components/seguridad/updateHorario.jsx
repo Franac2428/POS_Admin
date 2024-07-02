@@ -1,12 +1,71 @@
-
 'use client';
 import { useEffect, useState, createContext, useContext } from 'react';
-import { initFlowbite } from 'flowbite';
+import { useForm } from "react-hook-form";
+import { Toaster, toast } from 'sonner';
 import DeleteHorario from '@/app/components/seguridad/deleteHorario';
 
-export default function UpdateHorario() {
+export default function UpdateHorario({ horarioId }) {
     const [open, setOpen] = useState(false);
     const [deletehorario, SetDeleteHorario] = useState(false);
+    const { register, handleSubmit, setValue, formState: { errors }} = useForm();
+    const [horario, setHorario] = useState(null);
+
+  
+    const fetchHorario = async () => {
+        if (horarioId) {
+            try {
+                const response = await fetch(`http://localhost:3000/api/horario/${horarioId}`);
+                const result = await response.json();
+                if (response.ok) {
+                    setHorario(result);
+                } else {
+                    toast.error('Error al obtener los datos del horario');
+                }
+            } catch (error) {
+                toast.error('Error al obtener los datos del horario');
+            }
+        }
+    };
+
+    useEffect(() => {
+        fetchHorario();
+    }, [horarioId]);
+
+    useEffect(() => {
+        if (horario) {
+            setValue('Dia', horario.Dia);
+            setValue('HoraInicio', horario.HoraInicio);
+            setValue('HoraFin', horario.HoraFin);
+           
+        }
+    }, [horario, setValue]);
+
+    const handleEditar = handleSubmit(async (data) => {
+        try {
+            const response = await fetch(`http://localhost:3000/api/horario/${horarioId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            });
+
+            if (response.ok) {
+                const horarioActualizado = await response.json();
+                toast.success('Horario editado con éxito');
+                mutate();  
+                setTimeout(() => {
+                    onClose();
+                }, 500);
+            } else {
+                const errorData = await response.json();
+                toast.error(`Error: ${errorData.message}`);
+            }
+        } catch (error) {
+            toast.error('Error al editar el horario');
+        }
+    });
+
     return (
         <>
             <div
@@ -45,28 +104,28 @@ export default function UpdateHorario() {
                             </button>
                         </div>
                         {/* Modal body */}
-                        <form action="#">
+                        <form onSubmit={handleEditar}>
                             <div className="grid gap-4 mb-4">
                                 <div>
                                     <label
-                                        htmlFor="day"
+                                        htmlFor="Dia"
                                         className="block mb-2 w-10 text-sm font-medium text-gray-900 dark:text-white"
                                     >
                                         Dia
                                     </label>
                                     <input
                                         type="text"
-                                        name="day"
-                                        id="day"
+                                        name="Dia"
+                                        id="Dia"
                                         defaultValue="Lunes"
                                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                        placeholder="Dia de semana"
-                                        required=""
-                                    />
+                                        placeholder="Dia de semana"   
+                                        {...register("Dia", { required: { value: true, message: 'El día es requerido' } })} />
+                                        {errors.Dia && <span className="text-red-500">{errors.Dia.message}</span>}
                                 </div>
                                 <div>
                                     <label
-                                        htmlFor="start-time"
+                                        htmlFor="HoraInicio"
                                         className="block mb-2 w-24 text-sm font-medium text-gray-900 dark:text-white"
                                     >
                                         Hora Entrada:
@@ -89,18 +148,18 @@ export default function UpdateHorario() {
                                         </div>
                                         <input
                                             type="time"
-                                            id="start-time"
+                                            id="HoraInicio"
                                             className="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                             min="09:00"
                                             max="18:00"
                                             defaultValue="00:00"
-                                            required=""
-                                        />
+                                            {...register("HoraInicio", { required: { value: true, message: 'La hora es requerida' } })} />
+                                            {errors.HoraInicio && <span className="text-red-500">{errors.HoraInicio.message}</span>}
                                     </div>
                                 </div>
                                 <div>
                                     <label
-                                        htmlFor="end-time"
+                                        htmlFor="HoraFin"
                                         className="block mb-2 w-20 text-sm font-medium text-gray-900 dark:text-white"
                                     >
                                         Hora Salida:
@@ -123,13 +182,13 @@ export default function UpdateHorario() {
                                         </div>
                                         <input
                                             type="time"
-                                            id="end-time"
+                                            id="HoraFin"
                                             className="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                             min="09:00"
                                             max="21:00"
                                             defaultValue="00:00"
-                                            required=""
-                                        />
+                                            {...register("HoraFin", { required: { value: true, message: 'La hora es requerida' } })} />
+                                            {errors.HoraFin && <span className="text-red-500">{errors.HoraFin.message}</span>}
                                     </div>
                                 </div>
                                 
@@ -168,13 +227,13 @@ export default function UpdateHorario() {
                                 </div>
                                 <div className="flex">
                                     <label
-                                        htmlFor="all-day"
+                                        htmlFor="all-Dia"
                                         className="inline-flex relative items-center cursor-pointer"
                                     >
                                         <input
                                             type="checkbox"
                                             defaultValue=""
-                                            id="all-day"
+                                            id="all-Dia"
                                             className="sr-only peer"
                                             defaultChecked=""
                                         />
@@ -215,7 +274,7 @@ export default function UpdateHorario() {
                                 </button>
                             </div>
                         </form>
-                        <DeleteHorario open={deletehorario} onClose={() => SetDeleteHoraio(false)} />
+                        <DeleteHorario open={deletehorario} onClose={() => SetDeleteHoraio(false)}  horarioId={horarioId}/>
                     </div>
                 </div>
             </div>

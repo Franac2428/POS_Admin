@@ -27,6 +27,8 @@ model Usuarios {
 
   role String
   usuarioRoles UsuarioRole[]
+
+  horarios     AsignacionHorario[]
 }
 
 model StatusAuditoriaLogin {
@@ -79,4 +81,21 @@ model RolPermiso {
   permiso      Permiso @relation(fields: [permissionId], references: [id])
 
   @@id([roleId, permissionId])
+}
+
+model Horario {
+  Id          Int                 @id @default(autoincrement())
+  Dia         String
+  HoraInicio  String
+  HoraFin     String
+  empleados   AsignacionHorario[]
+}
+
+
+model AsignacionHorario {
+  AsignacionID Int       @id @default(autoincrement())
+  EmpleadoID   Int
+  HorarioID    Int
+  empleado     Usuarios  @relation(fields: [EmpleadoID], references: [Id])
+  horario      Horario   @relation(fields: [HorarioID], references: [Id])
 }
