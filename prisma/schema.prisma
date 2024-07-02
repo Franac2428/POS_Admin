@@ -99,3 +99,20 @@ model AsignacionHorario {
   empleado     Usuarios  @relation(fields: [EmpleadoID], references: [Id])
   horario      Horario   @relation(fields: [HorarioID], references: [Id])
 }
+model Pedido {
+  id                Int       @id @default(autoincrement())
+  proveedor         String
+  medioPedido       String
+  productos         Json
+  observaciones     String?
+  estado            Estado    @default(EN_PROGRESO)
+  fechaFinalizacion DateTime?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+}
+
+enum Estado {
+  EN_PROGRESO
+  CANCELADO
+  FINALIZADO
+}
