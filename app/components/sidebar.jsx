@@ -1,5 +1,5 @@
 'use client';
-import { AlarmClock, BadgeCent, BookUser, BriefcaseBusiness, ChevronFirst, ChevronLast, FileLineChart, LockKeyhole, LogOut, MoreVertical, Truck, Utensils, Warehouse } from "lucide-react";
+import { AlarmClock, BadgeCent, BriefcaseBusiness, ChevronFirst, ChevronLast, FileLineChart, LockKeyhole, LogOut, MoreVertical, Truck, Users, Utensils, Warehouse } from "lucide-react";
 import Link from "next/link";
 import { createContext, useEffect, useState } from "react";
 import ThemeButton from "./theme/ChangeTheme";
@@ -32,11 +32,11 @@ export default function Sidebar() {
 
   const sidebarItems = [
     { icon: <Utensils size={20} />, text: "POS", link: "/menu" },
+    { icon: <Users size={20} />, text: "Clientes", link: "/clientes" },
     { icon: <Warehouse size={20} />, text: "Inventario", link: "/inventario" },
     { icon: <FileLineChart size={20} />, text: "Reportes", link: "/reporteria" },
     { icon: <BadgeCent size={20} />, text: "Transacciones", link: "/transacciones" },
     { icon: <BriefcaseBusiness size={20} />, text: "Empleados", link: "/empleado" },
-    { icon: <BookUser size={20} />, text: "Clientes", link: "/clientes" },
     { icon: <LockKeyhole size={20} />, text: "Seguridad", link: "/seguridad", subItems: [{ text: "Usuarios", link: "/seguridad" }, { text: "Auditoria", link: "/auditoria" }] },
     { icon: <Truck size={20} />, text: "Pedidos", link: "/pedido" },
     { icon: <AlarmClock size={20} />, text: "Monitorizar horarios", link: "/horas" },

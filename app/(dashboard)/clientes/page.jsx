@@ -1,116 +1,201 @@
 'use client'
-
-import { useState } from "react";
-import { CirclePlus, FileUp, Pencil, SlidersHorizontal, Trash, Eye, SmilePlus } from "lucide-react";
+import HtmlBreadCrumb from "@/app/components/HtmlHelpers/BreadCrumb";
+import HtmlButton from "@/app/components/HtmlHelpers/Button";
+import HtmlLabel from "@/app/components/HtmlHelpers/Label";
+import HtmlTableButton from "@/app/components/HtmlHelpers/TableButton";
+import ActivarCliente from "@/app/components/clientes/activarCliente";
+import AgregarCliente from "@/app/components/clientes/agregarCliente";
+import EditarCliente from "@/app/components/clientes/editarCliente";
+import EliminarCliente from "@/app/components/clientes/eliminarCliente";
 import Buscador from "@/app/components/pos/buscador";
-import Eliminar from "@/app/components/clientes/eliminar";
-import Ver from "@/app/components/clientes/ver";
-import Editar from "@/app/components/clientes/editar";
+import { Pencil, PlusCircle, Save, Trash, UserPlus } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Toaster, toast } from 'sonner';
 
-// Define los datos de los clientes
-const clientes = [
-    {
-        id: "CL10102",
-        cedula: "305440618",
-        nombre: "Josue",
-        apellido: "Bonilla Soto",
-        correo: "josue@gmail.com",
-        telefono: "72094668",
-        factura: "00001",
-    },
-    {
-        id: "CL20203",
-        cedula: "1234567689",
-        nombre: "Yaritza",
-        apellido: "Macotelo Menocal",
-        correo: "yaritza@gmail.com",
-        telefono: "87456128",
-        factura: "00002",
-    },
-    {
-        id: "CL30304",
-        cedula: "78930292",
-        nombre: "Francisco",
-        apellido: "Araya Carvajal",
-        correo: "francisco@gmail.com",
-        telefono: "61198211",
-        factura: "00003",
-    },
-    {
-        id: "CL40405",
-        cedula: "52981198",
-        nombre: "Manfred",
-        apellido: "Villegas Lopez",
-        correo: "manfred@gmail.com",
-        telefono: "65907621",
-        factura: "00004",
-    },
-];
+const itemsBreadCrumb = ["Home","Clientes"];
+
+
 
 export default function Clientes() {
-    const [open, setOpen] = useState(false);
-    const [ver, setVer] = useState(false);
-    const [editar, setEditar] = useState(false);
+    const [modalAgregar, openModalAgregar] = useState(false);
+    const [modalEliminar, openModalEliminar] = useState(false);
+    const [modalActivar, openModalActivar] = useState(false);
+    const [modalEditar, openModalEditar] = useState(false);
+    const [clientes, setClientes] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [clienteSeleccionado, setClienteSeleccionado] = useState(null);
+
+    // async function exportarClientesToExcel() {
+    //     try {
+    //         const response = await fetch('http://localhost:3000/api/clientes');
+    //         if (!response.ok) {
+    //             toast.error('Sucedió un error al exportar los clientes');
+    //             throw new Error(`Error al generar el archivo clientes: ${response.statusText}`);
+    //         }
+
+    //         const clientes = await response.json();
+
+    //         if (clientes.length === 0) {
+    //             toast.warning('No es posible exportar los clientes, no hay datos');
+    //             throw new Error(`No existen clientes: ${response.statusText}`);
+    //         } 
+    //         else {
+    //             const workbook = new Workbook();
+    //             const worksheet = workbook.addWorksheet('Clientes');
+        
+    //             worksheet.addRow(['IdCliente', 'Nombre', 'Apellido', 'Correo','Telefono']);
+        
+    //             clientes.forEach(cliente => {
+    //                 worksheet.addRow([cliente.id, cliente.nombre, cliente.apellido, cliente.correo,cliente.telefono]);
+    //             });
+    //             var date = new Date().toDateString();
+    //             const excelFilePath = 'ExportClientes_'+ date +'.xlsx';
+    //             const writeStream = fs.createWriteStream(excelFilePath);
+        
+    //             console.log('Archivo Excel exportado satisfactoriamente:', excelFilePath);
+    //             writeStream.end();
+    //             return excelFilePath;
+    //         }
+
+            
+    
+    //     } catch (error) {
+    //         console.error('Error al exportar datos a Excel:', error);
+    //         throw new Error('Ocurrió un error al exportar datos a Excel');
+    //     }
+    // }
+
+
+
+
+
+
+    const obtenerClientes = async () => {
+        try {
+            const response = await fetch('http://localhost:3000/api/clientes');
+            if (!response.ok) {
+                throw new Error(`Error al obtener clientes: ${response.statusText}`);
+            }
+            const data = await response.json();
+            if (data.length === 0) {
+                toast.warning('No se encontraron registros');
+            } else {
+                console.log(data);
+                toast.success('Se han obtenido los clientes');
+                setClientes(data);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            toast.error('Sucedió un error al obtener los clientes');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        obtenerClientes();
+    }, []);
+
+    if (loading) return <div>Loading...</div>;
 
     return (
-        < div className="w-full" >
-            <div className="grid grid-cols-10 gap-4 max-w-7xl mx-auto py-4">
-                <h1 className="font-semibold col-span-10 text-3xl text-gray-900 dark:text-gray-100">Clientes</h1>
-                <div className="col-span-3">
+        <>
+        <div className="w-full p-4">
+            <nav className="flex" aria-label="Breadcrumb">
+                <ol className="pl-2 inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
+                    <HtmlBreadCrumb items={itemsBreadCrumb}/>
+                </ol>
+            </nav>
+            <div className="p-2">
+                <h4 className="text-2xl font-bold dark:text-white">Admin. de Clientes</h4>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-4 mx-auto">
+                <div className="md:col-span-4">
                     <Buscador />
                 </div>
-                <div className="col-start-8 col-span-3">
-                    <div className="flex justify-end gap-6">
 
-                        <button className="transition-transform ease-in-out duration-75 hover:scale-105 active:scale-95 transform shadow-lg bg-white dark:bg-gray-700 px-3 py-2 rounded-lg">
-                            <SlidersHorizontal className="text-gray-500 dark:text-gray-400" />
-                        </button>
-                        <button className="flex gap-3 shadow-lg text-green-500 dark:text-green-400 font-semibold bg-white dark:bg-gray-700 px-4 py-2 active:scale-95 transition-transform ease-in-out duration-75 hover:scale-105 transform border border-green-500 dark:border-green-400 rounded-lg">
-                            <FileUp className="text-green-500 dark:text-green-400" />
-                            Exportar
-                        </button>
+                <div className="md:col-span-3">
+                    <div className="mt-1">
+                        <HtmlButton color={"blue"} legend={"Agregar Cliente"} icon={UserPlus} onClick={() => openModalAgregar(true)}/>
                     </div>
                 </div>
-                <div className="shadow-lg col-span-10 bg-white dark:bg-gray-700 px-5 py-4 rounded-lg">
-                    <table className="w-full">
-                        <thead>
-                            <tr>
-                                <th className="text-sm font-semibold text-gray-600 dark:text-gray-400 pb-4"> Id </th>
-                                <th className="text-sm font-semibold text-gray-600 dark:text-gray-400 pb-4"> Cedula </th>
-                                <th className="text-sm font-semibold text-gray-600 dark:text-gray-400 pb-4"> Nombre</th>
-                                <th className="text-sm font-semibold text-gray-600 dark:text-gray-400 pb-4"> Apellido</th>
-                                <th className="text-sm font-semibold text-gray-600 dark:text-gray-400 pb-4"> Correo   </th>
-                                <th className="text-sm font-semibold text-gray-600 dark:text-gray-400 pb-4"> #Telefono   </th>
-                                <th className="text-sm font-semibold text-gray-600 dark:text-gray-400 pb-4"> Factura reciente   </th>
-                                <th className="text-sm font-semibold text-gray-600 dark:text-gray-400 pb-4"> Acciones  </th>
-                            </tr>
-                        </thead>
-                        <tbody className="">
+
+                <div className="md:col-span-3">
+                    <div className="mt-1">
+                        <HtmlButton color={"green"} legend={"Exportar Clientes"} icon={Save} onClick={() => exportarClientesToExcel()}/>
+                    </div>
+                </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-12 mt-8 mx-auto">
+                <div className="col-span-12">
+                    <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+                        <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                            <thead className="text-sm text-gray-700 uppercase bg-gray-300 dark:bg-gray-700 dark:text-gray-400">
+                                <tr>
+                                    <th hidden scope="col" className="px-6 py-3">
+                                        IdCliente
+                                    </th>
+                                    <th  scope="col" className="px-6 py-3" style={{ width: '7%' }}>
+                                        #
+                                    </th>
+                                    <th scope="col" className="px-6 py-3" style={{ width: '25%' }}>
+                                        Nombre Completo
+                                    </th>
+                                    <th scope="col" className="px-6 py-3" style={{ width: '10%' }}>
+                                        Estado
+                                    </th>
+                                    <th scope="col" className="px-6 py-3" style={{ width: '20%' }} >
+                                        Teléfonos
+                                    </th>
+                                    <th scope="col" className="px-6 py-3" style={{ width: '20%' }}>
+                                        Correo
+                                    </th>
+                                    <th scope="col" className="px-6 py-3" style={{ width: '15%' }}>
+                                        Acciones
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
                             {clientes.map((cliente, index) => (
-                                <tr key={index} className="border-b dark:border-gray-600">
-                                    <td className="text-center text-sm text-gray-900 whitespace-nowrap">
-                                        <a href="#" className="font-bold text-blue-700 hover:underline">{cliente.id}</a>
+                                <tr key={index} className="bg-white dark:bg-gray-800">
+                                    <td hidden className="px-6 py-4">{cliente.clienteId}</td>
+                                    <td  className="px-6 py-4">{index+1}</td>
+                                    <td className="px-6 py-4"><span>{cliente.nombre}</span> <span>{ cliente.apellido }</span></td>
+                                    <td className="px-6 py-4"><HtmlLabel color={cliente.eliminado ? 'red' : 'green'} legend={cliente.eliminado ? 'Inactivo' : 'Activo'} /></td>
+                                    <td className="px-6 py-4">
+                                        <div className="mt-1">
+                                            <HtmlLabel color={"blue"} legend={cliente.celular ? `${cliente.telefono} / ${cliente.celular}` : cliente.telefono} />
+                                        </div>
                                     </td>
-                                    <td className="text-center text-sm text-gray-900 dark:text-gray-200 py-4">{cliente.cedula}</td>
-                                    <td className="text-center text-sm text-gray-900 dark:text-gray-200">{cliente.nombre}</td>
-                                    <td className="text-center text-sm text-gray-900 dark:text-gray-200">{cliente.apellido}</td>
-                                    <td className="text-center text-sm text-gray-900 dark:text-gray-200">{cliente.correo}</td>
-                                    <td className="text-center text-sm text-gray-900 dark:text-gray-200">{cliente.telefono}</td>
-                                    <td className="text-center text-sm text-gray-900 dark:text-gray-200">{cliente.factura}</td>
-                                    <td className="flex gap-1 justify-evenly my-1 whitespace-nowrap">
-                                        <button className="p-1.5 text-gray-900 dark:text-gray-200 dark:text-gray-200 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-blue-600 bg-opacity-50 rounded-md " onClick={() => setEditar(true)}><Pencil size={15} strokeWidth={2.2} /></button>
-                                        <button className="p-1.5 text-gray-900 dark:text-gray-200 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-green-600 bg-opacity-50 rounded-md" onClick={() => setVer(true)}><Eye size={15} strokeWidth={2.2} /> </button>
-                                        <button className="p-1.5 text-gray-900 dark:text-gray-200 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-red-600 bg-opacity-50 rounded-md" onClick={() => setOpen(true)}><Trash size={15} strokeWidth={2.2} /> </button>
+                                    <td className="px-6 py-4">{cliente.email}</td>
+                                    <td className="px-6 py-4">
+                                        {cliente.eliminado ? 
+                                        (
+                                            <HtmlTableButton color={"green"} icon={PlusCircle} onClick={() => { openModalActivar(true); setClienteSeleccionado(cliente); }} />
+                                        ) 
+                                        :
+                                        (
+                                            <HtmlTableButton color={"red"} icon={Trash} onClick={() => { openModalEliminar(true); setClienteSeleccionado(cliente); }} />
+                                        )
+                                        }
+                                        <HtmlTableButton color={"blue"} icon={Pencil} onClick={() => { openModalEditar(true); setClienteSeleccionado(cliente); }} />
                                     </td>
                                 </tr>
                             ))}
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-            <Eliminar open={open} onClose={() => setOpen(false)} />
-            <Editar open={editar} onClose={() => setEditar(false)} />
-            <Ver open={ver} onClose={() => setVer(false)} />
-        </div >
+            {/* Modal Agregar Cliente */}
+            <AgregarCliente open={modalAgregar} onClose={() => openModalAgregar(false)} reloadTable={obtenerClientes} />
+            <EliminarCliente open={modalEliminar} onClose={() => openModalEliminar(false) } cliente={clienteSeleccionado} reloadTable={obtenerClientes} />    
+            <ActivarCliente open={modalActivar} onClose={() => openModalActivar(false) } cliente={clienteSeleccionado} reloadTable={obtenerClientes} />    
+            <EditarCliente open={modalEditar} onClose={() => openModalEditar(false)} reloadTable={obtenerClientes} cliente={clienteSeleccionado} />
+                
+        </div>
+        <Toaster richColors />
+        </>
     );
 }

@@ -1,11 +1,10 @@
 import { Roboto } from "next/font/google";
-import Sidebar from "../components/sidebar";
-import Footer from '../components/footer';
-import "../globals.css";
-import { ThemeProvider } from "../components/theme/ThemeProvider";
-import Script from 'next/script'
-import { Toaster, toast } from 'sonner';
+import Script from 'next/script';
 import NextTopLoader from 'nextjs-toploader';
+import { Toaster } from 'sonner';
+import Sidebar from "../components/sidebar";
+import { ThemeProvider } from "../components/theme/ThemeProvider";
+import "../globals.css";
 
 const roboto = Roboto({ subsets: ['latin'], weight: ['400', '500', '700'] })
 
