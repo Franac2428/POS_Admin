@@ -52,8 +52,54 @@ CREATE TABLE `roles` (
     PRIMARY KEY (`IdRole`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
+-- CreateTable
+CREATE TABLE `Clientes` (
+    `clienteId` INTEGER NOT NULL AUTO_INCREMENT,
+    `nombre` VARCHAR(191) NOT NULL,
+    `apellido` VARCHAR(191) NOT NULL,
+    `email` VARCHAR(191) NOT NULL,
+    `telefono` VARCHAR(191) NOT NULL,
+    `celular` VARCHAR(191) NOT NULL,
+    `direccion` VARCHAR(191) NOT NULL,
+    `eliminado` BOOLEAN NOT NULL,
+    `fechaCreacion` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `idUsuarioCreacion` INTEGER NOT NULL,
+    `rfc` VARCHAR(191) NOT NULL,
+
+    PRIMARY KEY (`clienteId`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `CategoriaProdVenta` (
+    `idCategoriaProdVenta` INTEGER NOT NULL AUTO_INCREMENT,
+    `nombre` VARCHAR(191) NOT NULL,
+    `estado` BOOLEAN NOT NULL,
+
+    PRIMARY KEY (`idCategoriaProdVenta`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `ProductoVenta` (
+    `idProductoVenta` INTEGER NOT NULL AUTO_INCREMENT,
+    `nombre` VARCHAR(191) NOT NULL,
+    `cantidad` DECIMAL(18, 3) NOT NULL,
+    `cantidadMinima` DECIMAL(18, 3) NOT NULL,
+    `precio` DECIMAL(18, 3) NOT NULL,
+    `idUsuarioCreacion` INTEGER NOT NULL,
+    `fechaCreacion` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `eliminado` BOOLEAN NOT NULL,
+    `idCategoriaProdVenta` INTEGER NOT NULL,
+    `imagen` LONGBLOB NOT NULL,
+    `tipoImagen` VARCHAR(191) NOT NULL,
+
+    PRIMARY KEY (`idProductoVenta`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
 -- AddForeignKey
 ALTER TABLE `usuarios` ADD CONSTRAINT `usuarios_roleId_fkey` FOREIGN KEY (`roleId`) REFERENCES `roles`(`IdRole`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `AuditoriaLogin` ADD CONSTRAINT `AuditoriaLogin_IdStatusAuditoriaLogin_fkey` FOREIGN KEY (`IdStatusAuditoriaLogin`) REFERENCES `StatusAuditoriaLogin`(`IdStatusAuditoriaLogin`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `ProductoVenta` ADD CONSTRAINT `ProductoVenta_idCategoriaProdVenta_fkey` FOREIGN KEY (`idCategoriaProdVenta`) REFERENCES `CategoriaProdVenta`(`idCategoriaProdVenta`) ON DELETE RESTRICT ON UPDATE CASCADE;
