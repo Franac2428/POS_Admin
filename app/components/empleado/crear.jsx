@@ -130,6 +130,11 @@ export default function Agregar({ open, onClose, mutate }) {
                                 </select>
                                 {errors.roleId && <span className="text-red-500">{errors.roleId.message}</span>}
                             </div>
+                            <div className="mb-4 mr-5">
+                                <label htmlFor="direccion" className="block text-sm font-medium text-gray-700">Dirección</label>
+                                <textarea id="direccion" name="direccion" rows="3" className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" {...register("direccion", { required: { value: true, message: 'La dirección es requerida' } })}></textarea>
+                                {errors.direccion && <span className="text-red-500">{errors.direccion.message}</span>}
+                            </div>
                         </div>
                         <div className="flex mt-5 justify-end gap-x-3">
                             <button type="button" className="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400" onClick={handleCancel}>Cancelar</button>
