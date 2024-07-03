@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import Agregar from "@/app/components/empleado/crear";
 import { CirclePlus, FileUp, Pencil, SlidersHorizontal, Trash, Eye, SmilePlus } from "lucide-react";
@@ -9,6 +9,7 @@ import Evaluar from "@/app/components/empleado/evaluar";
 import Editar from "@/app/components/empleado/editar";
 import Ver from "@/app/components/empleado/ver";
 import useSWR from 'swr';
+import { useSession } from "next-auth/react";
 
 export default function Empleado() {
     const [open, setOpen] = useState(false);
@@ -18,11 +19,26 @@ export default function Empleado() {
     const [evaluar, setEvaluar] = useState(false);
     const [selectedEmployeeId, setSelectedEmployeeId] = useState(null);
 
+    const { data: session, status } = useSession();
     const { data, error, mutate } = useSWR('http://localhost:3000/api/empleado', async (url) => {
         const response = await fetch(url);
         const data = await response.json();
         return data;
     });
+
+    if (status === "loading") {
+        return <div>Cargando...</div>;
+    }
+
+    if (status === "error") {
+        return <div>Error al cargar la sesión</div>;
+    }
+
+    if (!session || session.user.role !== "Administrador") {
+        return <div className="flex justify-center items-center h-screen">
+            <p className="text-red-600 text-center">No estás autorizado para ver esta página.</p>
+        </div>;
+    }
 
     if (error) return <div>Error al cargar los datos</div>;
     if (!data) return <div>Cargando...</div>;

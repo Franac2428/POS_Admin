@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { CirclePlus, Pencil, Trash } from "lucide-react";
 import useSWR from 'swr';
+import { useSession } from "next-auth/react";
 import AddRole from '@/app/components/seguridad/addRol';
 import UpdateRole from '@/app/components/seguridad/updateRol';
 import DeleteRole from '@/app/components/seguridad/deleteRol';
@@ -18,6 +19,8 @@ export default function RoleTable() {
         const data = await response.json();
         return data;
     });
+
+    const { data: session, status } = useSession();
 
     if (error) return <div>Error al cargar los roles</div>;
     if (!roles) return <div>Cargando roles...</div>;
@@ -65,6 +68,9 @@ export default function RoleTable() {
         }
     };
 
+    if (status === "loading") return <div>Cargando...</div>;
+    if (status === "unauthenticated") return <div>No autorizado</div>;
+
     return (
         <div className="overflow-hidden bg-white shadow-md dark:bg-gray-800 sm:rounded-lg">
             <div className="px-4 divide-y dark:divide-gray-700">
@@ -75,14 +81,16 @@ export default function RoleTable() {
                             <span className="dark:text-white">{roles.length}</span>
                         </h5>
                     </div>
-                    <button
-                        type="button"
-                        className="flex items-center justify-center px-4 py-2 text-sm font-medium text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
-                        onClick={() => setAddRoleModalOpen(true)}
-                    >
-                        <CirclePlus className="w-5 h-5 mr-2" />
-                        Agregar Rol
-                    </button>
+                    {session?.user?.role === "Administrador" && (
+                        <button
+                            type="button"
+                            className="flex items-center justify-center px-4 py-2 text-sm font-medium text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
+                            onClick={() => setAddRoleModalOpen(true)}
+                        >
+                            <CirclePlus className="w-5 h-5 mr-2" />
+                            Agregar Rol
+                        </button>
+                    )}
                 </div>
 
             </div>
@@ -102,24 +110,28 @@ export default function RoleTable() {
                                 <td className="px-4 py-2">{role.Descripcion}</td>
                                 <td className="px-4 py-2">
                                     <div className="flex gap-1 justify-evenly my-1 whitespace-nowrap">
-                                        <button
-                                            className="p-1.5 text-gray-900 dark:text-gray-200 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01] ease-in-out transform bg-blue-600 bg-opacity-50 rounded-md"
-                                            onClick={() => {
-                                                setSelectedRole(role.IdRole);
-                                                setUpdateRoleModalOpen(true);
-                                            }}
-                                        >
-                                            <Pencil size={15} strokeWidth={2.2} />
-                                        </button>
-                                        <button
-                                            className="p-1.5 text-gray-900 dark:text-gray-200 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01] ease-in-out transform bg-red-600 bg-opacity-50 rounded-md"
-                                            onClick={() => {
-                                                setSelectedRole(role.IdRole);
-                                                setDeleteRoleModalOpen(true);
-                                            }}
-                                        >
-                                            <Trash size={15} strokeWidth={2.2} />
-                                        </button>
+                                        {session?.user?.role === "Administrador" && (
+                                            <>
+                                                <button
+                                                    className="p-1.5 text-gray-900 dark:text-gray-200 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01] ease-in-out transform bg-blue-600 bg-opacity-50 rounded-md"
+                                                    onClick={() => {
+                                                        setSelectedRole(role.IdRole);
+                                                        setUpdateRoleModalOpen(true);
+                                                    }}
+                                                >
+                                                    <Pencil size={15} strokeWidth={2.2} />
+                                                </button>
+                                                <button
+                                                    className="p-1.5 text-gray-900 dark:text-gray-200 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01] ease-in-out transform bg-red-600 bg-opacity-50 rounded-md"
+                                                    onClick={() => {
+                                                        setSelectedRole(role.IdRole);
+                                                        setDeleteRoleModalOpen(true);
+                                                    }}
+                                                >
+                                                    <Trash size={15} strokeWidth={2.2} />
+                                                </button>
+                                            </>
+                                        )}
                                     </div>
                                 </td>
                             </tr>
@@ -127,9 +139,13 @@ export default function RoleTable() {
                     </tbody>
                 </table>
             </div>
-            <AddRole open={addRoleModalOpen} onClose={() => setAddRoleModalOpen(false)} onAddRole={handleAddRole} />
-            <UpdateRole open={updateRoleModalOpen} onClose={() => setUpdateRoleModalOpen(false)} roleId={selectedRole} onUpdateRole={handleEditRole} />
-            <DeleteRole open={deleteRoleModalOpen} onClose={() => setDeleteRoleModalOpen(false)} roleId={selectedRole} onDeleteRole={handleDeleteRole} />
+            {session?.user?.role === "Administrador" && (
+                <>
+                    <AddRole open={addRoleModalOpen} onClose={() => setAddRoleModalOpen(false)} onAddRole={handleAddRole} />
+                    <UpdateRole open={updateRoleModalOpen} onClose={() => setUpdateRoleModalOpen(false)} roleId={selectedRole} onUpdateRole={handleEditRole} />
+                    <DeleteRole open={deleteRoleModalOpen} onClose={() => setDeleteRoleModalOpen(false)} roleId={selectedRole} onDeleteRole={handleDeleteRole} />
+                </>
+            )}
         </div>
     );
 }
