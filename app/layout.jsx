@@ -1,13 +1,11 @@
 import { Roboto } from "next/font/google";
-import Sidebar from "../components/sidebar";
-import Footer from '../components/footer';
+import Sidebar from "@/app/components/sidebar";
 import "@/app/globals.css";
-import { ThemeProvider } from "../components/theme/ThemeProvider";
+import { ThemeProvider } from "@/app/components/theme/ThemeProvider";
 import Script from 'next/script';
 import { Toaster } from 'sonner';
 import NextTopLoader from 'nextjs-toploader';
-import { SessionProvider } from "next-auth/react";
-import Providers from "../Providers";
+import Providers from "@/app/Providers";
 
 const roboto = Roboto({ subsets: ['latin'], weight: ['400', '500', '700'] });
 
@@ -24,7 +22,6 @@ export default function RootLayout({ children }) {
         <body className={`${roboto.className} bg-gray-50 dark:bg-gray-900 transition-all`}>
           <NextTopLoader color="#ffff00" />
           <main className="flex overflow-hidden">
-            <Sidebar />
             <div className="overflow-auto p-2 h-screen w-full">
               {children}
             </div>

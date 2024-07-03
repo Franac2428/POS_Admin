@@ -10,7 +10,7 @@ const ChangePasswordForm = ({ resetPasswordToken }) => {
 
     const handleSubmit = async () => {
         if (password !== confirmPassword) {
-            setMessage("Passwords do not match")
+            setMessage("Contraseñas no coinciden")
             return
         }
 
@@ -21,20 +21,20 @@ const ChangePasswordForm = ({ resetPasswordToken }) => {
 
     return (
         <div>
-            <h1>Change Password</h1>
+            <h1>Cambiar Contraseña</h1>
             <input
                 type="password"
-                placeholder="Password"
+                placeholder="Contraseña"
                 value={password}
                 onChange={e => setPassword(e.target.value)}
             />
             <input
                 type="password"
-                placeholder="Confirm Password"
+                placeholder="Confirmar contraseña"
                 value={confirmPassword}
                 onChange={e => setConfirmPassword(e.target.value)}
             />
-            <button onClick={handleSubmit}>Change Password</button>
+            <button onClick={handleSubmit}>Cambiar Contraseña</button>
             <p>{message}</p>
         </div>
     )

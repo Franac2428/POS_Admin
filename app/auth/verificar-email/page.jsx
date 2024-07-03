@@ -9,7 +9,7 @@ const VerifyEmailPage = async ({ searchParams }) => {
             }
         })
         if (!user) {
-            return <div>Invalid token</div>
+            return <div>Token Inválido</div>
         }
 
         await prisma.usuarios.update({
@@ -25,15 +25,15 @@ const VerifyEmailPage = async ({ searchParams }) => {
         return (
             <div>
                 <h1>
-                    Email verified for <b>{user.email}</b>!
+                    Su correo ha sido verificado con éxito: <b>{user.email}</b>!
                 </h1>
             </div>
         )
     } else {
         return (
             <div>
-                <h1>Verify Email</h1>
-                No email verification token found. Check your email.
+                <h1>Verificar email</h1>
+                No se ha encontrado un token para verificar el email. Revise su correo.
             </div>
         )
     }

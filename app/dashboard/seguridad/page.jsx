@@ -1,6 +1,14 @@
+
+'use client';
+import { useEffect, useState, createContext, useContext } from 'react';
 import UsuariosLista from "../../components/seguridad/usuariosList";
+import RoleTable from "../../components/seguridad/roles";
+import HorariosList from "../../components/seguridad/horarios";
+import AddUser from '@/app/components/seguridad/addUser';
 
 export default function SeguridadGeneral() {
+    const [adduser, SetAddUser] = useState(false);
+
     return (
         <>
 
@@ -8,8 +16,9 @@ export default function SeguridadGeneral() {
                 <div className="px-4 mx-auto max-w-screen-2xl lg:px-12">
                 </div>
                 <main className="bg-gray-50 dark:bg-gray-900 p-4 md:ml-64 lg:mr-16 min-h-full pt-20">
-                    <div className="flex items-center grid grid-cols-3 md:grip-cols-3 gap-4 mb-4"></div>
-                    <div className="border-2 border-dashed border-gray-300 rounded-lg dark:border-gray-600 h-160 mb-4 flex flex-col">
+                    <div className="grid grid-cols-3 gap-4 mb-4"></div>
+                    <div className="rounded-lg dark:border-gray-600 h-160 mb-4 flex flex-col">
+
                         <div className="overflow-hidden bg-white shadow-md dark:bg-gray-800 sm:rounded-lg">
                             <div className="px-4 divide-y dark:divide-gray-700">
                                 <div className="flex flex-col py-3 space-y-3 md:flex-row md:items-center md:justify-between md:space-y-0 md:space-x-4">
@@ -43,6 +52,8 @@ export default function SeguridadGeneral() {
                                 </div>
                                 <div className="flex flex-col items-stretch justify-between py-4 space-y-3 md:flex-row md:items-center md:space-y-0">
                                     <button
+                                        data-modal-target="addUserModal"
+                                        data-modal-toggle="addUserModal"
                                         type="button"
                                         className="flex items-center justify-center px-4 py-2 text-sm font-medium text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
                                     >
@@ -62,6 +73,8 @@ export default function SeguridadGeneral() {
                                         Agregar
                                     </button>
                                 </div>
+                                <AddUser open={adduser} onClose={() => SetAddUser(false)} />
+
                             </div>
                             <div className="overflow-x-auto">
                                 <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -98,19 +111,17 @@ export default function SeguridadGeneral() {
                                                 Ultimo Inicio
                                             </th>
                                             <th scope="col" className="px-4 py-3">
-                                                <span className="sr-only">Actions</span>
+                                                Acciones
+
                                             </th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <UsuariosLista name="Jose Morales" role="Founder" status="Activo" schedule="11:00/21:00" lastlogin="29 May 2024" />
-                                        <UsuariosLista name="Cristian Sandi" role="Caja" status="Inactivo" schedule="17:00/21:00" lastlogin="28 May 2024" />
-                                        <UsuariosLista name="Esteban Mora" role="Cocina" status="Activo" schedule="11:00/21:00" lastlogin="29 May 2024" />
-                                        <UsuariosLista name="Esteban Mora" role="Cocina" status="Activo" schedule="11:00/21:00" lastlogin="29 May 2024" />
-                                        <UsuariosLista name="Esteban Mora" role="Cocina" status="Activo" schedule="11:00/21:00" lastlogin="29 May 2024" />
-                                        <UsuariosLista name="Esteban Mora" role="Cocina" status="Activo" schedule="11:00/21:00" lastlogin="29 May 2024" />
-                                        <UsuariosLista name="Esteban Mora" role="Cocina" status="Activo" schedule="11:00/21:00" lastlogin="29 May 2024" />
-                                        <UsuariosLista name="Esteban Mora" role="Cocina" status="Activo" schedule="11:00/21:00" lastlogin="29 May 2024" />
+                                        <UsuariosLista name="Jose Morales" role="Founder" status="Activo" contact="josemorales@gmail.com" schedule="11:00/21:00" lastlogin="29 May 2024" />
+                                        <UsuariosLista name="Cristian Sandi" role="Caja" status="Inactivo" contact="csandi@gmail.com" schedule="17:00/21:00" lastlogin="28 May 2024" />
+                                        <UsuariosLista name="Esteban Mora" role="Cocina" status="Activo" contact="emora@gmail.com" schedule="11:00/21:00" lastlogin="29 May 2024" />
+                                        <UsuariosLista name="Francisco Araya" role="Cocina" status="Activo" contact="franaraya@gmail.com" schedule="11:00/21:00" lastlogin="29 May 2024" />
+
                                     </tbody>
                                 </table>
                             </div>
@@ -168,18 +179,19 @@ export default function SeguridadGeneral() {
                         </div>
                     </div>
                     <div className="grid grid-cols-2 gap-4 mb-4">
-                        <div className="border-2 border-dashed border-gray-300 rounded-lg dark:border-gray-600 h-48 lg:h-72"></div>
-                        <div className="border-2 border-dashed border-gray-300 rounded-lg dark:border-gray-600 h-48 lg:h-72"></div>
-                        <div className="border-2 border-dashed border-gray-300 rounded-lg dark:border-gray-600 h-48 lg:h-72"></div>
-                        <div className="border-2 border-dashed border-gray-300 rounded-lg dark:border-gray-600 h-48 lg:h-72"></div>
+                        {/* Comienza divisiones */}
+                        <div className="rounded-lg dark:border-gray-600">
+                            <RoleTable />
+                        </div>
+
+                        <div className="rounded-lg dark:border-gray-600 h-48 lg:h-72">
+                            <HorariosList />
+                        </div>
+
+                        {/* <div className="border-2 border-dashed border-gray-300 rounded-lg dark:border-gray-600 h-48 lg:h-72"></div> */}
+                        {/* <div className="border-2 border-dashed border-gray-300 rounded-lg dark:border-gray-600 h-48 lg:h-72"></div> */}
                     </div>
-                    {/*                   <div className="border-2 border-dashed border-gray-300 rounded-lg dark:border-gray-600 h-96 mb-4"></div>
-                    <div className="grid grid-cols-2 gap-4">
-                        <div className="border-2 border-dashed border-gray-300 rounded-lg dark:border-gray-600 h-48 lg:h-72"></div>
-                        <div className="border-2 border-dashed border-gray-300 rounded-lg dark:border-gray-600 h-48 lg:h-72"></div>
-                        <div className="border-2 border-dashed border-gray-300 rounded-lg dark:border-gray-600 h-48 lg:h-72"></div>
-                        <div className="border-2 border-dashed border-gray-300 rounded-lg dark:border-gray-600 h-48 lg:h-72"></div>
-                    </div> */}
+
                 </main>
             </section>
         </>

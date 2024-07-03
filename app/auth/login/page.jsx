@@ -30,6 +30,7 @@ export default function login() {
         } else {
             router.push('/dashboard/menu')
             console.log("Enviando a /dashboard");
+            console.log(session.user.role)
         }
 
         console.log(res);
@@ -75,11 +76,7 @@ export default function login() {
                          text-white font-bold text-center text-lg' >Ingresar</button>
 
                         </div>
-                        <div className='flex flex-col mt-4'>
-                            <Link href="./pos" className='active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform py-4 bg-custom-yellow rounded-xl
-                         text-white font-bold text-center text-lg' >Ingresar empleado</Link>
 
-                        </div>
                         <div className='mt-4'>
                             <button type="button" onClick={() => setCambioClave(true)} className='font-medium text-base text-custom-yellow'>¿Olvidaste tu contraseña?</button>
                         </div>
