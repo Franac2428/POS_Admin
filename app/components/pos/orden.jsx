@@ -7,9 +7,11 @@ export default function Orden() {
         { id: 2, nombre: 'Té Frío', precio: 1000, cantidad: 1, img: '/vaso.png' }
     ]);
     return (
+        <>
+
         <div className="flex flex-col p-4 space-y-4 dark:bg-gray-800 dark:text-white">
             {orden.map((item) => (
-                <>
+               
                     <div key={item.id} className="grid grid-cols-4 gap-2 items-center bg-yellow-100 dark:bg-yellow-900 rounded-lg p-2">
                         <img className="col-span-1 w-full max-w-[4rem] h-auto object-cover rounded-lg" src={item.img} alt={item.nombre} />
                         <div className="col-span-3 md:col-span-2 flex flex-col md:flex-row justify-between items-center md:items-start">
@@ -27,8 +29,9 @@ export default function Orden() {
                             <button className="text-yellow-800 dark:text-yellow-400 font-bold">Remover</button>
                         </div>
                     </div>
-                </>
+              
             ))}
         </div>
+        </>
     );
 }
