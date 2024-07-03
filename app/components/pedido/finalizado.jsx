@@ -1,8 +1,9 @@
 import React from 'react';
 import * as AlertDialog from '@radix-ui/react-alert-dialog';
 import { Toaster, toast } from 'sonner';
+import { mutate } from 'swr';
 
-const Finalizado = ({ pedidoId, onEliminar }) => {
+const Finalizado = ({ pedidoId }) => {
   const handleEditar = async () => {
     try {
       const response = await fetch(`http://localhost:3000/api/pedido/${pedidoId}`, {
@@ -16,8 +17,11 @@ const Finalizado = ({ pedidoId, onEliminar }) => {
       if (response.ok) {
         const pedidoActualizado = await response.json();
         toast.success('Pedido finalizado con éxito');
-        // Llama a onEliminar o cualquier otra función para actualizar el estado de la aplicación
-        onEliminar(pedidoId);
+        mutate('http://localhost:3000/api/pedido', (currentData) => {
+          return currentData.map((pedido) =>
+            pedido.id === pedidoId ? { ...pedido, estado: 'FINALIZADO' } : pedido
+          );
+        }, false);
       } else {
         const errorData = await response.json();
         toast.error(`Error: ${errorData.message}`);

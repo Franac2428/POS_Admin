@@ -1,7 +1,7 @@
 import React from 'react';
 import Cancelar from './cancelar';
 import Finalizado from './finalizado';
-import useSWR from 'swr';
+import useSWR, { mutate } from 'swr';
 
 const Progreso = ({ AccordionItem, AccordionTrigger, AccordionContent }) => {
     const { data, error } = useSWR('http://localhost:3000/api/pedido', async (url) => {
@@ -15,7 +15,9 @@ const Progreso = ({ AccordionItem, AccordionTrigger, AccordionContent }) => {
     if (!data || !Array.isArray(data)) return <div>No hay datos disponibles</div>;
 
     const pedidosEnProgreso = data.filter(pedido => pedido.estado !== 'FINALIZADO');
-
+    const eliminarPedido = (pedidoId) => {
+        mutate('http://localhost:3000/api/pedido', data.filter(pedido => pedido.id !== pedidoId), false);
+    };
 
     return (
         <>
@@ -41,10 +43,10 @@ const Progreso = ({ AccordionItem, AccordionTrigger, AccordionContent }) => {
                                     <td className="text-sm text-gray-900 dark:text-gray-200">{new Date(pedido.createdAt).toLocaleDateString()}</td>
                                     <td className="flex gap-2 my-2">
                                         <button>
-                                            <Finalizado pedidoId = {pedido.id} />
+                                            <Finalizado pedidoId={pedido.id} />
                                         </button>
                                         <button>
-                                            <Cancelar pedidoId = {pedido.id}/>
+                                            <Cancelar pedidoId={pedido.id} onEliminar={eliminarPedido} />
                                         </button>
                                     </td>
                                 </tr>

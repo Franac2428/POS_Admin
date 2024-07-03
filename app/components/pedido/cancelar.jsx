@@ -12,6 +12,7 @@ const Cancelar = ({ pedidoId, onEliminar }) => {
       if (response.ok) {
         toast.success('Pedido eliminado con éxito');
         onEliminar(pedidoId);
+
       } else {
         toast.error('Error al eliminar el pedido');
       }
