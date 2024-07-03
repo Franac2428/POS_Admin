@@ -7,6 +7,7 @@ import Editar from "@/app/components/proveedor/editar";
 
 import Buscador from "../../components/pos/buscador";
 import { CirclePlus, FileUp, Pencil, SlidersHorizontal, Trash, Eye } from "lucide-react";
+
 import { useState } from "react";
 import Ver from "../../components/proveedor/ver";
 
@@ -15,7 +16,6 @@ export default function Proveedores() {
   const [agregar, setAgregar] = useState(false);
   const [ver, setVer] = useState(false);
   const [editar, setEditar] = useState(false);
-
 
 
   return (

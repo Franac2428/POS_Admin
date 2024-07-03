@@ -1,4 +1,5 @@
 'use client';
+import { AlarmClock, BadgeCent, BriefcaseBusiness, ChevronFirst, ChevronLast, FileLineChart, LockKeyhole, LogOut, MoreVertical, Truck, Users, Utensils, Warehouse } from "lucide-react";
 import Link from "next/link";
 import { ChevronFirst, ChevronLast, MoreVertical } from "lucide-react";
 import { createContext, useContext, useState } from "react";
@@ -34,17 +35,6 @@ export default function Sidebar() {
     };
   }, []);
 
-  const sidebarEmItems = [
-    { icon: <Utensils size={20} />, text: "POS", link: "/pos" },
-    { icon: <Warehouse size={20} />, text: "Inventario", link: "/inventarioEM" },
-    { icon: <BadgeCent size={20} />, text: "Transacciones", link: "/transaccionesEM" },
-    { icon: <BookUser size={20} />, text: "Clientes", link: "/clientesEM" },
-    { icon: <BriefcaseBusiness size={20} />, text: "Metas", link: "/metas" },
-    { icon: <Flag size={20} />, text: "Marcar Hora", link: "/marcar" },
-    { icon: <Truck size={20} />, text: "Pedidos", link: "/pedidoEM" },
-    { icon: <hr className="my-3" /> },
-    { icon: <LogOut size={20} />, text: "Cerrar Sesión", link: "/login" },
-  ];
   const sidebarItems = [
     { icon: <Utensils size={20} />, text: "POS", link: "menu" },
     { icon: <Warehouse size={20} />, text: "Inventario", link: "inventario" },

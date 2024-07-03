@@ -1,14 +1,5 @@
-'use client'
-import { useEffect, useState, createContext, useContext } from 'react';
-import { initFlowbite } from 'flowbite'
-import UpdateUser from '@/app/components/seguridad/updateUser';
 
 export default function UsuariosLista({ name, role, status, contact, schedule, lastlogin }) {
-    const [open, setOpen] = useState(false);
-    const [updateUser, SetUpdateUser] = useState(false);
-    useEffect(() => {
-        initFlowbite()
-    }, [])
     return (
         <>
             <tr className="border-b dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700">
@@ -17,7 +8,7 @@ export default function UsuariosLista({ name, role, status, contact, schedule, l
                         <input
                             id="checkbox-table-search-1"
                             type="checkbox"
-                            onClick="event.stopPropagation()"
+                            onclick="event.stopPropagation()"
                             className="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                         />
                         <label htmlFor="checkbox-table-search-1" className="sr-only">
@@ -67,7 +58,7 @@ export default function UsuariosLista({ name, role, status, contact, schedule, l
                     <div className="flex items-center space-x-1.5">
                         <a
                             className="transition hover:text-gray-900 dark:hover:text-white"
-                            href={contact}
+                            href="#"
                         >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -93,8 +84,8 @@ export default function UsuariosLista({ name, role, status, contact, schedule, l
                             strokeWidth={2}
                         >
                             <path
-                                fillRule="evenodd"
-                                clipRule="evenodd"
+                                fill-rule="evenodd"
+                                clip-rule="evenodd"
                                 d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
                             />
                         </svg>
@@ -105,9 +96,9 @@ export default function UsuariosLista({ name, role, status, contact, schedule, l
                 <td className="px-4 py-2">{lastlogin}</td>
                 <td className="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                     <button
-                        id={`${contact}-dropdown-button`} // Cambiado para usar `contact` en el id
+                        id="dropdown-button-0"
                         type="button"
-                        data-dropdown-toggle={`${contact}-dropdown`} // Asegúrate de que coincida con el id del contenedor del dropdown
+                        data-dropdown-toggle="dropdown-0"
                         className="inline-flex items-center p-1 text-sm font-medium text-center text-gray-500 rounded-lg hover:text-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none dark:text-gray-400 dark:hover:text-gray-100"
                     >
                         <svg
@@ -121,27 +112,39 @@ export default function UsuariosLista({ name, role, status, contact, schedule, l
                         </svg>
                     </button>
                     <div
-                        id={`${contact}-dropdown`} // Id actualizado para coincidir con `contact`
+                        id="dropdown-0"
                         className="z-10 hidden bg-white divide-y divide-gray-100 rounded shadow w-44 dark:bg-gray-700 dark:divide-gray-600"
-                        aria-labelledby={`${contact}-dropdown-button`} // Actualizado para mejorar la accesibilidad
                     >
                         <ul
                             className="py-1 text-sm text-gray-700 dark:text-gray-200"
+                            aria-labelledby="dropdown-button-0"
                         >
                             <li>
-                                <button
-                                    type='button'
-                                    data-modal-target="updateUserModal"
-                                    data-modal-toggle="updateUserModal"
-                                    className="block py-2 px-4 w-full text-left hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                                /* onClick={() => SetUpdateUser(true)} */
+                                <a
+                                    href="#"
+                                    className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                                >
+                                    Show
+                                </a>
+                            </li>
+                            <li>
+                                <a
+                                    href="#"
+                                    className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                                 >
                                     Edit
-                                </button>
+                                </a>
                             </li>
                         </ul>
+                        <div className="py-1">
+                            <a
+                                href="#"
+                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                            >
+                                Delete
+                            </a>
+                        </div>
                     </div>
-                    <UpdateUser open={updateUser} onClose={() => SetUpdateUser(false)} />
                 </td>
             </tr>
         </>

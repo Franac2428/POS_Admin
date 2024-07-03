@@ -56,17 +56,17 @@ export default function Agregar({ open, onClose, mutate }) {
                         <div className="grid mr-5 gap-x-12 grid-cols-2">
                             <div className="mb-4 flex flex-col">
                                 <label htmlFor="username" className="text-sm font-medium text-gray-700">Username</label>
-                                <input type="text" className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" {...register("username", { required: { value: true, message: 'El username es requerido' } })} />
+                                <input type="text" className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" {...register("username", { required: { value: true, message: 'El username es requerido' }, minLength: { value: 4, message: 'El username debe tener al menos 4 caracteres' } })} />
                                 {errors.username && <span className="text-red-500">{errors.username.message}</span>}
                             </div>
                             <div className="mb-4 flex flex-col">
                                 <label htmlFor="email" className="text-sm font-medium text-gray-700">Email</label>
-                                <input type="email" className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" {...register("email", { required: { value: true, message: 'El email es requerido' } })} />
+                                <input type="email" className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" {...register("email", { required: { value: true, message: 'El email es requerido' }, pattern: { value: /^[^@]+@[^@]+\.[a-zA-Z]{2,}$/, message: 'El email no es válido' } })} />
                                 {errors.email && <span className="text-red-500">{errors.email.message}</span>}
                             </div>
                             <div className="mb-4 flex flex-col">
                                 <label htmlFor="password" className="text-sm font-medium text-gray-700">Contraseña</label>
-                                <input type="password" className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" {...register("password", { required: { value: true, message: 'La contraseña es requerida' } })} />
+                                <input type="password" className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" {...register("password", { required: { value: true, message: 'La contraseña es requerida' }, minLength: { value: 6, message: 'La contraseña debe tener al menos 6 caracteres' } })} />
                                 {errors.password && <span className="text-red-500">{errors.password.message}</span>}
                             </div>
                             <div className="mb-4 flex flex-col">
@@ -81,17 +81,17 @@ export default function Agregar({ open, onClose, mutate }) {
                             </div>
                             <div className="mb-4 flex flex-col">
                                 <label htmlFor="telefono" className="text-sm font-medium text-gray-700">Telefono</label>
-                                <input type="text" className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" {...register("telefono", { required: { value: true, message: 'El telefono es requerido' } })} />
+                                <input type="text" className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" {...register("telefono", { required: { value: true, message: 'El telefono es requerido' }, pattern: { value: /^[0-9]+$/, message: 'El teléfono solo puede contener números' } })} />
                                 {errors.telefono && <span className="text-red-500">{errors.telefono.message}</span>}
                             </div>
                             <div className="mb-4">
                                 <label htmlFor="salario" className="block text-sm font-medium text-gray-700">Salario x hora</label>
-                                <input required type="number" id="salario" name="salario" className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" {...register("salario", { required: { value: true, message: 'El salario es requerido' } })} />
+                                <input type="number" id="salario" name="salario" className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" {...register("salario", { required: { value: true, message: 'El salario es requerido' }, min: { value: 1, message: 'El salario debe ser mayor a 0' } })} />
                                 {errors.salario && <span className="text-red-500">{errors.salario.message}</span>}
                             </div>
                             <div className="mb-4">
                                 <label htmlFor="horario" className="block text-sm font-medium text-gray-700">Horario</label>
-                                <select required id="horario" name="horario" className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" {...register("horario", { required: { value: true, message: 'El horario es requerido' } })}>
+                                <select id="horario" name="horario" className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" {...register("horario", { required: { value: true, message: 'El horario es requerido' } })}>
                                     <option value="completo">L-S 12md-6pm</option>
                                     <option value="medio">L-S 12md-4pm</option>
                                     <option value="fines">L-S 6pm-11pm</option>

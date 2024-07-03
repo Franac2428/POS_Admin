@@ -1,12 +1,12 @@
 "use client"
 
 import CambioClave from "@/app/(auth)/olvidoClave";
+import { signIn } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
 
 
 

@@ -1,3 +1,4 @@
+
 'use client';
 import { useEffect, useState, createContext, useContext } from 'react';
 import UsuariosLista from "../../components/seguridad/usuariosList";
@@ -7,6 +8,7 @@ import AddUser from '@/app/components/seguridad/addUser';
 
 export default function SeguridadGeneral() {
     const [adduser, SetAddUser] = useState(false);
+
     return (
         <>
 
@@ -16,6 +18,7 @@ export default function SeguridadGeneral() {
                 <main className="bg-gray-50 dark:bg-gray-900 p-4 md:ml-64 lg:mr-16 min-h-full pt-20">
                     <div className="grid grid-cols-3 gap-4 mb-4"></div>
                     <div className="rounded-lg dark:border-gray-600 h-160 mb-4 flex flex-col">
+
                         <div className="overflow-hidden bg-white shadow-md dark:bg-gray-800 sm:rounded-lg">
                             <div className="px-4 divide-y dark:divide-gray-700">
                                 <div className="flex flex-col py-3 space-y-3 md:flex-row md:items-center md:justify-between md:space-y-0 md:space-x-4">
@@ -71,6 +74,7 @@ export default function SeguridadGeneral() {
                                     </button>
                                 </div>
                                 <AddUser open={adduser} onClose={() => SetAddUser(false)} />
+
                             </div>
                             <div className="overflow-x-auto">
                                 <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -108,6 +112,7 @@ export default function SeguridadGeneral() {
                                             </th>
                                             <th scope="col" className="px-4 py-3">
                                                 Acciones
+
                                             </th>
                                         </tr>
                                     </thead>
@@ -116,6 +121,7 @@ export default function SeguridadGeneral() {
                                         <UsuariosLista name="Cristian Sandi" role="Caja" status="Inactivo" contact="csandi@gmail.com" schedule="17:00/21:00" lastlogin="28 May 2024" />
                                         <UsuariosLista name="Esteban Mora" role="Cocina" status="Activo" contact="emora@gmail.com" schedule="11:00/21:00" lastlogin="29 May 2024" />
                                         <UsuariosLista name="Francisco Araya" role="Cocina" status="Activo" contact="franaraya@gmail.com" schedule="11:00/21:00" lastlogin="29 May 2024" />
+
                                     </tbody>
                                 </table>
                             </div>
@@ -185,6 +191,7 @@ export default function SeguridadGeneral() {
                         {/* <div className="border-2 border-dashed border-gray-300 rounded-lg dark:border-gray-600 h-48 lg:h-72"></div> */}
                         {/* <div className="border-2 border-dashed border-gray-300 rounded-lg dark:border-gray-600 h-48 lg:h-72"></div> */}
                     </div>
+
                 </main>
             </section>
         </>

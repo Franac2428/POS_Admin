@@ -1,6 +1,6 @@
 import { X } from "lucide-react";
 import { Toaster, toast } from 'sonner';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from "react-hook-form";
 
 export default function Editar({ open, onClose, employeeId, mutate }) {
@@ -14,6 +14,7 @@ export default function Editar({ open, onClose, employeeId, mutate }) {
     const telefonoRef = useRef();
     const direccionRef = useRef();
     const rolRef = useRef();
+
 
     const fetchEmpleado = async () => {
         if (employeeId) {
@@ -59,16 +60,16 @@ export default function Editar({ open, onClose, employeeId, mutate }) {
             direccionRef.current.value = empleado.direccion;
             rolRef.current.value = empleado.roleId || "";  // Asigna el rol actual del empleado
         }
-    }, [empleado]);
+    }, [empleado, setValue]);
 
-    const handleEditar = async (event) => {
-        event.preventDefault();
+    const handleEditar = handleSubmit(async (data) => {
         try {
             const response = await fetch(`/api/empleado/${employeeId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },
+
                 body: JSON.stringify({
                     nombre: nombreRef.current.value,
                     apellido: apellidoRef.current.value,
@@ -82,7 +83,7 @@ export default function Editar({ open, onClose, employeeId, mutate }) {
             if (response.ok) {
                 const empleadoActualizado = await response.json();
                 toast.success('Usuario editado con éxito');
-                mutate();  // Revalidate the cache
+                mutate();  
                 setTimeout(() => {
                     onClose();
                 }, 500);
@@ -93,11 +94,12 @@ export default function Editar({ open, onClose, employeeId, mutate }) {
         } catch (error) {
             toast.error('Error al editar el empleado');
         }
-    };
+    });
 
     const handleCancel = () => {
-        fetchEmpleado();  // Reload the original data
+        fetchEmpleado(); 
         onClose();
+        reset(); 
     }
 
     return (
@@ -114,21 +116,35 @@ export default function Editar({ open, onClose, employeeId, mutate }) {
                         <hr className="w-full border-t border-gray-300 dark:border-gray-600"></hr>
                         <form onSubmit={handleEditar} className="ml-5 my-4 w-full">
                             <div className="grid mr-5 gap-x-12 grid-cols-2">
-                                <div className="mb-4">
+                                <div className="mb-4 flex flex-col">
+                                    <label htmlFor="username" className="block text-sm font-medium text-gray-700 dark:text-gray-200">Username</label>
+                                    <input type="text" id="username" className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" 
+                                    {...register("username", { required: { value: true, message: 'El username es requerido' }, minLength: { value: 4, message: 'El username debe tener al menos 4 caracteres' } })} />
+                                    {errors.username && <span className="text-red-500">{errors.username.message}</span>}
+                                </div>
+                                <div className="mb-4 flex flex-col">
                                     <label htmlFor="nombre" className="block text-sm font-medium text-gray-700 dark:text-gray-200">Nombre</label>
-                                    <input required type="text" id="nombre_empleado" ref={nombreRef} className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
+                                    <input type="text" id="nombre" className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" 
+                                    {...register("nombre", { required: { value: true, message: 'El nombre es requerido' } })} />
+                                    {errors.nombre && <span className="text-red-500">{errors.nombre.message}</span>}
                                 </div>
-                                <div className="mb-4">
-                                    <label htmlFor="apellidos" className="block text-sm font-medium text-gray-700 dark:text-gray-200">Apellidos</label>
-                                    <input required type="text" ref={apellidoRef} className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
+                                <div className="mb-4 flex flex-col">
+                                    <label htmlFor="apellido" className="block text-sm font-medium text-gray-700 dark:text-gray-200">Apellidos</label>
+                                    <input type="text" id="apellido" className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" 
+                                    {...register("apellido", { required: { value: true, message: 'El apellido es requerido' } })} />
+                                    {errors.apellido && <span className="text-red-500">{errors.apellido.message}</span>}
                                 </div>
-                                <div className="mb-4">
+                                <div className="mb-4 flex flex-col">
                                     <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-200">Correo</label>
-                                    <input required type="text" id="email" name="email" ref={correoRef} className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
+                                    <input type="email" id="email" className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" 
+                                    {...register("email", { required: { value: true, message: 'El email es requerido' }, pattern: { value: /^[^@]+@[^@]+\.[a-zA-Z]{2,}$/, message: 'El email no es válido' } })} />
+                                    {errors.email && <span className="text-red-500">{errors.email.message}</span>}
                                 </div>
-                                <div className="mb-4">
+                                <div className="mb-4 flex flex-col">
                                     <label htmlFor="telefono" className="block text-sm font-medium text-gray-700 dark:text-gray-200">Telefono</label>
-                                    <input required type="number" id="telefono" name="telefono" ref={telefonoRef} className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
+                                    <input type="text" id="telefono" className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" 
+                                    {...register("telefono", { required: { value: true, message: 'El telefono es requerido' }, pattern: { value: /^[0-9]+$/, message: 'El teléfono solo puede contener números' } })} />
+                                    {errors.telefono && <span className="text-red-500">{errors.telefono.message}</span>}
                                 </div>
                                 <div className="mb-4">
                                     <label htmlFor="rol" className="block text-sm font-medium text-gray-700 dark:text-gray-200">Rol</label>
@@ -141,9 +157,11 @@ export default function Editar({ open, onClose, employeeId, mutate }) {
                                     </select>
                                 </div>
                             </div>
-                            <div className="mb-4 mr-5">
-                                <label htmlFor="direccion" className="block text-sm font-medium text-gray-700 dark:text-gray-200">Descripción</label>
-                                <textarea required id="direccion" name="direccion" ref={direccionRef} rows="3" className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"></textarea>
+                            <div className="mb-4 mr-5 flex flex-col">
+                                <label htmlFor="direccion" className="block text-sm font-medium text-gray-700 dark:text-gray-200">Dirección</label>
+                                <textarea id="direccion" rows="3" className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" 
+                                {...register("direccion", { required: { value: true, message: 'La dirección es requerida' } })}></textarea>
+                                {errors.direccion && <span className="text-red-500">{errors.direccion.message}</span>}
                             </div>
                             <div className="flex justify-end gap-4 mr-5">
                                 <button type="submit" className="bg-verde font-semibold rounded-md py-2 px-6 text-white">Guardar</button>
