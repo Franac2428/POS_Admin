@@ -14,14 +14,14 @@ const ResetPasswordForm = () => {
 
     return (
         <div className="flex flex-col gap-4">
-            <h1>Reset Password</h1>
+            <h1>Reasignar Contraseña</h1>
             <input
                 type="email"
                 placeholder="Email"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
             />
-            <button onClick={handleSubmit}>Reset Password</button>
+            <button onClick={handleSubmit}>Reiniciar contraseña</button>
             <p>{message}</p>
         </div>
     )

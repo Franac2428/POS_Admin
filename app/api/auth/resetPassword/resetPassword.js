@@ -6,7 +6,7 @@ import { sendEmail } from "@/app/api/emails/sendEmail"
 import { ResetPasswordEmailTemplate } from "@/app/template/reset-password-email"
 
 export const resetPassword = async email => {
-  console.log("Resetting password for " + email)
+  console.log("Reiniciando contraseña para: " + email)
 
   // Buscar el usuario por email
   const user = await db.usuarios.findUnique({
@@ -17,7 +17,7 @@ export const resetPassword = async email => {
 
   // Si no se encuentra el usuario, lanzar un error
   if (!user) {
-    throw new Error("User not found")
+    throw new Error("Usuario no encontrado")
   }
 
   // Generar un token de restablecimiento de contraseña
@@ -38,9 +38,9 @@ export const resetPassword = async email => {
 
   // Enviar el correo electrónico con el token de restablecimiento
   await sendEmail({
-    from: "Acme <onboarding@resend.dev>",
+    from: "Pollo Petote <onboarding@resend.dev>",
     to: [email],
-    subject: "Reset your password",
+    subject: "Reinicie su contraseña",
     react: ResetPasswordEmailTemplate({ email, resetPasswordToken })
   })
 

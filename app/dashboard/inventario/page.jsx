@@ -12,6 +12,7 @@ import useSWR from 'swr';
 
 const fetcher = (url) => fetch(url).then((res) => res.json());
 
+
 export default function Inventario() {
   const [open, setOpen] = useState(false);
   const [agregar, setAgregar] = useState(false);
@@ -28,6 +29,7 @@ export default function Inventario() {
 
   if (error) return <div>Error al cargar los datos</div>;
   if (!data) return <div>Cargando...</div>;
+
 
   return (
     <>
@@ -84,10 +86,12 @@ export default function Inventario() {
         <Agregar open={agregar} onClose={() => setAgregar(false)} mutate={mutate} />
         <Editar open={editar} onClose={() => setEditar(false)} productoId={selectedProductoId} mutate={mutate} />
         <Ver open={ver} onClose={() => setVer(false)} productoId={selectedProductoId} />
+
       </div>
     </>
   );
 }
+
 
 function getEstadoClass(estado) {
   switch (estado) {
@@ -103,3 +107,4 @@ function getEstadoClass(estado) {
       return 'text-gray-800 dark:text-gray-200';
   }
 }
+
