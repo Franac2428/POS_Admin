@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
-import {ScrollText,Trash,ArrowDownToLine } from "lucide-react";
 import classNames from 'classnames';
 import * as Accordion from '@radix-ui/react-accordion';
 import { ChevronDownIcon } from '@radix-ui/react-icons';
 import * as Tabs from '@radix-ui/react-tabs';
-import Adjuntar from './adjuntar';
-import Eliminar from './eliminar';
-import Cancelar from './cancelar';
-import Finalizado from './finalizado';
+import Historial from './historial';
+import Progreso from './progreso';
+import Realizar from './realizar';
 
 const TabsDemo = () => {
   const [nombre, setNombre] = useState('');
@@ -39,257 +37,7 @@ const TabsDemo = () => {
     setDescripcion('');
     setProductos([]);
   };
-  return(
-    <>
-    <Tabs.Root
-    className="flex flex-col"
-    defaultValue="tab1"
-  >
-    <Tabs.List className="shrink-0 flex border-b  border-mauve6" aria-label="Manejp de pedidos">
-      <Tabs.Trigger
-        className="bg-white px-5 h-[45px] flex-1 flex items-center font-semibold justify-center text-xl leading-none text-mauve11 select-none first:rounded-tl-md last:rounded-tr-md hover:text-custom-yellow data-[state=active]:text-custom-yellow data-[state=active]:shadow-[inset_0_-1px_0_0,0_1px_0_0] data-[state=active]:shadow-current data-[state=active]:focus:relative data-[state=active]:focus:shadow-[0_0_0_2px] data-[state=active]:focus:shadow-black outline-none cursor-default "
-        value="tab1"
-      >
-        Realizar Pedido
-      </Tabs.Trigger>
-      <Tabs.Trigger
-        className="bg-white px-5 h-[45px] flex-1 flex items-center font-semibold justify-center text-xl leading-none text-mauve11 select-none first:rounded-tl-md last:rounded-tr-md hover:text-custom-yellow data-[state=active]:text-custom-yellow data-[state=active]:shadow-[inset_0_-1px_0_0,0_1px_0_0] data-[state=active]:shadow-current data-[state=active]:focus:relative data-[state=active]:focus:shadow-[0_0_0_2px] data-[state=active]:focus:shadow-black outline-none cursor-default"
-        value="tab2"
-      >
-        Historial
-      </Tabs.Trigger>
-    </Tabs.List>
-    <Tabs.Content
-      className="grow p-5 bg-white rounded-b-md outline-none focus:shadow-[0_0_0_2px] focus:shadow-black"
-      value="tab1"
-    >
-      <p className="mb-5 text-mauve11 text-[15px] leading-normal">
-        Los detalles de los pedidos en progreso se encuentran en el correo electrónico.
-      </p>
-      <fieldset className="mb-[15px] w-full flex flex-col justify-start">
-        <Accordion.Root
-            className="bg-mauve6 w-fullrounded-md  shadow-[0_2px_10px] shadow-black/5"
-            type="single"
-            defaultValue="item-1"
-            collapsible
-        >
-            <AccordionItem value="item-1">
-            <AccordionTrigger>En progreso</AccordionTrigger>
-            <AccordionContent>
-                <table className="w-full text-left">
-                    <thead>
-                      <tr>
-                        <th className="text-sm font-semibold text-gray-600 dark:text-gray-400 pb-4">Id</th>
-                        <th className="text-sm font-semibold text-gray-600 dark:text-gray-400 pb-4">Proveedor</th>
-                        <th className="text-sm font-semibold text-gray-600 dark:text-gray-400 pb-4">Tipo</th>
-                        <th className="text-sm font-semibold text-gray-600 dark:text-gray-400 pb-4">Fecha</th>
-                        <th className="text-sm font-semibold text-gray-600 dark:text-gray-400 pb-4">Cambiar estado</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr className="border-b dark:border-gray-600">
-                        <td className="text-sm font-bold text-blue-700 hover:underline py-4">PD1001</td>
-                        <td className="text-sm text-gray-900 dark:text-gray-200">Coca Cola</td>
-                        <td className="text-sm text-gray-900 dark:text-gray-200">Via web</td>
-                        <td className="text-sm text-gray-900 dark:text-gray-200">16/10/2021</td>
-                        <td className="flex gap-2  my-2">
-                        <Finalizado/>
-                        <Cancelar/>
-                        </td>
-                      </tr>
-                      <tr className="border-b dark:border-gray-600">
-                        <td className="text-sm font-bold text-blue-700 hover:underline py-4">PD1002</td>
-                        <td className="text-sm text-gray-900 dark:text-gray-200">Plastico</td>
-                        <td className="text-sm text-gray-900 dark:text-gray-200">Correo</td>
-                        <td className="text-sm text-gray-900 dark:text-gray-200">16/10/2021</td>
-                        <td className="flex gap-2  my-2">
-                        <Finalizado/>
-                        <Cancelar/>
-                          </td>
-                      </tr>
-                      <tr className="border-b dark:border-gray-600">
-                        <td className="text-sm font-bold text-blue-700 hover:underline py-4">PD1003</td>
-                        <td className="text-sm text-gray-900 dark:text-gray-200">Coca Cola</td>
-                        <td className="text-sm text-gray-900 dark:text-gray-200">Via web</td>
-                        <td className="text-sm text-gray-900 dark:text-gray-200">16/10/2021</td>
-                        <td className="flex gap-2  my-2">
-                          <Finalizado/>
-                        <Cancelar/>
-                            </td>
-                      </tr>
-
-                    </tbody>
-                  </table>
-       </AccordionContent>
-            </AccordionItem>
-            <AccordionItem value="item-2">
-            <AccordionTrigger>Realizar pedido</AccordionTrigger>
-            <AccordionContent>
-            <form  className="ml-5 my-4 w-full">
-            <div className="grid mr-5 gap-x-12 grid-cols-5">
-              <div className="mb-4 col-span-5">
-                      <label htmlFor="estado" className="block text-sm font-medium text-gray-700 dark:text-gray-200">Proveedor</label>
-                      <select required  id="estado" name="estado" className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
-                          <option value="fresco">Coca-cola</option>
-                          <option value="vigente">Pipsa</option>
-                          <option value="por_caducar">Mario Gomez</option>
-                          <option value="caducado">Caducado</option>
-                      </select>                       
-              </div>  
-              <div className='mb-4'>      
-                  <input type="radio" id="correo" name="tipo" value="correo" checked={tipoRadio === 'correo'} onChange={handleRadioChange} />
-                  <label className='dark:text-gray-400 ml-5' htmlFor="correo">Correo</label>
-                </div> 
-                <div className='mb-4'>      
-                  <input type="radio" id="sitio_web" name="tipo" value="sitio_web" checked={tipoRadio === 'sitio_web'} onChange={handleRadioChange} />
-                  <label  className='ml-5 dark:text-gray-400'  htmlFor="sitio_web">Sitio Web</label>  
-                </div> 
-                  <div className='mb-4 col-span-5'>            
-                  {tipoRadio === 'correo' && (
-                    <div id="producto-form">
-                      <div className='grid grid-cols-3 gap-7'>
-                          <div className="mb-4">
-                            <label htmlFor="nombre" className="block text-sm font-medium text-gray-700 dark:text-gray-200">
-                              Nombre
-                            </label>
-                            <input
-                              type="text"
-                              id="nombre"
-                              name="nombre"
-                              value={nombre}
-                              onChange={handleNombreChange}
-                              className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                            />
-                          </div>
-                          <div className="mb-4">
-                            <label htmlFor="cantidad" className="block text-sm font-medium text-gray-700 dark:text-gray-200">
-                              Cantidad
-                            </label>
-                            <input
-                              type="text"
-                              id="cantidad"
-                              name="cantidad"
-                              value={cantidad}
-                              onChange={handleCantidadChange}
-                              className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                            />
-                          </div>
-                          <div className="flex items-center">
-                            <button type='button' onClick={agregarProducto} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                              Agregar Producto
-                            </button>
-                          </div>
-                        </div>                   
-                      <div className="shadow-lg col-span-5 overflow-x-auto bg-white dark:bg-gray-700 px-5 py-4 rounded-lg">
-                        <table className="w-full text-left">
-                          <thead>
-                            <tr>
-                              <th className="text-sm font-semibold text-gray-600 dark:text-gray-400 pb-4">Producto</th>
-                              <th className="text-sm font-semibold text-gray-600 dark:text-gray-400 pb-4">Cantidad</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {productos.map((producto, index) => (
-                              <tr className="border-b dark:border-gray-600" key={index}>
-                                <td className="text-sm text-gray-900 dark:text-gray-200">{producto.nombre}</td>
-                                <td className="text-sm text-gray-900 dark:text-gray-200">{producto.cantidad}</td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-                  )}
-                  {tipoRadio === 'sitio_web' && (
-                  <div id="sitio-web-text">
-                    <p className='mt-4 dark:text-gray-200'>Sitio web: ejemplo@ejemplo.com</p>
-                  </div>
-                )}
-              </div>   
-            </div>
-                  <div className="mb-4 mr-5">
-                  <label htmlFor="Observaciones" className="block text-sm font-medium text-gray-700 dark:text-gray-200">Observaciones</label>
-                  <textarea
-                    id="descripcion"
-                    name="descripcion"
-                    rows="3"
-                    value={descripcion} 
-                    onChange={(event) => setDescripcion(event.target.value)} 
-                    className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                  ></textarea>
-                  </div>
-                  <div className="flex justify-end gap-4 mr-5 ">
-                  <button type="submit" className="bg-verde font-semibold rounded-md py-2 px-6 text-white">Agregar
-                  </button>
-                  <button type="button" className="bg-gray-400 font-semibold rounded-md py-2 px-6" onClick={limpiarCampos}>
-                  Limpiar
-                </button>
-                  </div>
-            </form>
-            </AccordionContent>
-            </AccordionItem>
-        </Accordion.Root>     
-      </fieldset>
-    </Tabs.Content>
-    <Tabs.Content
-      className="grow p-5 overflow-x-auto bg-white rounded-b-md outline-none focus:shadow-[0_0_0_2px] focus:shadow-black"
-      value="tab2"
-    >      
-      <fieldset className="mb-[15px] w-full flex flex-col justify-startshadow-lg col-span-10 overflow-x-auto bg-white dark:bg-gray-700 px-5 py-4 rounded-lg">
-            <table className="w-full text-left">
-              <thead>
-                <tr>
-                  <th className="text-sm font-semibold text-gray-600 dark:text-gray-400 pb-4">Id</th>
-                  <th className="text-sm font-semibold text-gray-600 dark:text-gray-400 pb-4">Proveedor</th>
-                  <th className="text-sm font-semibold text-gray-600 dark:text-gray-400 pb-4">Tipo</th>
-                  <th className="text-sm font-semibold text-gray-600 dark:text-gray-400 pb-4">Fecha</th>
-                  <th className="text-sm font-semibold text-gray-600 dark:text-gray-400 pb-4">Factura</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr className="border-b dark:border-gray-600">
-                  <td className="text-sm font-bold text-blue-700 hover:underline py-4">PD1001</td>
-                  <td className="text-sm text-gray-900 dark:text-gray-200">Coca Cola</td>
-                  <td className="text-sm text-gray-900 dark:text-gray-200">Via web</td>
-                  <td className="text-sm text-gray-900 dark:text-gray-200">16/10/2021</td>
-                  <td className="flex gap-2  my-2">
-                    <Adjuntar/>
-                    <button className="p-1.5 text-gray-900 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-yellow-600 bg-opacity-50 rounded-md" onClick={() => setDescarga(true)}><ArrowDownToLine size={15} strokeWidth={2.2} /></button>
-                    <Eliminar/>
-                  </td>
-                </tr>
-                <tr className="border-b dark:border-gray-600">
-                  <td className="text-sm font-bold text-blue-700 hover:underline py-4">PD1002</td>
-                  <td className="text-sm text-gray-900 dark:text-gray-200">Plastico</td>
-                  <td className="text-sm text-gray-900 dark:text-gray-200">Correo</td>
-                  <td className="text-sm text-gray-900 dark:text-gray-200">16/10/2021</td>
-                  <td className="flex gap-2  my-2">
-                  <Adjuntar/>
-                    <button className="p-1.5 text-gray-900 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-yellow-600 bg-opacity-50 rounded-md" onClick={() => setDescarga(true)}><ArrowDownToLine size={15} strokeWidth={2.2} /></button>
-                    <Eliminar/>
-
-                     </td>
-                </tr>
-                <tr className="border-b dark:border-gray-600">
-                  <td className="text-sm font-bold text-blue-700 hover:underline py-4">PD1003</td>
-                  <td className="text-sm text-gray-900 dark:text-gray-200">Coca Cola</td>
-                  <td className="text-sm text-gray-900 dark:text-gray-200">Via web</td>
-                  <td className="text-sm text-gray-900 dark:text-gray-200">16/10/2021</td>
-                  <td className="flex gap-2  my-2">
-                  <Adjuntar/>
-                    <button className="p-1.5 text-gray-900 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-yellow-600 bg-opacity-50 rounded-md" onClick={() => setDescarga(true)}><ArrowDownToLine size={15} strokeWidth={2.2} /></button>
-                    <Eliminar/>
-                       </td>
-                </tr>
-              </tbody>
-            </table>
-      </fieldset>     
-        </Tabs.Content>
-      </Tabs.Root>
-    </>
-  );
-}
-const AccordionItem = React.forwardRef(({ children, className, ...props }, forwardedRef) => (
+  const AccordionItem = React.forwardRef(({ children, className, ...props }, forwardedRef) => (
     <Accordion.Item
       className={classNames(
         'focus-within:shadow-mauve12 mt-px font-semibold overflow-hidden first:mt-0 first:rounded-t last:rounded-b focus-within:relative focus-within:z-10 focus-within:shadow-[0_0_0_2px]',
@@ -331,5 +79,56 @@ const AccordionItem = React.forwardRef(({ children, className, ...props }, forwa
     >
       <div className="py-[15px] px-5">{children}</div>
     </Accordion.Content>
-      ));
+      ));  
+  return(
+    <>
+    <Tabs.Root
+    className="flex flex-col"
+    defaultValue="tab1"
+  >
+    <Tabs.List className="shrink-0 flex border-b  border-mauve6" aria-label="Manejp de pedidos">
+      <Tabs.Trigger
+        className="bg-white px-5 h-[45px] flex-1 flex items-center font-semibold justify-center text-xl leading-none text-mauve11 select-none first:rounded-tl-md last:rounded-tr-md hover:text-custom-yellow data-[state=active]:text-custom-yellow data-[state=active]:shadow-[inset_0_-1px_0_0,0_1px_0_0] data-[state=active]:shadow-current data-[state=active]:focus:relative data-[state=active]:focus:shadow-[0_0_0_2px] data-[state=active]:focus:shadow-black outline-none cursor-default "
+        value="tab1"
+      >
+        Realizar Pedido
+      </Tabs.Trigger>
+      <Tabs.Trigger
+        className="bg-white px-5 h-[45px] flex-1 flex items-center font-semibold justify-center text-xl leading-none text-mauve11 select-none first:rounded-tl-md last:rounded-tr-md hover:text-custom-yellow data-[state=active]:text-custom-yellow data-[state=active]:shadow-[inset_0_-1px_0_0,0_1px_0_0] data-[state=active]:shadow-current data-[state=active]:focus:relative data-[state=active]:focus:shadow-[0_0_0_2px] data-[state=active]:focus:shadow-black outline-none cursor-default"
+        value="tab2"
+      >
+        Historial
+      </Tabs.Trigger>
+    </Tabs.List>
+    <Tabs.Content
+      className="grow p-5 bg-white rounded-b-md outline-none focus:shadow-[0_0_0_2px] focus:shadow-black"
+      value="tab1"
+    >
+      <p className="mb-5 text-mauve11 text-[15px] leading-normal">
+        Los detalles de los pedidos en progreso se encuentran en el correo electrónico.
+      </p>
+      <fieldset className="mb-[15px] w-full flex flex-col justify-start">
+        <Accordion.Root
+            className="bg-mauve6 w-fullrounded-md  shadow-[0_2px_10px] shadow-black/5"
+            type="single"
+            defaultValue="item-1"
+            collapsible
+        >
+          <Progreso AccordionItem = {AccordionItem} AccordionTrigger = {AccordionTrigger} AccordionContent = {AccordionContent}/>
+          <Realizar AccordionItem = {AccordionItem} AccordionTrigger = {AccordionTrigger} AccordionContent = {AccordionContent}/>
+
+        </Accordion.Root>     
+      </fieldset>
+    </Tabs.Content>
+    <Tabs.Content
+      className="grow p-5 overflow-x-auto bg-white rounded-b-md outline-none focus:shadow-[0_0_0_2px] focus:shadow-black"
+      value="tab2"
+    >  
+    <Historial/>    
+    
+    </Tabs.Content>
+      </Tabs.Root>
+    </>
+  );
+}
 export default TabsDemo;

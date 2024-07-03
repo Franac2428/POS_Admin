@@ -1,5 +1,48 @@
 'use client';
-export default function DeleteHorario() {
+import { useState, useEffect } from 'react';
+import { Toaster, toast } from 'sonner';
+
+export default function DeleteHorario({horarioId, onEliminar}) {
+    const [horario, setHorario] = useState(null);
+    
+    useEffect(() => {
+        const fetchHorario = async () => {
+            if (horarioId) {
+                try {
+                    const response = await fetch(`http://localhost:3000/api/empleado/${horarioId}`);
+                    const result = await response.json();
+                    if (response.ok) {
+                        setHorario(result);
+                    } else {
+                        toast.error('Error al obtener los datos del horario');
+                    }
+                } catch (error) {
+                    toast.error('Error al obtener los datos del horario');
+                }
+            }
+        };
+
+        fetchHorario();
+    }, [horarioId]);
+    const handleEliminar = async () => {
+        try {
+            const response = await fetch(`http://localhost:3000/api/horario/${horarioId}`, {
+                method: 'DELETE',
+            });
+            const result = await response.json();
+            if (response.ok) {
+                toast.success('horario eliminado con éxito');
+                onEliminar(horarioId);
+            } else {
+                toast.error('Error al eliminar el horario');
+            }
+        } catch (error) {
+            toast.error('Error al eliminar el horario');
+        }
+       
+    };
+
+
     return (
         <>
             <div
@@ -53,6 +96,7 @@ export default function DeleteHorario() {
                             <button
                                 data-modal-hide="popup-modal"
                                 type="button"
+                                onClick={handleEliminar}
                                 className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center"
                             >
                                 Si, estoy seguro
@@ -67,6 +111,7 @@ export default function DeleteHorario() {
                         </div>
                     </div>
                 </div>
+                <Toaster richColors />
             </div>
         </>
 

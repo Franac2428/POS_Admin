@@ -21,10 +21,8 @@ export default function Pedido() {
                       <Users className=" text-white-800"/>
                       <div className="">Proveedores</div>
                 </a>
-            </div>
-              
-         
-                
+            </div>                   
+
             </div>
           </div>
  

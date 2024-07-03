@@ -1,13 +1,6 @@
 import { X, CircleAlert } from "lucide-react";
-import { Toaster, toast } from 'sonner';
 
-export default function Eliminar({ open, onClose }) {
-  const handleEliminar = () => {
-    toast.success('Acción realizada con éxito');
-    setTimeout(() => {
-      onClose(); // Cierra el modal después de mostrar la notificación
-    }, 1500);
-  };
+export default function Factura({ open, onClose }) {
 
   return (
     <div onClick={onClose} className={`fixed inset-0 flex justify-center items-center transition-opacity ${open ? "visible bg-black bg-opacity-20 dark:bg-opacity-30" : "invisible"}`}>
