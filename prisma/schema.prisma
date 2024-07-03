@@ -26,6 +26,9 @@ model Usuarios {
   emailVerificationToken String? @unique
 
   role String
+  puntajeEvaluacion Int @default(0)
+  observaciones String @default("")
+
   usuarioRoles UsuarioRole[]
 }
 

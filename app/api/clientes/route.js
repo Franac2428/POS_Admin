@@ -1,6 +1,9 @@
 import db from '@/app/lib/db';
+import { PrismaClient } from '@prisma/client';
 import { NextResponse } from 'next/server';
-import { FindAll, FindById, Update } from '../utils/db-methods';
+import { FindAll, FindById } from '../utils/db-methods';
+
+const prisma = new PrismaClient()
 
 export async function POST(request) {
   const data = await request.json();
@@ -41,7 +44,10 @@ export async function GET() {
     eliminado: data.eliminado
   };
 
-  const clienteEliminado = await Update("clientes",data.clienteId,model)
+  const clienteEliminado = await prisma.clientes.update({
+    where: { clienteId: data.clienteId },
+    data: model,
+  })
   return NextResponse.json(clienteEliminado); 
 
 }
