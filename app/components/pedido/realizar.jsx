@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useForm } from "react-hook-form";
 import { Toaster, toast } from 'sonner';
+import useSWR, { mutate } from 'swr';
 
 const Realizar = ({ AccordionItem, AccordionTrigger, AccordionContent }) => {
   const [nombre, setNombre] = useState('');
@@ -31,6 +32,8 @@ const Realizar = ({ AccordionItem, AccordionTrigger, AccordionContent }) => {
         const newPedido = await res.json();
         toast.success('Nuevo pedido realizado con éxito');
         reset();
+
+        mutate('http://localhost:3000/api/pedido', (currentData) => [...currentData, newPedido], false);
       } else {
         const errorData = await res.json();
         toast.error(`Error: ${errorData.message}`);

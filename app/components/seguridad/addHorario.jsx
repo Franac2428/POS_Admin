@@ -2,7 +2,7 @@
 import { useForm } from "react-hook-form";
 import { Toaster, toast } from 'sonner';
 
-export default function AddHorario() {
+export default function AddHorario({ open, onClose, mutate }) {
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
 
     const handleAgregar = handleSubmit(async (data) => {
@@ -18,9 +18,10 @@ export default function AddHorario() {
             if (res.ok) {
                 const newHorario = await res.json();
                 toast.success('Nuevo horario guardado con éxito');
-                // Aquí deberías manejar cómo quieres actualizar los datos en tu interfaz
                 setTimeout(() => {
                     reset(); // Limpia el formulario después de guardar
+                    onClose();
+                    mutate();
                 }, 500);
             } else {
                 const errorData = await res.json();
