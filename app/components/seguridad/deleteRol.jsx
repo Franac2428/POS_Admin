@@ -39,7 +39,7 @@ export default function DeleteRol({ open, onClose, roleId, onDelete }) {
                 toast.error('Error al eliminar el rol');
             }
         } catch (error) {
-            toast.error('Error al eliminar el rol');
+
         }
         setTimeout(() => {
             onClose();

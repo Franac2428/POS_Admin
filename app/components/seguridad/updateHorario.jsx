@@ -7,10 +7,10 @@ import DeleteHorario from '@/app/components/seguridad/deleteHorario';
 export default function UpdateHorario({ horarioId }) {
     const [open, setOpen] = useState(false);
     const [deletehorario, SetDeleteHorario] = useState(false);
-    const { register, handleSubmit, setValue, formState: { errors }} = useForm();
+    const { register, handleSubmit, setValue, formState: { errors } } = useForm();
     const [horario, setHorario] = useState(null);
 
-  
+
     const fetchHorario = async () => {
         if (horarioId) {
             try {
@@ -36,7 +36,7 @@ export default function UpdateHorario({ horarioId }) {
             setValue('Dia', horario.Dia);
             setValue('HoraInicio', horario.HoraInicio);
             setValue('HoraFin', horario.HoraFin);
-           
+
         }
     }, [horario, setValue]);
 
@@ -53,7 +53,7 @@ export default function UpdateHorario({ horarioId }) {
             if (response.ok) {
                 const horarioActualizado = await response.json();
                 toast.success('Horario editado con éxito');
-                mutate();  
+                mutate();
                 setTimeout(() => {
                     onClose();
                 }, 500);
@@ -62,7 +62,6 @@ export default function UpdateHorario({ horarioId }) {
                 toast.error(`Error: ${errorData.message}`);
             }
         } catch (error) {
-            toast.error('Error al editar el horario');
         }
     });
 
@@ -114,21 +113,21 @@ export default function UpdateHorario({ horarioId }) {
                                         Dia
                                     </label>
                                     <select
-                                    id="Dia"
-                                    name="Dia"
-                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                                    {...register("Dia", { required: { value: true, message: 'El día es requerido' } })}
-                                >
-                                    <option value="Lunes">Lunes</option>
-                                    <option value="Martes">Martes</option>
-                                    <option value="Miércoles">Miércoles</option>
-                                    <option value="Jueves">Jueves</option>
-                                    <option value="Viernes">Viernes</option>
-                                    <option value="Sábado">Sábado</option>
-                                    <option value="Domingo">Domingo</option>
-                                </select>
-                                        
-                                        {errors.Dia && <span className="text-red-500">{errors.Dia.message}</span>}
+                                        id="Dia"
+                                        name="Dia"
+                                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                                        {...register("Dia", { required: { value: true, message: 'El día es requerido' } })}
+                                    >
+                                        <option value="Lunes">Lunes</option>
+                                        <option value="Martes">Martes</option>
+                                        <option value="Miércoles">Miércoles</option>
+                                        <option value="Jueves">Jueves</option>
+                                        <option value="Viernes">Viernes</option>
+                                        <option value="Sábado">Sábado</option>
+                                        <option value="Domingo">Domingo</option>
+                                    </select>
+
+                                    {errors.Dia && <span className="text-red-500">{errors.Dia.message}</span>}
                                 </div>
                                 <div>
                                     <label
@@ -159,7 +158,7 @@ export default function UpdateHorario({ horarioId }) {
                                             className="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                             defaultValue="00:00"
                                             {...register("HoraInicio", { required: { value: true, message: 'La hora es requerida' } })} />
-                                            {errors.HoraInicio && <span className="text-red-500">{errors.HoraInicio.message}</span>}
+                                        {errors.HoraInicio && <span className="text-red-500">{errors.HoraInicio.message}</span>}
                                     </div>
                                 </div>
                                 <div>
@@ -191,7 +190,7 @@ export default function UpdateHorario({ horarioId }) {
                                             className="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                             defaultValue="00:00"
                                             {...register("HoraFin", { required: { value: true, message: 'La hora es requerida' } })} />
-                                            {errors.HoraFin && <span className="text-red-500">{errors.HoraFin.message}</span>}
+                                        {errors.HoraFin && <span className="text-red-500">{errors.HoraFin.message}</span>}
                                     </div>
                                 </div>
                             </div>
@@ -224,7 +223,7 @@ export default function UpdateHorario({ horarioId }) {
                                 </button>
                             </div>
                         </form>
-                        <DeleteHorario open={deletehorario} onClose={() => SetDeleteHoraio(false)}  horarioId={horarioId}/>
+                        <DeleteHorario open={deletehorario} onClose={() => SetDeleteHoraio(false)} horarioId={horarioId} />
                     </div>
                 </div>
             </div>

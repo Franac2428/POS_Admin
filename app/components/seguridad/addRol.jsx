@@ -31,7 +31,6 @@ export default function AddRole({ open, onClose, mutate }) {
             }
         } catch (error) {
             console.error("Error en la solicitud:", error);
-            toast.error('Error en la solicitud');
         }
     });
 
