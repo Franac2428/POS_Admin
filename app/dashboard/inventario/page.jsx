@@ -12,13 +12,13 @@ import useSWR from 'swr';
 
 const fetcher = (url) => fetch(url).then((res) => res.json());
 
-
 export default function Inventario() {
   const [open, setOpen] = useState(false);
   const [agregar, setAgregar] = useState(false);
   const [ver, setVer] = useState(false);
   const [editar, setEditar] = useState(false);
   const [selectedProductoId, setSelectedProductoId] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
   const { data, error, mutate } = useSWR('http://localhost:3000/api/inventario', fetcher);
 
   useEffect(() => {
@@ -27,9 +27,17 @@ export default function Inventario() {
     }
   }, [error]);
 
+  const handleSearch = (term) => {
+    setSearchTerm(term);
+  };
+
+  const filteredData = data ? data.filter(producto => 
+    producto.Nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    producto.ProductoID.toString().includes(searchTerm)
+  ) : [];
+
   if (error) return <div>Error al cargar los datos</div>;
   if (!data) return <div>Cargando...</div>;
-
 
   return (
     <>
@@ -37,7 +45,7 @@ export default function Inventario() {
         <div className="md:grid gap-4 max-w-7xl mx-auto py-4 md:w-auto flex flex-col md:grid-cols-10 mb-3 md:mb-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
           <h1 className="font-semibold col-span-10 text-3xl text-gray-900 dark:text-gray-100">Inventario</h1>
           <div className="col-span-3">
-            <Buscador />
+            <Buscador onSearch={handleSearch} />
           </div>
           <div className="col-start-8 space-x-4 col-span-3">
             <div className="sm:w-auto flex gap-4 flex-row mb-3 md:mb-0 md:items-center justify-end md:space-x-3 flex-shrink-0">
@@ -53,7 +61,7 @@ export default function Inventario() {
           </div>
           <div className="shadow-lg col-span-10 overflow-x-auto bg-white dark:bg-gray-700 px-5 py-4 rounded-lg">
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-              {data.map((producto) => (
+              {filteredData.map((producto) => (
                 <div key={producto.ProductoID} className="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
                   <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100">{producto.Nombre}</h2>
                   <p className="text-sm text-gray-500 dark:text-gray-400">ID: {producto.ProductoID}</p>
@@ -86,12 +94,10 @@ export default function Inventario() {
         <Agregar open={agregar} onClose={() => setAgregar(false)} mutate={mutate} />
         <Editar open={editar} onClose={() => setEditar(false)} productoId={selectedProductoId} mutate={mutate} />
         <Ver open={ver} onClose={() => setVer(false)} productoId={selectedProductoId} />
-
       </div>
     </>
   );
 }
-
 
 function getEstadoClass(estado) {
   switch (estado) {
@@ -107,4 +113,3 @@ function getEstadoClass(estado) {
       return 'text-gray-800 dark:text-gray-200';
   }
 }
-

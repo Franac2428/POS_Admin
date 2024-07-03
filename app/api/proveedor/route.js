@@ -8,15 +8,20 @@ export async function GET() {
 
 export async function POST(request) {
   const data = await request.json();
-  const nuevoProveedor = await db.proveedores.create({
-    data: {
-      Nombre: data.nombre,
-      Tipo: data?.tipo,
-      Telefono: data.telefono,
-      Email: data.correo,
-      Direccion: data.direccion,
-      Contacto: data.contacto,
-    },
-  });
-  return NextResponse.json(nuevoProveedor);
+  try {
+    const nuevoProveedor = await db.proveedores.create({
+      data: {
+        Nombre: data.Nombre,
+        Tipo: data.Tipo,
+        Telefono: data.Telefono,
+        Email: data.Email,
+        Direccion: data.Direccion,
+        Contacto: data.Contacto,
+      },
+    });
+    return NextResponse.json(nuevoProveedor);
+  } catch (error) {
+    console.error('Error al crear el proveedor:', error);
+    return NextResponse.json({ error: 'Error al crear el proveedor' }, { status: 500 });
+  }
 }
