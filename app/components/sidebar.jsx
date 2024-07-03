@@ -57,7 +57,7 @@ export default function Sidebar() {
     { icon: <AlarmClock size={20} />, text: "Monitorizar horarios", link: "horas" },
     { icon: <hr className="my-3" /> },
     { icon: <LogOut size={20} />, text: "Cerrar Sesión", link: "/api/auth/signout" },
-    { icon: <LogOut size={20} />, text: "Admin", link: "/dashboard" },
+    { icon: <LogOut size={20} />, text: "Admin", link: "/" },
   ];
 
   return (

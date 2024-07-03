@@ -2,7 +2,7 @@
 
 import { CirclePlus, Pencil, Trash } from "lucide-react";
 import { useState } from "react";
-import Eliminar from "../../components/seguridad/deleteRol";
+import Eliminar from "@/app/components/seguridad/deleteRol";
 import Agregar from "@/app/components/seguridad/addRol";
 import Editar from "@/app/components/seguridad/updateRol";
 import useSWR from 'swr';
@@ -25,7 +25,7 @@ export default function RoleTable() {
 
     const handleDeleteRole = async (roleId) => {
         try {
-            await fetch(`/api/roles/${roleId}`, {
+            await fetch(`/api/role/${roleId}`, {
                 method: 'DELETE',
             });
             mutate(roles.filter(role => role.IdRole !== roleId), false);
@@ -78,7 +78,7 @@ export default function RoleTable() {
                 </div>
                 <Agregar open={addRoleModalOpen} onClose={() => setAddRoleModalOpen(false)} mutate={handleMutateRoles} />
                 <Editar open={updateRoleModalOpen} onClose={() => setUpdateRoleModalOpen(false)} roleId={selectedRoleId} onUpdate={() => mutate()} />
-                <Eliminar open={deleteRoleModalOpen} onClose={() => setDeleteRoleModalOpen(false)} roleId={selectedRoleId} onDelete={handleDeleteRole} />
+                <Eliminar open={deleteRoleModalOpen} onClose={() => setDeleteRoleModalOpen(false)} roleId={selectedRoleId} onDelete={() => handleDeleteRole(selectedRoleId)} />
             </div>
             <div className="overflow-x-auto">
                 <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
