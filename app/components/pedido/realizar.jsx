@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from "react-hook-form";
 import { Toaster, toast } from 'sonner';
+import useSWR, { mutate } from 'swr';
 
 const Realizar = ({ AccordionItem, AccordionTrigger, AccordionContent }) => {
   const [nombre, setNombre] = useState('');
@@ -8,6 +9,8 @@ const Realizar = ({ AccordionItem, AccordionTrigger, AccordionContent }) => {
   const [productos, setProductos] = useState([]);
   const [tipoRadio, setTipoRadio] = useState('correo'); 
   const { register, handleSubmit, formState: { errors }, reset } = useForm();
+  const [proveedores, setProveedores] = useState([]);
+
 
   const handleAgregar = handleSubmit(async (data) => {
     const pedido = {
@@ -31,6 +34,8 @@ const Realizar = ({ AccordionItem, AccordionTrigger, AccordionContent }) => {
         const newPedido = await res.json();
         toast.success('Nuevo pedido realizado con éxito');
         reset();
+
+        mutate('http://localhost:3000/api/pedido', (currentData) => [...currentData, newPedido], false);
       } else {
         const errorData = await res.json();
         toast.error(`Error: ${errorData.message}`);
@@ -40,6 +45,14 @@ const Realizar = ({ AccordionItem, AccordionTrigger, AccordionContent }) => {
       toast.error('Error en la solicitud');
     }
   });
+  
+  useEffect(() => {
+    fetch('http://localhost:3000/api/proveedor')
+      .then(response => response.json())
+      .then(data => setProveedores(data))
+      .catch(error => console.error('Error fetching proveedores:', error));
+  }, []);
+
 
   const handleRadioChange = (event) => {
     setTipoRadio(event.target.value);
@@ -80,10 +93,10 @@ const Realizar = ({ AccordionItem, AccordionTrigger, AccordionContent }) => {
               <div className="mb-4 col-span-5">
                 <label htmlFor="proveedor" className="block text-sm font-medium text-gray-700 dark:text-gray-200">Proveedor</label>
                 <select required id="proveedor" name="proveedor" className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" {...register("proveedor", { required: true })}>
-                  <option value="Coca-cola">Coca-cola</option>
-                  <option value="Pipsa">Pipsa</option>
-                  <option value="Mario Gomez">Mario Gomez</option>
-                  <option value="Caducado">Caducado</option>
+                  <option value="">Selecciona un proveedor</option>
+                    {proveedores.map((proveedor) => (
+                      <option key={proveedor.ProveedorID} value={proveedor.ProveedorID}>{proveedor.Nombre}</option>
+                    ))}
                 </select>                       
               </div>  
               <div className='mb-4'>      

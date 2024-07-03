@@ -20,7 +20,6 @@ export default function HorariosLista({ days, entryhours, exithours, importDate,
                 </th>
                 <td className="px-6 py-4">{entryhours}</td>
                 <td className="px-6 py-4">{exithours}</td>
-                <td className="px-6 py-4">{importDate}</td>                
                 <td className="px-6 py-4 text-right">
                     <button
                         type='button'

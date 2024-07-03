@@ -1,4 +1,5 @@
 
+
 'use client';
 import { useEffect, useState, createContext, useContext } from 'react';
 import UsuariosLista from "../../components/seguridad/usuariosList";
@@ -52,8 +53,10 @@ export default function SeguridadGeneral() {
                                 </div>
                                 <div className="flex flex-col items-stretch justify-between py-4 space-y-3 md:flex-row md:items-center md:space-y-0">
                                     <button
+
                                         data-modal-target="addUserModal"
                                         data-modal-toggle="addUserModal"
+
                                         type="button"
                                         className="flex items-center justify-center px-4 py-2 text-sm font-medium text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
                                     >
@@ -73,8 +76,8 @@ export default function SeguridadGeneral() {
                                         Agregar
                                     </button>
                                 </div>
-                                <AddUser open={adduser} onClose={() => SetAddUser(false)} />
 
+                                <AddUser open={adduser} onClose={() => SetAddUser(false)} />
                             </div>
                             <div className="overflow-x-auto">
                                 <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -111,12 +114,14 @@ export default function SeguridadGeneral() {
                                                 Ultimo Inicio
                                             </th>
                                             <th scope="col" className="px-4 py-3">
-                                                Acciones
+
+                                               Acciones
 
                                             </th>
                                         </tr>
                                     </thead>
                                     <tbody>
+
                                         <UsuariosLista name="Jose Morales" role="Founder" status="Activo" contact="josemorales@gmail.com" schedule="11:00/21:00" lastlogin="29 May 2024" />
                                         <UsuariosLista name="Cristian Sandi" role="Caja" status="Inactivo" contact="csandi@gmail.com" schedule="17:00/21:00" lastlogin="28 May 2024" />
                                         <UsuariosLista name="Esteban Mora" role="Cocina" status="Activo" contact="emora@gmail.com" schedule="11:00/21:00" lastlogin="29 May 2024" />

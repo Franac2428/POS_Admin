@@ -1,9 +1,17 @@
 'use client';
 import { useForm } from "react-hook-form";
+import { useEffect } from 'react';
+
 import { Toaster, toast } from 'sonner';
 
-export default function AddHorario() {
+export default function AddHorario({ open, onClose, mutate }) {
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
+    useEffect(() => {
+        initFlowbite(); // Inicializamos Flowbite una vez que el componente se ha montado
+    }, []);
+
+
+
 
     const handleAgregar = handleSubmit(async (data) => {
         try {
@@ -18,9 +26,9 @@ export default function AddHorario() {
             if (res.ok) {
                 const newHorario = await res.json();
                 toast.success('Nuevo horario guardado con éxito');
-                // Aquí deberías manejar cómo quieres actualizar los datos en tu interfaz
                 setTimeout(() => {
-                    reset(); // Limpia el formulario después de guardar
+                    reset(); 
+                    mutate();
                 }, 500);
             } else {
                 const errorData = await res.json();

@@ -2,42 +2,34 @@ import { useState, useEffect } from 'react';
 import { X } from "lucide-react";
 import { Toaster, toast } from 'sonner';
 
-export default function Editar({ open, onClose, proveedorId, mutate }) {
+export default function Editar({ open, onClose, categoriaId, mutate }) {
   const [formData, setFormData] = useState({
-    Nombre: '',
-    Tipo: 'Bebidas',
-    Telefono: '',
-    Email: '',
-    Contacto: '',
-    Direccion: '',
+    NombreCategoria: '',
+    Descripcion: '',
   });
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
 
   useEffect(() => {
-    if (proveedorId) {
+    if (categoriaId) {
       setIsLoading(true);
       setIsError(false);
-      fetch(`http://localhost:3000/api/proveedor/${proveedorId}`)
+      fetch(`http://localhost:3000/api/categorias/${categoriaId}`)
         .then(response => response.json())
         .then(data => {
           setFormData({
-            Nombre: data.Nombre || '',
-            Tipo: data.Tipo || 'Bebidas',
-            Telefono: data.Telefono || '',
-            Email: data.Email || '',
-            Contacto: data.Contacto || '',
-            Direccion: data.Direccion || '',
+            NombreCategoria: data.NombreCategoria || '',
+            Descripcion: data.Descripcion || '',
           });
           setIsLoading(false);
         })
         .catch(error => {
-          console.error('Error fetching proveedor:', error);
+          console.error('Error fetching categoría:', error);
           setIsError(true);
           setIsLoading(false);
         });
     }
-  }, [proveedorId]);
+  }, [categoriaId]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -49,13 +41,13 @@ export default function Editar({ open, onClose, proveedorId, mutate }) {
 
   const handleEditar = async (e) => {
     e.preventDefault();
-    if (!proveedorId) {
-      toast.error('Proveedor no encontrado');
+    if (!categoriaId) {
+      toast.error('Categoría no encontrada');
       return;
     }
 
     try {
-      const response = await fetch(`http://localhost:3000/api/proveedor/${proveedorId}`, {
+      const response = await fetch(`http://localhost:3000/api/categorias/${categoriaId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -64,13 +56,13 @@ export default function Editar({ open, onClose, proveedorId, mutate }) {
       });
 
       if (response.ok) {
-        toast.success('Proveedor actualizado con éxito');
+        toast.success('Categoría actualizada con éxito');
         mutate();  // Refresca los datos
         setTimeout(() => {
           onClose();
         }, 1500);
       } else {
-        toast.error('Error al actualizar el proveedor');
+        toast.error('Error al actualizar la categoría');
       }
     } catch (error) {
       toast.error('Error al conectar con el servidor');
@@ -91,7 +83,7 @@ export default function Editar({ open, onClose, proveedorId, mutate }) {
     return (
       <div onClick={onClose} className={`fixed inset-0 flex justify-center items-center transition-opacity ${open ? "visible bg-black bg-opacity-20 dark:bg-opacity-30" : "invisible"}`}>
         <div className={`bg-white dark:bg-gray-800 rounded-xl shadow p-6 transition-all ${open ? "scale-100 opacity-100" : "scale-125 opacity-0"} m-auto`}>
-          <p className="text-center text-gray-700 dark:text-gray-200">Error al cargar los datos del proveedor.</p>
+          <p className="text-center text-gray-700 dark:text-gray-200">Error al cargar los datos de la categoría.</p>
         </div>
       </div>
     );
@@ -105,40 +97,19 @@ export default function Editar({ open, onClose, proveedorId, mutate }) {
         </button>
         <div className="flex flex-col items-center">
           <h2 className="text-xl font-bold flex items-center gap-3 text-gray-900 dark:text-gray-100 my-4">
-            Editar Proveedor ID : {proveedorId}
+            Editar Categoría ID : {categoriaId}
           </h2>
           <hr className="w-full border-t border-gray-300 dark:border-gray-600"></hr>
           <form onSubmit={handleEditar} className="ml-5 my-4 w-full">
             <div className="grid mr-5 gap-x-12 grid-cols-2">
               <div className="mb-4">
-                <label htmlFor="Nombre" className="block text-sm font-medium text-gray-700 dark:text-gray-200">Nombre</label>
-                <input required type="text" id="Nombre" name="Nombre" value={formData.Nombre} onChange={handleChange} className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
+                <label htmlFor="NombreCategoria" className="block text-sm font-medium text-gray-700 dark:text-gray-200">Nombre</label>
+                <input required type="text" id="NombreCategoria" name="NombreCategoria" value={formData.NombreCategoria} onChange={handleChange} className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
               </div>
               <div className="mb-4">
-                <label htmlFor="Tipo" className="block text-sm font-medium text-gray-700 dark:text-gray-200">Tipo</label>
-                <select required id="Tipo" name="Tipo" value={formData.Tipo} onChange={handleChange} className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
-                  <option value="Bebidas">Bebidas</option>
-                  <option value="Carnes">Carnes</option>
-                  <option value="Envases">Envases</option>
-                  <option value="Electrodomésticos">Electrodomésticos</option>
-                </select>
+                <label htmlFor="Descripcion" className="block text-sm font-medium text-gray-700 dark:text-gray-200">Descripción</label>
+                <input type="text" id="Descripcion" name="Descripcion" value={formData.Descripcion} onChange={handleChange} className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
               </div>
-              <div className="mb-4">
-                <label htmlFor="Telefono" className="block text-sm font-medium text-gray-700 dark:text-gray-200">Teléfono</label>
-                <input required type="text" id="Telefono" name="Telefono" value={formData.Telefono} onChange={handleChange} className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
-              </div>
-            </div>
-            <div className="mb-4 mr-5">
-              <label htmlFor="Email" className="block text-sm font-medium text-gray-700 dark:text-gray-200">Correo</label>
-              <input required type="text" id="Email" name="Email" value={formData.Email} onChange={handleChange} className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
-            </div>
-            <div className="mb-4 mr-5">
-              <label htmlFor="Direccion" className="block text-sm font-medium text-gray-700 dark:text-gray-200">Dirección</label>
-              <input required type="text" id="Direccion" name="Direccion" value={formData.Direccion} onChange={handleChange} className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
-            </div>
-            <div className="mb-4 mr-5">
-              <label htmlFor="Contacto" className="block text-sm font-medium text-gray-700 dark:text-gray-200">Sitio Web</label>
-              <input required type="text" id="Contacto" name="Contacto" value={formData.Contacto} onChange={handleChange} className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
             </div>
             <div className="flex justify-end gap-4 mr-5">
               <button type="submit" className="bg-verde font-semibold rounded-md py-2 px-6 text-white">Guardar</button>
