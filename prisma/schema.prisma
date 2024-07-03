@@ -25,15 +25,11 @@ model Usuarios {
   emailVerified          Boolean @default(false)
   emailVerificationToken String? @unique
 
-  role String
-  usuarioRoles UsuarioRole[]
-
-  horarios     AsignacionHorario[]
-  roleId Int
-  Role   Role @relation(fields: [roleId], references: [IdRole])
+  horarios AsignacionHorario[]
+  roleId   Int
+  Role     Role                @relation(fields: [roleId], references: [IdRole])
 
   @@map("usuarios")
-
 }
 
 model StatusAuditoriaLogin {
@@ -62,60 +58,61 @@ model Role {
   usuarios Usuarios[]
 
   @@map("roles")
-
-model Clientes {
-  clienteId Int @id @default(autoincrement())
-  nombre     String
-  apellido String
-  email      String
-  telefono String
-  celular String
-  direccion String
-  eliminado Boolean
-  fechaCreacion DateTime @default(now())
-  idUsuarioCreacion Int
-  rfc String
 }
 
-model CategoriaProdVenta{
-  idCategoriaProdVenta Int @id @default(autoincrement())
-  nombre String
-  estado Boolean
-  productosVenta ProductoVenta[]
+model Clientes {
+  clienteId         Int      @id @default(autoincrement())
+  nombre            String
+  apellido          String
+  email             String
+  telefono          String
+  celular           String
+  direccion         String
+  eliminado         Boolean
+  fechaCreacion     DateTime @default(now())
+  idUsuarioCreacion Int
+  rfc               String
+}
+
+model CategoriaProdVenta {
+  idCategoriaProdVenta Int             @id @default(autoincrement())
+  nombre               String
+  estado               Boolean
+  productosVenta       ProductoVenta[]
 }
 
 model ProductoVenta {
-  idProductoVenta      Int               @id @default(autoincrement())
+  idProductoVenta      Int      @id @default(autoincrement())
   nombre               String
-  cantidad             Decimal           @db.Decimal(18, 3)
-  cantidadMinima       Decimal           @db.Decimal(18, 3)
-  precio               Decimal           @db.Decimal(18, 3)
+  cantidad             Decimal  @db.Decimal(18, 3)
+  cantidadMinima       Decimal  @db.Decimal(18, 3)
+  precio               Decimal  @db.Decimal(18, 3)
   idUsuarioCreacion    Int
-  fechaCreacion        DateTime          @default(now())
+  fechaCreacion        DateTime @default(now())
   eliminado            Boolean
   idCategoriaProdVenta Int
   imagen               Bytes
-  tipoImagen              String
-  
+  tipoImagen           String
+
   fk_CategoriaProdVenta CategoriaProdVenta @relation(fields: [idCategoriaProdVenta], references: [idCategoriaProdVenta])
 }
 
 model Horario {
-  Id          Int                 @id @default(autoincrement())
-  Dia         String
-  HoraInicio  String
-  HoraFin     String
-  empleados   AsignacionHorario[]
+  Id         Int                 @id @default(autoincrement())
+  Dia        String
+  HoraInicio String
+  HoraFin    String
+  empleados  AsignacionHorario[]
 }
-
 
 model AsignacionHorario {
-  AsignacionID Int       @id @default(autoincrement())
+  AsignacionID Int      @id @default(autoincrement())
   EmpleadoID   Int
   HorarioID    Int
-  empleado     Usuarios  @relation(fields: [EmpleadoID], references: [Id])
-  horario      Horario   @relation(fields: [HorarioID], references: [Id])
+  empleado     Usuarios @relation(fields: [EmpleadoID], references: [Id])
+  horario      Horario  @relation(fields: [HorarioID], references: [Id])
 }
+
 model Pedido {
   id                Int       @id @default(autoincrement())
   proveedor         String
