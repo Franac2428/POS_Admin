@@ -11,7 +11,7 @@ function RegisterPage() {
     useEffect(() => {
         const fetchRoles = async () => {
             try {
-                const res = await fetch('/api/roles');
+                const res = await fetch('/api/role');
                 const data = await res.json();
                 if (res.ok) {
                     setRoles(data);

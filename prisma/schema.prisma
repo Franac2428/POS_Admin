@@ -25,12 +25,9 @@ model Usuarios {
   emailVerified          Boolean @default(false)
   emailVerificationToken String? @unique
 
-  role String
-  usuarioRoles UsuarioRole[]
-
-  horarios     AsignacionHorario[]
-  roleId Int
-  Role   Role @relation(fields: [roleId], references: [IdRole])
+  horarios AsignacionHorario[]
+  roleId   Int
+  Role     Role                @relation(fields: [roleId], references: [IdRole])
 
   @@map("usuarios")
 }
@@ -101,21 +98,21 @@ model ProductoVenta {
 }
 
 model Horario {
-  Id          Int                 @id @default(autoincrement())
-  Dia         String
-  HoraInicio  String
-  HoraFin     String
-  empleados   AsignacionHorario[]
+  Id         Int                 @id @default(autoincrement())
+  Dia        String
+  HoraInicio String
+  HoraFin    String
+  empleados  AsignacionHorario[]
 }
-
 
 model AsignacionHorario {
-  AsignacionID Int       @id @default(autoincrement())
+  AsignacionID Int      @id @default(autoincrement())
   EmpleadoID   Int
   HorarioID    Int
-  empleado     Usuarios  @relation(fields: [EmpleadoID], references: [Id])
-  horario      Horario   @relation(fields: [HorarioID], references: [Id])
+  empleado     Usuarios @relation(fields: [EmpleadoID], references: [Id])
+  horario      Horario  @relation(fields: [HorarioID], references: [Id])
 }
+
 model Pedido {
   id                Int       @id @default(autoincrement())
   proveedor         String
