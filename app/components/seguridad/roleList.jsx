@@ -1,86 +1,123 @@
-'use client';
-import { useEffect, useState, createContext, useContext } from 'react';
-import { initFlowbite } from 'flowbite';
-import UpdateRole from '@/app/components/seguridad/updateRol';
+'use client'
 
-export default function RoleLista({ role, description }) {
-    const [open, setOpen] = useState(false);
-    const [updaterol, SetUpdateRole] = useState(false);
-    useEffect(() => {
-        initFlowbite(); // Inicializamos Flowbite una vez que el componente se ha montado
-    }, []);
+import { CirclePlus, Pencil, Trash } from "lucide-react";
+import { useState } from "react";
+import Eliminar from "@/app/components/seguridad/deleteRol";
+import Agregar from "@/app/components/seguridad/addRol";
+import Editar from "@/app/components/seguridad/updateRol";
+import useSWR from 'swr';
 
-    // Generamos IDs únicos para cada dropdown y botón basados en el role para evitar conflictos
-    const dropdownId = `dropdown-${role.replace(/\s+/g, '-')}`; // Reemplaza espacios por guiones para asegurar un ID válido
+export default function RoleTable() {
+    const [addRoleModalOpen, setAddRoleModalOpen] = useState(false);
+    const [updateRoleModalOpen, setUpdateRoleModalOpen] = useState(false);
+    const [deleteRoleModalOpen, setDeleteRoleModalOpen] = useState(false);
+    const [selectedRoleId, setSelectedRoleId] = useState(null);
+
+    const { data: roles, error, mutate } = useSWR('/api/role', async (url) => {
+        const response = await fetch(url);
+        const data = await response.json();
+        return data;
+    });
+
+    if (error) return <div>Error al cargar los roles</div>;
+    if (!roles) return <div>Cargando roles...</div>;
+    if (!Array.isArray(roles)) return <div>No hay roles disponibles</div>;
+
+    const handleDeleteRole = async (roleId) => {
+        try {
+            await fetch(`/api/role/${roleId}`, {
+                method: 'DELETE',
+            });
+            mutate(roles.filter(role => role.IdRole !== roleId), false);
+            setDeleteRoleModalOpen(false);
+        } catch (error) {
+            console.error('Error al eliminar el rol', error);
+        }
+    };
+
+    const handleEditRole = (roleId) => {
+        setSelectedRoleId(roleId);
+        setUpdateRoleModalOpen(true);
+    };
+
+    const handleMutateRoles = async (newRole) => {
+        try {
+            const response = await fetch('/api/role', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(newRole),
+            });
+            const data = await response.json();
+            mutate([...roles, data], false);
+            setAddRoleModalOpen(false);
+        } catch (error) {
+            console.error('Error al agregar el rol', error);
+        }
+    };
 
     return (
-        <>
-            <tr className="border-b dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700">
-                <td className="w-4 px-4 py-3">
-                    <div className="flex items-center">
-                        <input
-                            id={`checkbox-${dropdownId}`}
-                            type="checkbox"
-                            onClick="event.stopPropagation()" // Corrige la capitalización de onclick a onClick
-                            className="w-4 h-4 text-primary-600 bg-gray-100 border-gray-300 rounded focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                        />
-                        <label htmlFor={`checkbox-${dropdownId}`} className="sr-only">
-                            checkbox
-                        </label>
+        <div className="overflow-hidden bg-white shadow-md dark:bg-gray-800 sm:rounded-lg">
+            <div className="px-4 divide-y dark:divide-gray-700">
+                <div className="flex flex-col py-3 space-y-3 sm:flex-row sm:items-center sm:justify-between sm:space-y-0 sm:space-x-4">
+                    <div className="flex items-center space-x-4">
+                        <h5>
+                            <span className="text-gray-500">Roles Totales: </span>
+                            <span className="dark:text-white">{roles.length}</span>
+                        </h5>
                     </div>
-                </td>
-                <th
-                    scope="row"
-                    className="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                >
-                    {role}
-                </th>
-                <td className="px-4 py-2">
-                    <div className="px-2 py-0.5 text-xs font-medium text-primary-800 bg-primary-100 rounded dark:bg-primary-900 dark:text-primary-300">
-                        {description}
-                    </div>
-                </td>
-                <td className="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                     <button
-                        id={`button-${dropdownId}`}
                         type="button"
-                        data-dropdown-toggle={dropdownId}
-                        className="inline-flex items-center p-1 text-sm font-medium text-center text-gray-500 rounded-lg hover:bg-gray-200 hover:text-gray-800 focus:outline-none dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                        className="flex items-center justify-center px-4 py-2 text-sm font-medium text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
+                        onClick={() => setAddRoleModalOpen(true)}
                     >
-                        {/* SVG del botón aquí */}
-                        <svg
-                            className="w-5 h-5"
-                            aria-hidden="true"
-                            fill="currentColor"
-                            viewBox="0 0 20 20"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
-                        </svg>
+                        <CirclePlus className="w-5 h-5 mr-2" />
+                        Agregar Rol
                     </button>
-                    <div
-                        id={dropdownId}
-                        className="hidden z-10 w-44 bg-white rounded shadow divide-y divide-gray-100 dark:bg-gray-700 dark:divide-gray-600"
-                    >
-                        <ul
-                            className="py-1 text-sm text-gray-700 dark:text-gray-200"
-                            aria-labelledby={`button-${dropdownId}`}
-                        >
-                            <li>
-                                <button
-                                    type='button'
-                                    data-modal-target="UpdateRoldefaultModal"
-                                    data-modal-toggle="UpdateRoldefaultModal"
-                                    className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                                >
-                                    Edit
-                                </button>
-                            </li>
-                        </ul>
-                    </div>
-                    <UpdateRole open={updaterol} onClose={() => SetUpdateRole(false)} />
-                </td>
-            </tr>
-        </>
+                </div>
+                <Agregar open={addRoleModalOpen} onClose={() => setAddRoleModalOpen(false)} mutate={handleMutateRoles} />
+                <Editar open={updateRoleModalOpen} onClose={() => setUpdateRoleModalOpen(false)} roleId={selectedRoleId} onUpdate={() => mutate()} />
+                <Eliminar open={deleteRoleModalOpen} onClose={() => setDeleteRoleModalOpen(false)} roleId={selectedRoleId} onDelete={() => handleDeleteRole(selectedRoleId)} />
+            </div>
+            <div className="overflow-x-auto">
+                <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                    <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <tr>
+                            <th scope="col" className="p-2">ID</th>
+                            <th scope="col" className="px-4 py-3">Descripción</th>
+                            <th scope="col" className="px-4 py-3">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {roles.map((role) => (
+                            <tr key={role.IdRole}>
+                                <td className="p-2">{role.IdRole}</td>
+                                <td className="px-4 py-2">{role.Descripcion}</td>
+                                <td className="px-4 py-2">
+                                    <div className="flex gap-1 justify-evenly my-1 whitespace-nowrap">
+                                        <button
+                                            className="p-1.5 text-gray-900 dark:text-gray-200 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01] ease-in-out transform bg-blue-600 bg-opacity-50 rounded-md"
+                                            onClick={() => handleEditRole(role.IdRole)}
+                                        >
+                                            <Pencil size={15} strokeWidth={2.2} />
+                                        </button>
+                                        <button
+                                            className="p-1.5 text-gray-900 dark:text-gray-200 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01] ease-in-out transform bg-red-600 bg-opacity-50 rounded-md"
+                                            onClick={() => {
+                                                setSelectedRoleId(role.IdRole);
+                                                setDeleteRoleModalOpen(true);
+                                            }}
+                                        >
+                                            <Trash size={15} strokeWidth={2.2} />
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+        </div>
     );
 }

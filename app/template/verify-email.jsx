@@ -3,13 +3,13 @@ import * as React from "react"
 export const VerifyEmailTemplate = ({ email, emailVerificationToken }) => (
     <div>
         <h1>
-            Verify email for <b>{email}</b>
+            Verificar el correo para: <b>{email}</b>
         </h1>
-        <p>To verify your email, click on this link:</p>
+        <p>Para verificar su email, entre a este link:</p>
         <a
             href={`http://localhost:3000/auth/verificar-email?token=${emailVerificationToken}`}
         >
-            Click here to verify your email
+            Clic aquí para verificar su email
         </a>
     </div>
 )

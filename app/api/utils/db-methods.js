@@ -1,11 +1,13 @@
-import db from '@/app/lib/db';
+import { PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient()
 
 export async function FindAll(model) {
-  return await db[model].findMany();
+  return await prisma[model].findMany();
 }
 
 export async function FindById(model, id) {
-  return await db[model].findUnique({ where: { id } });
+  return await prisma[model].findUnique({ where: { id:id } });
 }
 
 export async function Create(model, data) {
@@ -13,7 +15,7 @@ export async function Create(model, data) {
 }
 
 export async function Update(model, id, data) {
-  return await db[model].update({ where: { id }, data });
+  return await prisma[model].update({ where: { id:id }, data });
 }
 
 export async function Delete(model, id) {

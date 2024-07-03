@@ -29,6 +29,11 @@ model Usuarios {
   usuarioRoles UsuarioRole[]
 
   horarios     AsignacionHorario[]
+  roleId Int
+  Role   Role @relation(fields: [roleId], references: [IdRole])
+
+  @@map("usuarios")
+
 }
 
 model StatusAuditoriaLogin {
@@ -51,36 +56,48 @@ model AuditoriaLogin {
 }
 
 model Role {
-  id          Int           @id @default(autoincrement())
-  roleName    String        @unique
-  description String?
-  usuarios    UsuarioRole[]
-  permisos    RolPermiso[]
+  IdRole      Int    @id @default(autoincrement())
+  Descripcion String
+
+  usuarios Usuarios[]
+
+  @@map("roles")
+
+model Clientes {
+  clienteId Int @id @default(autoincrement())
+  nombre     String
+  apellido String
+  email      String
+  telefono String
+  celular String
+  direccion String
+  eliminado Boolean
+  fechaCreacion DateTime @default(now())
+  idUsuarioCreacion Int
+  rfc String
 }
 
-model Permiso {
-  id             Int          @id @default(autoincrement())
-  permissionName String       @unique
-  description    String?
-  roles          RolPermiso[]
+model CategoriaProdVenta{
+  idCategoriaProdVenta Int @id @default(autoincrement())
+  nombre String
+  estado Boolean
+  productosVenta ProductoVenta[]
 }
 
-model UsuarioRole {
-  usuarioId Int
-  roleId    Int
-  role      Role     @relation(fields: [roleId], references: [id])
-  usuario   Usuarios @relation(fields: [usuarioId], references: [Id])
-
-  @@id([usuarioId, roleId])
-}
-
-model RolPermiso {
-  roleId       Int
-  permissionId Int
-  role         Role    @relation(fields: [roleId], references: [id])
-  permiso      Permiso @relation(fields: [permissionId], references: [id])
-
-  @@id([roleId, permissionId])
+model ProductoVenta {
+  idProductoVenta      Int               @id @default(autoincrement())
+  nombre               String
+  cantidad             Decimal           @db.Decimal(18, 3)
+  cantidadMinima       Decimal           @db.Decimal(18, 3)
+  precio               Decimal           @db.Decimal(18, 3)
+  idUsuarioCreacion    Int
+  fechaCreacion        DateTime          @default(now())
+  eliminado            Boolean
+  idCategoriaProdVenta Int
+  imagen               Bytes
+  tipoImagen              String
+  
+  fk_CategoriaProdVenta CategoriaProdVenta @relation(fields: [idCategoriaProdVenta], references: [idCategoriaProdVenta])
 }
 
 model Horario {
