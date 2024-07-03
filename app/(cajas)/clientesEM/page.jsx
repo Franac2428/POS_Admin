@@ -1,17 +1,16 @@
 'use client'
 
-import { useState } from "react";
-import { CirclePlus, FileUp, Pencil, SlidersHorizontal, Trash, Eye, SmilePlus } from "lucide-react";
-import Buscador from "@/app/components/pos/buscador";
-import Eliminar from "@/app/components/clientes/eliminar";
-import Ver from "@/app/components/clientes/ver";
 import Editar from "@/app/components/clientes/editar";
+import Ver from "@/app/components/clientes/ver";
+import Buscador from "@/app/components/pos/buscador";
+import { Eye, FileUp, Pencil, SlidersHorizontal } from "lucide-react";
+import { useState } from "react";
 
 // Define los datos de los clientes
 const clientes = [
     {
         id: "CL10102",
-        cedula: "305440618",
+        cedula: "30544061sssssss8",
         nombre: "Josue",
         apellido: "Bonilla Soto",
         correo: "josue@gmail.com",

@@ -1,12 +1,12 @@
 "use client"
 
 import CambioClave from "@/app/(auth)/olvidoClave";
+import { signIn } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
 
 
 
@@ -28,7 +28,7 @@ export default function login() {
         if (res.error) {
             alert(res.error);
         } else {
-            router.push('/menu')
+            router.push('/dashboard/menu')
             console.log("Enviando a /dashboard");
         }
 

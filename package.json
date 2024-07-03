@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@heroicons/react": "^2.1.4",
     "@prisma/client": "^5.15.0",
     "@radix-ui/colors": "^3.0.0",
     "@radix-ui/react-accordion": "^1.1.2",
@@ -22,11 +23,12 @@
     "child_process": "^1.0.2",
     "classnames": "^2.5.1",
     "dotenv": "^16.4.5",
+    "exceljs": "^4.4.0",
     "express": "^4.19.2",
     "flowbite": "^2.3.0",
     "lucide-react": "^0.364.0",
     "mysql2": "^3.10.0",
-    "mysqldump": "^3.2.0",
+    "mysqldump": "^1.4.2",
     "next": "^14.1.4",
     "next-auth": "^4.24.7",
     "nextjs-toploader": "^1.6.11",
