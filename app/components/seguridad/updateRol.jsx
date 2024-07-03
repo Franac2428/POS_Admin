@@ -50,7 +50,7 @@ export default function UpdateRole({ open, onClose, roleId, onUpdateRole }) {
                 toast.error(`Error: ${errorData.message}`);
             }
         } catch (error) {
-            toast.error('Error al editar el rol');
+
         }
     };
 
