@@ -6,14 +6,7 @@ import useSWR from 'swr';
 
 
 export default function HorariosList() {
-    const [addHorario, SetAddHorario] = useState(false);
-    useEffect(() => {
-        initFlowbite(); // Inicializamos Flowbite una vez que el componente se ha montado
-    }, []);
-
-
-
-
+    
     const { data, error, mutate } = useSWR('http://localhost:3000/api/horario', async (url) => {
         const response = await fetch(url);
         const data = await response.json();
@@ -49,7 +42,7 @@ export default function HorariosList() {
                             </svg>
                             Agregar
                         </button>
-                        <AddHorario open={addHorario} onClose={() => SetAddHorario(false)} mutate={mutate} />
+                        <AddHorario mutate={mutate} />
                     </caption>
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
@@ -65,14 +58,14 @@ export default function HorariosList() {
                             <th scope="col" className="px-6 py-3">
                                 <span className="sr-only">Edit</span>
                             </th>
-
+                            
                         </tr>
                     </thead>
                     <tbody>
                         {data.map((horario) => (
                             <HorariosLista
                                 key={horario.Id}
-                                horarioId={horario.Id}
+                                horarioId ={horario.Id}
                                 days={horario.Dia}
                                 entryhours={horario.HoraInicio}
                                 exithours={horario.HoraFin}
