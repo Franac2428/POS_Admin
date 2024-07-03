@@ -3,7 +3,7 @@ import { useEffect, useState, createContext, useContext } from 'react';
 import { initFlowbite } from 'flowbite';
 import UpdateHorario from '@/app/components/seguridad/updateHorario';
 
-export default function HorariosLista({ days, entryhours, exithours, importDate, status }) {
+export default function HorariosLista({ days, entryhours, exithours, importDate,horarioId, status }) {
     const [open, setOpen] = useState(false);
     const [updatehorario, SetUpdateHorario] = useState(false);
     useEffect(() => {
@@ -20,13 +20,7 @@ export default function HorariosLista({ days, entryhours, exithours, importDate,
                 </th>
                 <td className="px-6 py-4">{entryhours}</td>
                 <td className="px-6 py-4">{exithours}</td>
-                <td className="px-6 py-4">{importDate}</td>
-                <td className="px-6 py-4">
-                <div className="flex items-center">
-                        <div className={`w-3 h-3 mr-2 ${status === 'Laboral' ? 'bg-green-500' : 'bg-red-500'} border rounded-full`} />
-                        {status}
-                    </div>
-                </td>
+                <td className="px-6 py-4">{importDate}</td>                
                 <td className="px-6 py-4 text-right">
                     <button
                         type='button'
@@ -36,7 +30,7 @@ export default function HorariosLista({ days, entryhours, exithours, importDate,
                     >
                         Edit
                     </button>
-                    <UpdateHorario open={updatehorario} onClose={() => SetUpdateHorario(false)} />
+                    <UpdateHorario open={updatehorario} onClose={() => SetUpdateHorario(false)} horarioId={horarioId}/>
                 </td>
             </tr>
         </>
