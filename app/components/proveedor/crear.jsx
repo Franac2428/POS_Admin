@@ -4,14 +4,16 @@ import { Toaster, toast } from 'sonner';
 
 export default function Agregar({ open, onClose, mutate }) {
   const [formData, setFormData] = useState({
-    nombre: '',
-    tipo: 'Bebidas',
-    whatsapp: '',
-    telefono: '',
-    correo: '',
-    direccion: '',
-    sitioWeb: '',
-    descripcion: ''
+    Nombre: '',
+    Descripcion: '',
+    PrecioCompra: '',
+    PrecioVenta: '',
+    Stock: '',
+    CategoriaID: '',
+    ProveedorID: '',
+    FechaIngreso: '',
+    FechaCaducidad: '',
+    Estado: 'Vigente'
   });
 
   const handleChange = (e) => {
@@ -25,7 +27,7 @@ export default function Agregar({ open, onClose, mutate }) {
   const handleAgregar = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:3000/api/proveedor', {
+      const response = await fetch('http://localhost:3000/api/productos', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -34,13 +36,13 @@ export default function Agregar({ open, onClose, mutate }) {
       });
 
       if (response.ok) {
-        toast.success('Proveedor agregado con éxito');
+        toast.success('Producto agregado con éxito');
         mutate();  // Refresca los datos
         setTimeout(() => {
           onClose();
         }, 1500);
       } else {
-        toast.error('Error al agregar el proveedor');
+        toast.error('Error al agregar el producto');
       }
     } catch (error) {
       toast.error('Error al conectar con el servidor');
@@ -55,43 +57,59 @@ export default function Agregar({ open, onClose, mutate }) {
         </button>
         <div className="flex flex-col items-center">
           <h2 className="text-xl font-bold flex items-center gap-3 text-gray-900 dark:text-gray-100 my-4">
-            Agregar Proveedor
+            Agregar Producto
           </h2>
           <hr className="w-full border-t border-gray-300 dark:border-gray-600"></hr>
           <form onSubmit={handleAgregar} className="ml-5 my-4 w-full">
             <div className="grid mr-5 gap-x-12 grid-cols-2">
-              <div className="mb-4 ">
-                <label htmlFor="nombre" className="block text-sm font-medium text-gray-700 dark:text-gray-200">Nombre</label>
-                <input required type="text" id="nombre" name="nombre" value={formData.nombre} onChange={handleChange} className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
+              <div className="mb-4">
+                <label htmlFor="Nombre" className="block text-sm font-medium text-gray-700 dark:text-gray-200">Nombre</label>
+                <input required type="text" id="Nombre" name="Nombre" value={formData.Nombre} onChange={handleChange} className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
               </div>
               <div className="mb-4">
-                <label htmlFor="tipo" className="block text-sm font-medium text-gray-700 dark:text-gray-200">Tipo</label>
-                <select required id="tipo" name="tipo" value={formData.tipo} onChange={handleChange} className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
-                  <option value="Bebidas">Bebidas</option>
-                  <option value="Carnes">Carnes</option>
-                  <option value="Envases">Envases</option>
-                  <option value="Electrodomésticos">Electrodomésticos</option>
+                <label htmlFor="Descripcion" className="block text-sm font-medium text-gray-700 dark:text-gray-200">Descripción</label>
+                <input required type="text" id="Descripcion" name="Descripcion" value={formData.Descripcion} onChange={handleChange} className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
+              </div>
+              <div className="mb-4">
+                <label htmlFor="PrecioCompra" className="block text-sm font-medium text-gray-700 dark:text-gray-200">Precio de Compra</label>
+                <input required type="number" step="0.01" id="PrecioCompra" name="PrecioCompra" value={formData.PrecioCompra} onChange={handleChange} className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
+              </div>
+              <div className="mb-4">
+                <label htmlFor="PrecioVenta" className="block text-sm font-medium text-gray-700 dark:text-gray-200">Precio de Venta</label>
+                <input required type="number" step="0.01" id="PrecioVenta" name="PrecioVenta" value={formData.PrecioVenta} onChange={handleChange} className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
+              </div>
+              <div className="mb-4">
+                <label htmlFor="Stock" className="block text-sm font-medium text-gray-700 dark:text-gray-200">Stock</label>
+                <input required type="number" id="Stock" name="Stock" value={formData.Stock} onChange={handleChange} className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
+              </div>
+              <div className="mb-4">
+                <label htmlFor="CategoriaID" className="block text-sm font-medium text-gray-700 dark:text-gray-200">Categoría</label>
+                <input required type="text" id="CategoriaID" name="CategoriaID" value={formData.CategoriaID} onChange={handleChange} className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
+              </div>
+              <div className="mb-4">
+                <label htmlFor="ProveedorID" className="block text-sm font-medium text-gray-700 dark:text-gray-200">Proveedor</label>
+                <input required type="text" id="ProveedorID" name="ProveedorID" value={formData.ProveedorID} onChange={handleChange} className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
+              </div>
+              <div className="mb-4">
+                <label htmlFor="FechaIngreso" className="block text-sm font-medium text-gray-700 dark:text-gray-200">Fecha de Ingreso</label>
+                <input required type="date" id="FechaIngreso" name="FechaIngreso" value={formData.FechaIngreso} onChange={handleChange} className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
+              </div>
+              <div className="mb-4">
+                <label htmlFor="FechaCaducidad" className="block text-sm font-medium text-gray-700 dark:text-gray-200">Fecha de Caducidad</label>
+                <input type="date" id="FechaCaducidad" name="FechaCaducidad" value={formData.FechaCaducidad} onChange={handleChange} className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
+              </div>
+              <div className="mb-4">
+                <label htmlFor="Estado" className="block text-sm font-medium text-gray-700 dark:text-gray-200">Estado</label>
+                <select required id="Estado" name="Estado" value={formData.Estado} onChange={handleChange} className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                  <option value="Vigente">Vigente</option>
+                  <option value="Por caducar">Por caducar</option>
+                  <option value="Caducado">Caducado</option>
+                  <option value="Fresco">Fresco</option>
                 </select>
               </div>
-              <div className="mb-4">
-                <label htmlFor="telefono" className="block text-sm font-medium text-gray-700 dark:text-gray-200">Teléfono</label>
-                <input required type="text" id="telefono" name="telefono" value={formData.telefono} onChange={handleChange} className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
-              </div>
             </div>
-            <div className="mb-4 mr-5">
-              <label htmlFor="correo" className="block text-sm font-medium text-gray-700 dark:text-gray-200">Correo</label>
-              <input required type="email" id="correo" name="correo" value={formData.correo} onChange={handleChange} className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
-            </div>
-            <div className="mb-4 mr-5">
-              <label htmlFor="direccion" className="block text-sm font-medium text-gray-700 dark:text-gray-200">Dirección</label>
-              <input required type="text" id="direccion" name="direccion" value={formData.direccion} onChange={handleChange} className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
-            </div>
-            <div className="mb-4 mr-5">
-              <label htmlFor="sitioWeb" className="block text-sm font-medium text-gray-700 dark:text-gray-200">Sitio We</label>
-              <input required type="text" id="sitioWeb" name="sitioWeb" value={formData.sitioWeb} onChange={handleChange} className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
-            </div>
-            <div className="flex justify-end gap-4 mr-5 ">
-              <button type="submit" className="bg-verde font-semibold rounded-md py-2 px-6 text-white">Agregar</button>
+            <div className="flex justify-end gap-4 mr-5">
+              <button type="submit" className="bg-green-500 font-semibold rounded-md py-2 px-6 text-white">Agregar</button>
               <button type="button" className="bg-gray-400 font-semibold rounded-md py-2 px-6" onClick={onClose}>Cancelar</button>
             </div>
           </form>
