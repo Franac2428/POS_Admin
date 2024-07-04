@@ -1,6 +1,44 @@
 'use client';
-export default function AddHorario() {
+import { useForm } from "react-hook-form";
+import { useEffect } from 'react';
 
+import { Toaster, toast } from 'sonner';
+
+export default function AddHorario({ open, onClose, mutate }) {
+    const { register, handleSubmit, formState: { errors }, reset } = useForm();
+    useEffect(() => {
+        initFlowbite(); // Inicializamos Flowbite una vez que el componente se ha montado
+    }, []);
+
+
+
+
+    const handleAgregar = handleSubmit(async (data) => {
+        try {
+            const res = await fetch(`http://localhost:3000/api/horario`, {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (res.ok) {
+                const newHorario = await res.json();
+                toast.success('Nuevo horario guardado con éxito');
+                setTimeout(() => {
+                    reset(); 
+                    mutate();
+                }, 500);
+            } else {
+                const errorData = await res.json();
+                toast.error(`Error: ${errorData.message}`);
+            }
+        } catch (error) {
+            console.error("Error en la solicitud:", error);
+            toast.error('Error en la solicitud');
+        }
+    });
 
     return (
         <>
@@ -37,77 +75,84 @@ export default function AddHorario() {
                                     />
                                 </svg>
                                 <span className="sr-only">Close modal</span>
-
                             </button>
                         </div>
                         {/* Modal body */}
-                        <div className="grid gap-4 mb-4 sm:grid-cols-2">
-                            <div>
-                                <label
-                                    htmlFor="diaSemana"
-                                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                                >
-                                    Día de la semana
-                                </label>
-                                <select
-                                    id="diaSemana"
-                                    name="diaSemana"
-                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                    required
-                                >
-                                    <option value="">Selecciona un día</option>
-                                    <option value="Lunes">Lunes</option>
-                                    <option value="Martes">Martes</option>
-                                    <option value="Miércoles">Miércoles</option>
-                                    <option value="Jueves">Jueves</option>
-                                    <option value="Viernes">Viernes</option>
-                                    <option value="Sábado">Sábado</option>
-                                    <option value="Domingo">Domingo</option>
-                                </select>
+                        <form onSubmit={handleAgregar}>
+                            <div className="grid gap-4 mb-4 sm:grid-cols-2">
+                                <div>
+                                    <label
+                                        htmlFor="Dia"
+                                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                    >
+                                        Día de la semana
+                                    </label>
+                                    <select
+                                        id="Dia"
+                                        name="Dia"
+                                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                        {...register("Dia", { required: true })}
+                                        required
+                                    >
+                                        <option value="">Selecciona un día</option>
+                                        <option value="Lunes">Lunes</option>
+                                        <option value="Martes">Martes</option>
+                                        <option value="Miércoles">Miércoles</option>
+                                        <option value="Jueves">Jueves</option>
+                                        <option value="Viernes">Viernes</option>
+                                        <option value="Sábado">Sábado</option>
+                                        <option value="Domingo">Domingo</option>
+                                    </select>
+                                    {errors.Dia && <span className="text-sm text-red-600">Campo requerido</span>}
+                                </div>
+                                <div>
+                                    <label
+                                        htmlFor="HoraInicio"
+                                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                    >
+                                        Hora de inicio
+                                    </label>
+                                    <input
+                                        type="time"
+                                        name="HoraInicio"
+                                        id="HoraInicio"
+                                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                        {...register("HoraInicio", { required: true })}
+                                        required
+                                    />
+                                    {errors.HoraInicio && <span className="text-sm text-red-600">Campo requerido</span>}
+                                </div>
+                                <div>
+                                    <label
+                                        htmlFor="HoraFin"
+                                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                    >
+                                        Hora de fin
+                                    </label>
+                                    <input
+                                        type="time"
+                                        name="HoraFin"
+                                        id="HoraFin"
+                                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                        {...register("HoraFin", { required: true })}
+                                        required
+                                    />
+                                    {errors.HoraFin && <span className="text-sm text-red-600">Campo requerido</span>}
+                                </div>
+                                <div className="flex justify-end">
+                                    <button
+                                        type="submit"
+                                        className="bg-primary-600 text-white rounded-lg px-4 py-2 transition duration-300 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 bg-gray-700 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-80"
+                                    >
+                                        Guardar
+                                    </button>
+                                </div>
                             </div>
-                            <div>
-                                <label
-                                    htmlFor="horaInicio"
-                                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                                >
-                                    Hora de inicio
-                                </label>
-                                <input
-                                    type="time"
-                                    name="horaInicio"
-                                    id="horaInicio"
-                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                    required
-                                />
-                            </div>
-                            <div>
-                                <label
-                                    htmlFor="horaFin"
-                                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                                >
-                                    Hora de fin
-                                </label>
-                                <input
-                                    type="time"
-                                    name="horaFin"
-                                    id="horaFin"
-                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                    required
-                                />
-                            </div>
-                            <div className="flex justify-end">
-                                <button
-                                    type="submit"
-                                    className="bg-primary-600 text-white rounded-lg px-4 py-2 transition duration-300 hover:bg-primary-700"
-                                >
-                                    Guardar
-                                </button>
-                            </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
+                <Toaster richColors />
             </div>
         </>
-
-    )
+    );
 }

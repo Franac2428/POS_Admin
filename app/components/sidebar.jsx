@@ -1,8 +1,10 @@
 'use client';
-import { AlarmClock, BadgeCent, BriefcaseBusiness, ChevronFirst, ChevronLast, FileLineChart, LockKeyhole, LogOut, MoreVertical, Truck, Users, Utensils, Warehouse } from "lucide-react";
+import { BookUser, AlarmClock, BadgeCent, BriefcaseBusiness, ChevronFirst, ChevronLast, FileLineChart, LockKeyhole, LogOut, MoreVertical, Truck, Users, Utensils, Warehouse } from "lucide-react";
 import Link from "next/link";
-import { createContext, useEffect, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import ThemeButton from "./theme/ChangeTheme";
+import { useEffect } from "react";
+import { useSession } from "next-auth/react";
 
 
 
@@ -12,6 +14,8 @@ const SidebarContext = createContext();
 export default function Sidebar() {
   const [expanded, setExpanded] = useState(true);
   const [isSmallScreen, setIsSmallScreen] = useState(false);
+
+  const session = useSession();
 
   useEffect(() => {
     const handleResize = () => {
@@ -29,19 +33,19 @@ export default function Sidebar() {
     };
   }, []);
 
-
   const sidebarItems = [
     { icon: <Utensils size={20} />, text: "POS", link: "/dashboard/menu" },
-    { icon: <Users size={20} />, text: "Clientes", link: "/dashboard/clientes" },
-    { icon: <Warehouse size={20} />, text: "Inventario", link: "/dashboard/inventario" },
+    { icon: <Warehouse size={20} />, text: "Inventario", link: "/dashboard/inventario", subItems: [{ text: "Inventario", link: "/dashboard/inventario" }, { text: "Provedores", link: "/dashboard/proveedores" }, { text: "Categorias", link: "/dashboard/categorias" }] },
     { icon: <FileLineChart size={20} />, text: "Reportes", link: "/dashboard/reporteria" },
     { icon: <BadgeCent size={20} />, text: "Transacciones", link: "/dashboard/transacciones" },
     { icon: <BriefcaseBusiness size={20} />, text: "Empleados", link: "/dashboard/empleado" },
-    { icon: <LockKeyhole size={20} />, text: "Seguridad", link: "seguridad", subItems: [{ text: "Usuarios", link: "/dashboard/seguridad" }, { text: "Auditoria", link: "/dashboard/auditoria" }] },
+    { icon: <BookUser size={20} />, text: "Clientes", link: "/dashboard/clientes" },
+    { icon: <LockKeyhole size={20} />, text: "Seguridad", link: "/dashboard/seguridad", subItems: [{ text: "Usuarios", link: "/dashboard/seguridad" }, { text: "Auditoria", link: "/dashboard/auditoria" }] },
     { icon: <Truck size={20} />, text: "Pedidos", link: "/dashboard/pedido" },
     { icon: <AlarmClock size={20} />, text: "Monitorizar horarios", link: "/dashboard/horas" },
     { icon: <hr className="my-3" /> },
     { icon: <LogOut size={20} />, text: "Cerrar Sesión", link: "/api/auth/signout" },
+    { icon: <LogOut size={20} />, text: "Admin", link: "/" },
   ];
 
   return (

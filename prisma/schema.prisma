@@ -25,18 +25,17 @@ model Usuarios {
   emailVerified          Boolean @default(false)
   emailVerificationToken String? @unique
 
-  role String
-  puntajeEvaluacion Int @default(0)
-  observaciones String @default("")
+  horarios AsignacionHorario[]
+  roleId   Int
+  Role     Role                @relation(fields: [roleId], references: [IdRole])
 
-  usuarioRoles UsuarioRole[]
+  @@map("usuarios")
 }
 
 model StatusAuditoriaLogin {
   IdStatusAuditoriaLogin Int    @id @default(autoincrement())
   Status                 String
-
-  auditoriaLogins AuditoriaLogin[]
+  auditoriaLogins        AuditoriaLogin[]
 }
 
 model AuditoriaLogin {
@@ -48,75 +47,145 @@ model AuditoriaLogin {
   FechaEstadoActualizado DateTime?
   Mensaje                String?
 
-  fk_StatusAuditoria StatusAuditoriaLogin @relation(fields: [IdStatusAuditoriaLogin], references: [IdStatusAuditoriaLogin])
+  fk_StatusAuditoria     StatusAuditoriaLogin @relation(fields: [IdStatusAuditoriaLogin], references: [IdStatusAuditoriaLogin])
 }
+
 
 model Role {
-  id          Int           @id @default(autoincrement())
-  roleName    String        @unique
-  description String?
-  usuarios    UsuarioRole[]
-  permisos    RolPermiso[]
-}
+  IdRole      Int    @id @default(autoincrement())
+  Descripcion String
 
-model Permiso {
-  id             Int          @id @default(autoincrement())
-  permissionName String       @unique
-  description    String?
-  roles          RolPermiso[]
-}
+  usuarios Usuarios[]
 
-model UsuarioRole {
-  usuarioId Int
-  roleId    Int
-  role      Role     @relation(fields: [roleId], references: [id])
-  usuario   Usuarios @relation(fields: [usuarioId], references: [Id])
-
-  @@id([usuarioId, roleId])
-}
-
-model RolPermiso {
-  roleId       Int
-  permissionId Int
-  role         Role    @relation(fields: [roleId], references: [id])
-  permiso      Permiso @relation(fields: [permissionId], references: [id])
-
-  @@id([roleId, permissionId])
+  @@map("roles")
 }
 
 model Clientes {
-  clienteId Int @id @default(autoincrement())
-  nombre     String
-  apellido String
-  email      String
-  telefono String
-  celular String
-  direccion String
-  eliminado Boolean
-  fechaCreacion DateTime @default(now())
+  clienteId         Int      @id @default(autoincrement())
+  nombre            String
+  apellido          String
+  email             String
+  telefono          String
+  celular           String
+  direccion         String
+  eliminado         Boolean
+  fechaCreacion     DateTime @default(now())
   idUsuarioCreacion Int
-  rfc String
+  rfc               String
 }
 
-model CategoriaProdVenta{
-  idCategoriaProdVenta Int @id @default(autoincrement())
-  nombre String
-  estado Boolean
-  productosVenta ProductoVenta[]
+model CategoriaProdVenta {
+  idCategoriaProdVenta Int             @id @default(autoincrement())
+  nombre               String
+  estado               Boolean
+  productosVenta       ProductoVenta[]
 }
 
 model ProductoVenta {
-  idProductoVenta      Int               @id @default(autoincrement())
+  idProductoVenta      Int      @id @default(autoincrement())
   nombre               String
-  cantidad             Decimal           @db.Decimal(18, 3)
-  cantidadMinima       Decimal           @db.Decimal(18, 3)
-  precio               Decimal           @db.Decimal(18, 3)
+  cantidad             Decimal  @db.Decimal(18, 3)
+  cantidadMinima       Decimal  @db.Decimal(18, 3)
+  precio               Decimal  @db.Decimal(18, 3)
   idUsuarioCreacion    Int
-  fechaCreacion        DateTime          @default(now())
+  fechaCreacion        DateTime @default(now())
   eliminado            Boolean
   idCategoriaProdVenta Int
   imagen               Bytes
-  tipoImagen              String
-  
+  tipoImagen           String
+
   fk_CategoriaProdVenta CategoriaProdVenta @relation(fields: [idCategoriaProdVenta], references: [idCategoriaProdVenta])
+}
+
+model Horario {
+  Id         Int                 @id @default(autoincrement())
+  Dia        String
+  HoraInicio String
+  HoraFin    String
+  empleados  AsignacionHorario[]
+}
+
+model AsignacionHorario {
+  AsignacionID Int      @id @default(autoincrement())
+  EmpleadoID   Int
+  HorarioID    Int
+  empleado     Usuarios @relation(fields: [EmpleadoID], references: [Id])
+  horario      Horario  @relation(fields: [HorarioID], references: [Id])
+}
+
+model Pedido {
+  id                Int       @id @default(autoincrement())
+  proveedor         String
+  medioPedido       String
+  productos         Json
+  observaciones     String?
+  estado            Estado    @default(EN_PROGRESO)
+  fechaFinalizacion DateTime?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+}
+
+enum Estado {
+  EN_PROGRESO
+  CANCELADO
+  FINALIZADO
+}
+
+model Proveedores {
+  ProveedorID   Int             @id @default(autoincrement())
+  Nombre        String
+  Tipo          String   @default("Desconocido")
+  Direccion     String?
+  Telefono      String?
+  Email         String          @unique
+  Contacto      String?
+  Pedidos       Pedidos[]
+  Productos     Productos[]
+}
+
+model Pedidos {
+  PedidoID       Int             @id @default(autoincrement())
+  ProveedorID    Int
+  FechaEmision   DateTime
+  FechaRecepcion DateTime?
+  Estado         String
+  Observaciones  String?
+  Proveedor      Proveedores     @relation(fields: [ProveedorID], references: [ProveedorID])
+  Detalles       DetallesPedido[]
+}
+
+model DetallesPedido {
+  DetallePedidoID Int             @id @default(autoincrement())
+  PedidoID        Int
+  ProductoID      Int
+  Cantidad        Int
+  PrecioUnitario  Float
+  IVA             Float
+  Total           Float
+  Pedido          Pedidos         @relation(fields: [PedidoID], references: [PedidoID])
+  Producto        Productos       @relation(fields: [ProductoID], references: [ProductoID])
+}
+
+model Productos {
+  ProductoID      Int             @id @default(autoincrement())
+  Nombre          String
+  Descripcion     String?
+  PrecioCompra    Float
+  PrecioVenta     Float
+  Stock           Int
+  CategoriaID     Int
+  ProveedorID     Int
+  FechaIngreso    DateTime
+  FechaCaducidad  DateTime?
+  Estado          String
+  Categoria       CategoriasProducto @relation(fields: [CategoriaID], references: [CategoriaProductoID])
+  Proveedor       Proveedores        @relation(fields: [ProveedorID], references: [ProveedorID])
+  DetallesPedidos DetallesPedido[]
+}
+
+model CategoriasProducto {
+  CategoriaProductoID Int             @id @default(autoincrement())
+  NombreCategoria     String
+  Descripcion         String?
+  Productos           Productos[]
 }
