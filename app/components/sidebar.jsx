@@ -6,16 +6,13 @@ import ThemeButton from "./theme/ChangeTheme";
 import { useEffect } from "react";
 import { useSession } from "next-auth/react";
 
-
-
-
 const SidebarContext = createContext();
 
 export default function Sidebar() {
   const [expanded, setExpanded] = useState(true);
   const [isSmallScreen, setIsSmallScreen] = useState(false);
 
-  const session = useSession();
+  const { data: session, status } = useSession();
 
   useEffect(() => {
     const handleResize = () => {
@@ -33,20 +30,22 @@ export default function Sidebar() {
     };
   }, []);
 
+  if (status === "loading") return <div>Cargando...</div>;
+  if (status === "unauthenticated") return <div>No autorizado</div>;
+
   const sidebarItems = [
     { icon: <Utensils size={20} />, text: "POS", link: "/dashboard/menu" },
-    { icon: <Warehouse size={20} />, text: "Inventario", link: "/dashboard/inventario", subItems: [{ text: "Inventario", link: "/dashboard/inventario" }, { text: "Provedores", link: "/dashboard/proveedores" }, { text: "Categorias", link: "/dashboard/categorias" }] },
-    { icon: <FileLineChart size={20} />, text: "Reportes", link: "/dashboard/reporteria" },
-    { icon: <BadgeCent size={20} />, text: "Transacciones", link: "/dashboard/transacciones" },
-    { icon: <BriefcaseBusiness size={20} />, text: "Empleados", link: "/dashboard/empleado" },
+    { icon: <Warehouse size={20} />, text: "Inventario", link: "/dashboard/inventario", subItems: [{ text: "Inventario", link: "/dashboard/inventario" }, { text: "Proveedores", link: "/dashboard/proveedores" }, { text: "Categorías", link: "/dashboard/categorias" }] },
+    session?.user?.role === "Administrador" && { icon: <FileLineChart size={20} />, text: "Reportes", link: "/dashboard/reporteria" },
+    session?.user?.role === "Administrador" && { icon: <BadgeCent size={20} />, text: "Transacciones", link: "/dashboard/transacciones" },
+    session?.user?.role === "Administrador" && { icon: <BriefcaseBusiness size={20} />, text: "Empleados", link: "/dashboard/empleado" },
     { icon: <BookUser size={20} />, text: "Clientes", link: "/dashboard/clientes" },
-    { icon: <LockKeyhole size={20} />, text: "Seguridad", link: "/dashboard/seguridad", subItems: [{ text: "Usuarios", link: "/dashboard/seguridad" }, { text: "Auditoria", link: "/dashboard/auditoria" }] },
-    { icon: <Truck size={20} />, text: "Pedidos", link: "/dashboard/pedido" },
+    session?.user?.role === "Administrador" && { icon: <LockKeyhole size={20} />, text: "Seguridad", link: "/dashboard/seguridad", subItems: [{ text: "Usuarios", link: "/dashboard/seguridad" }, { text: "Auditoría", link: "/dashboard/auditoria" }] },
+    session?.user?.role === "Administrador" && { icon: <Truck size={20} />, text: "Pedidos", link: "/dashboard/pedido" },
     { icon: <AlarmClock size={20} />, text: "Monitorizar horarios", link: "/dashboard/horas" },
     { icon: <hr className="my-3" /> },
     { icon: <LogOut size={20} />, text: "Cerrar Sesión", link: "/api/auth/signout" },
-    { icon: <LogOut size={20} />, text: "Admin", link: "/" },
-  ];
+  ].filter(Boolean); // Filtrar elementos nulos
 
   return (
     <>
@@ -69,7 +68,7 @@ export default function Sidebar() {
             ))}
           </ul>
 
-          <div className="border-t border-gray-400 dark:border-gray-200  flex p-3">
+          <div className="border-t border-gray-400 dark:border-gray-200 flex p-3">
             <div className={`flex justify-between items-center overflow-hidden transition-all ${expanded ? "w-52 ml-3" : "w-0"}`}>
               <div className="leading-4 text-gray-700 dark:text-white">
                 <h4 className="font-semibold">Grupo03</h4>
@@ -144,4 +143,3 @@ export function SidebarItem({ icon, text, active, link, expanded, subItems }) {
     </li>
   );
 }
-
