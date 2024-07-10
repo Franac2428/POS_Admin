@@ -1,15 +1,14 @@
 'use client';
-import { useEffect, useState, createContext, useContext } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from "react-hook-form";
 import { Toaster, toast } from 'sonner';
 import DeleteHorario from '@/app/components/seguridad/deleteHorario';
 
-export default function UpdateHorario({ horarioId }) {
+export default function UpdateHorario({ horarioId, mutate }) {
     const [open, setOpen] = useState(false);
     const [deletehorario, SetDeleteHorario] = useState(false);
     const { register, handleSubmit, setValue, formState: { errors } } = useForm();
     const [horario, setHorario] = useState(null);
-
 
     const fetchHorario = async () => {
         if (horarioId) {
@@ -53,7 +52,7 @@ export default function UpdateHorario({ horarioId }) {
             if (response.ok) {
                 const horarioActualizado = await response.json();
                 toast.success('Horario editado con éxito');
-                mutate();
+                mutate(); 
                 setTimeout(() => {
                     onClose();
                 }, 500);
@@ -206,6 +205,8 @@ export default function UpdateHorario({ horarioId }) {
                                     data-modal-target="popup-modal-horario"
                                     data-modal-toggle="popup-modal-horario"
                                     className="text-red-600 inline-flex items-center hover:text-white border border-red-600 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"
+                                    onClick={() => setDeleteHorario(true)}
+                                 
                                 >
                                     <svg
                                         className="mr-1 -ml-1 w-5 h-5"
@@ -223,7 +224,7 @@ export default function UpdateHorario({ horarioId }) {
                                 </button>
                             </div>
                         </form>
-                        <DeleteHorario open={deletehorario} onClose={() => SetDeleteHoraio(false)} horarioId={horarioId} />
+                        <DeleteHorario open={deletehorario} onClose={() => SetDeleteHoraio(false)} horarioId={horarioId}  mutate={mutate} />
                     </div>
                 </div>
             </div>

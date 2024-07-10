@@ -35,7 +35,7 @@ export default function DeleteRol({ open, onClose, roleId, mutate }) {
             if (response.ok) {
                 toast.success('Rol eliminado con éxito');
                 mutate('/api/role');
-                onClose(); // Cerrar el modal después de eliminar
+                onClose();
             } else {
                 toast.error('Error al eliminar el rol');
             }
