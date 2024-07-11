@@ -7,10 +7,14 @@ import HorariosLista from "./horariosList";
 import UpdateHorario from '@/app/components/seguridad/updateHorario';
 import AddHorario from "./addHorario";
 import { Toaster, toast } from 'sonner';
+import DeleteHorario from '@/app/components/seguridad/deleteHorario';
+
 
 export default function HorariosList() {
     const [updateHorario, setUpdateHorario] = useState(false);
     const [selectedHorario, setSelectedHorario] = useState(null);
+    const [deletehorario, setDeleteHoraio] = useState(false);
+
 
     const { data, error, mutate } = useSWR('http://localhost:3000/api/horario', async (url) => {
         const response = await fetch(url);
@@ -56,6 +60,8 @@ export default function HorariosList() {
                             <th scope="col" className="px-6 py-3">Hora Entrada</th>
                             <th scope="col" className="px-6 py-3">Hora Salida</th>
                             <th scope="col" className="px-6 py-3"><span className="sr-only">Edit</span></th>
+                            <th scope="col" className="px-6 py-3"><span className="sr-only">Eliminar</span></th>
+
                         </tr>
                     </thead>
                     <tbody>
@@ -78,8 +84,25 @@ export default function HorariosList() {
                                         }}
                                     >
                                         Edit
-                                    </button>
+                                    </button>                              
+                                                                 
                                     <UpdateHorario open={updateHorario} onClose={() => setUpdateHorario(false)} horarioId={selectedHorario} mutate={mutate} />
+                                </td>
+                                <td className="px-6 py-4 text-right">
+                                    
+                                    <button
+                                        type='button'
+                                        data-modal-target="popup-modal-horario"
+                                        data-modal-toggle="popup-modal-horario"
+                                        className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                                        onClick={() => {
+                                            setSelectedHorario(horario.Id);
+                                            setDeleteHoraio(true);
+                                        }}
+                                    >
+                                        Eliminar
+                                    </button>
+                                    <DeleteHorario open={deletehorario} onClose={() => setDeleteHoraio(false)} horarioId={selectedHorario}  mutate={mutate} />
                                 </td>
                             </tr>
                         ))}
