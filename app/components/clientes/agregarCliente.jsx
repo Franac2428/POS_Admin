@@ -90,7 +90,7 @@ export default function AgregarCliente({ open, onClose, reloadTable }) {
         toast.success('Cliente registrado satisfactoriamente');
         setTimeout(() => {
           reloadTable();
-      }, 3000);
+      });
       }
       else {
         throw new Error(`Error: ${response.statusText}`);

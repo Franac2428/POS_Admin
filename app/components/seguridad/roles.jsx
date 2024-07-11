@@ -12,64 +12,22 @@ export default function RoleTable() {
     const [addRoleModalOpen, setAddRoleModalOpen] = useState(false);
     const [updateRoleModalOpen, setUpdateRoleModalOpen] = useState(false);
     const [deleteRoleModalOpen, setDeleteRoleModalOpen] = useState(false);
-    const [selectedRole, setSelectedRole] = useState(null); // Estado para almacenar el rol seleccionado para editar/eliminar
+    const [selectedRole, setSelectedRole] = useState(null); 
 
-    const { data: roles, error, mutate } = useSWR('/api/role', async (url) => {
-        const response = await fetch(url);
-        const data = await response.json();
-        return data;
-    });
+const { data: roles, error, mutate } = useSWR('/api/role', async (url) => {
+    const response = await fetch(url);
+    const data = await response.json();
+    return data;
+});
 
-    const { data: session, status } = useSession();
+const { data: session, status } = useSession();
 
-    if (error) return <div>Error al cargar los roles</div>;
-    if (!roles) return <div>Cargando roles...</div>;
-    if (!Array.isArray(roles)) return <div>No hay roles disponibles</div>;
+if (error) return <div>Error al cargar los roles</div>;
+if (!roles) return <div>Cargando roles...</div>;
+if (!Array.isArray(roles)) return <div>No hay roles disponibles</div>;
 
-    const handleAddRole = async (newRole) => {
-        try {
-            const response = await fetch('/api/role', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(newRole),
-            });
-            const data = await response.json();
-            mutate([...roles, data], false);
-            setAddRoleModalOpen(false);
-        } catch (error) {
-            console.error('Error al agregar el rol', error);
-        }
-    };
-
-    const handleEditRole = async (updatedRole) => {
-        try {
-            const response = await fetch(`/api/role/${selectedRole.IdRole}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(updatedRole),
-            });
-            const data = await response.json();
-            const updatedRoles = roles.map(role => role.IdRole === data.IdRole ? data : role);
-            mutate(updatedRoles, false);
-            setUpdateRoleModalOpen(false);
-        } catch (error) {
-            console.error('Error al actualizar el rol', error);
-        }
-    };
-
-    const handleDeleteRole = async () => {
-        try {
-            await fetch(`/api/role/${selectedRole.IdRole}`, { method: 'DELETE' });
-            const updatedRoles = roles.filter(role => role.IdRole !== selectedRole.IdRole);
-            mutate(updatedRoles, false);
-            setDeleteRoleModalOpen(false);
-        } catch (error) {
-            console.error('Error al eliminar el rol', error);
-        }
-    };
-
-    if (status === "loading") return <div>Cargando...</div>;
-    if (status === "unauthenticated") return <div>No autorizado</div>;
+if (status === "loading") return <div>Cargando...</div>;
+if (status === "unauthenticated") return <div>No autorizado</div>;
 
     return (
         <div className="overflow-hidden bg-white shadow-md dark:bg-gray-800 sm:rounded-lg">
@@ -141,9 +99,9 @@ export default function RoleTable() {
             </div>
             {session?.user?.role === "Administrador" && (
                 <>
-                    <AddRole open={addRoleModalOpen} onClose={() => setAddRoleModalOpen(false)} onAddRole={handleAddRole} />
-                    <UpdateRole open={updateRoleModalOpen} onClose={() => setUpdateRoleModalOpen(false)} roleId={selectedRole} onUpdateRole={handleEditRole} />
-                    <DeleteRole open={deleteRoleModalOpen} onClose={() => setDeleteRoleModalOpen(false)} roleId={selectedRole} onDeleteRole={handleDeleteRole} />
+                    <AddRole open={addRoleModalOpen} onClose={() => setAddRoleModalOpen(false)} mutate={mutate}  />
+                    <UpdateRole open={updateRoleModalOpen} onClose={() => setUpdateRoleModalOpen(false)} roleId={selectedRole} mutate={mutate} />
+                    <DeleteRole open={deleteRoleModalOpen} onClose={() => setDeleteRoleModalOpen(false)} roleId={selectedRole} mutate={mutate} />
                 </>
             )}
         </div>

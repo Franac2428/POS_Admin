@@ -31,7 +31,7 @@ export default function ActivarCliente({ open, onClose, cliente,reloadTable }) {
             toast.success('Cliente activado satisfactoriamente');
             setTimeout(() => {
                 reloadTable();
-            }, 3000);
+            });
           }
           else{
             throw new Error(`Error al activar cliente: ${response.statusText}`);

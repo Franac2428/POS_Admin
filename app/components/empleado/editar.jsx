@@ -57,7 +57,7 @@ export default function Editar({ open, onClose, employeeId, mutate }) {
             correoRef.current.value = empleado.email;
             telefonoRef.current.value = empleado.telefono;
             direccionRef.current.value = empleado.direccion;
-            rolRef.current.value = empleado.roleId || "";  // Asigna el rol actual del empleado
+            rolRef.current.value = empleado.roleId || "";  
         }
     }, [empleado]);
 
@@ -82,7 +82,7 @@ export default function Editar({ open, onClose, employeeId, mutate }) {
             if (response.ok) {
                 const empleadoActualizado = await response.json();
                 toast.success('Usuario editado con éxito');
-                mutate();  // Revalidate the cache
+                mutate();  
                 setTimeout(() => {
                     onClose();
                 }, 500);

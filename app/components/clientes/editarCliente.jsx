@@ -97,7 +97,7 @@ export default function EditarCliente({ open, onClose, reloadTable, cliente }) {
         toast.success('Cliente actualizado satisfactoriamente');
         setTimeout(() => {
           reloadTable();
-        }, 3000);
+        });
       } else {
         throw new Error(`Error: ${response.statusText}`);
       }
