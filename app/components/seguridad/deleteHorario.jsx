@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { Toaster, toast } from 'sonner';
 
-export default function DeleteHorario({horarioId, onEliminar}) {
+export default function DeleteHorario({horarioId,mutate}) {
     const [horario, setHorario] = useState(null);
     
     useEffect(() => {
@@ -32,7 +32,7 @@ export default function DeleteHorario({horarioId, onEliminar}) {
             const result = await response.json();
             if (response.ok) {
                 toast.success('horario eliminado con éxito');
-                onEliminar(horarioId);
+                mutate();
             } else {
                 toast.error('Error al eliminar el horario');
             }

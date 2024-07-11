@@ -1,28 +1,34 @@
-'use client'
-import { useEffect, useState, createContext, useContext } from 'react';
-import HorariosLista from "./horariosList"
-import AddHorario from "./addHorario"
-import useSWR from 'swr';
+'use client';
 
+import { useState } from 'react';
+import useSWR from 'swr';
+import { useEffect,createContext, useContext } from 'react';
+import HorariosLista from "./horariosList";
+import UpdateHorario from '@/app/components/seguridad/updateHorario';
+import AddHorario from "./addHorario";
+import { Toaster, toast } from 'sonner';
 
 export default function HorariosList() {
-    
+    const [updateHorario, setUpdateHorario] = useState(false);
+    const [selectedHorario, setSelectedHorario] = useState(null);
+
     const { data, error, mutate } = useSWR('http://localhost:3000/api/horario', async (url) => {
         const response = await fetch(url);
         const data = await response.json();
         return data;
     });
+
     if (error) return <div>Error al cargar los datos</div>;
     if (!data) return <div>Cargando...</div>;
-    if (!data || !Array.isArray(data)) return <div>No hay datos disponibles</div>;
+    if (!Array.isArray(data)) return <div>No hay datos disponibles</div>;
 
     return (
         <>
+            <Toaster />
             <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                     <caption className="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800">
                         Horarios
-
                         <p className="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400">
                             Horarios semanales, puedes asignar la hora de inicio y hora final de la jornada
                             o bien puedes hasta marcar la fecha de un feriado durante la semana.
@@ -46,35 +52,40 @@ export default function HorariosList() {
                     </caption>
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
-                            <th scope="col" className="px-6 py-3">
-                                Dias
-                            </th>
-                            <th scope="col" className="px-6 py-3">
-                                Hora Entrada
-                            </th>
-                            <th scope="col" className="px-6 py-3">
-                                Hora Salida
-                            </th>
-                            <th scope="col" className="px-6 py-3">
-                                <span className="sr-only">Edit</span>
-                            </th>
-                            
+                            <th scope="col" className="px-6 py-3">Dias</th>
+                            <th scope="col" className="px-6 py-3">Hora Entrada</th>
+                            <th scope="col" className="px-6 py-3">Hora Salida</th>
+                            <th scope="col" className="px-6 py-3"><span className="sr-only">Edit</span></th>
                         </tr>
                     </thead>
                     <tbody>
                         {data.map((horario) => (
-                            <HorariosLista
-                                key={horario.Id}
-                                horarioId ={horario.Id}
-                                days={horario.Dia}
-                                entryhours={horario.HoraInicio}
-                                exithours={horario.HoraFin}
-                            />
+                            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700" key={horario.Id}>
+                                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    {horario.Dia}
+                                </th>
+                                <td className="px-6 py-4">{horario.HoraInicio}</td>
+                                <td className="px-6 py-4">{horario.HoraFin}</td>
+                                <td className="px-6 py-4 text-right">
+                                    <button
+                                        type='button'
+                                        data-modal-target="updateEventModal"
+                                        data-modal-toggle="updateEventModal"
+                                        className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                                        onClick={() => {
+                                            setSelectedHorario(horario.Id);
+                                            setUpdateHorario(true);
+                                        }}
+                                    >
+                                        Edit
+                                    </button>
+                                    <UpdateHorario open={updateHorario} onClose={() => setUpdateHorario(false)} horarioId={selectedHorario} mutate={mutate} />
+                                </td>
+                            </tr>
                         ))}
                     </tbody>
                 </table>
-            </div >
-
+            </div>
         </>
-    )
+    );
 }

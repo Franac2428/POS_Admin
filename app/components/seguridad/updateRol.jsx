@@ -1,7 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
 import { toast } from 'sonner';
+import { X } from "lucide-react";
 
-export default function UpdateRole({ open, onClose, roleId, onUpdateRole }) {
+
+export default function UpdateRole({ open, onClose, roleId, mutate }) {
     const [rol, setRol] = useState(null);
     const descriptionRef = useRef();
 
@@ -43,8 +45,8 @@ export default function UpdateRole({ open, onClose, roleId, onUpdateRole }) {
             if (response.ok) {
                 const rolActualizado = await response.json();
                 toast.success('Rol actualizado con éxito');
-                onUpdateRole(rolActualizado); // Actualiza el rol en la interfaz padre si es necesario
-                onClose(); // Cierra el modal después de la edición
+                mutate();
+                onClose();
             } else {
                 const errorData = await response.json();
                 toast.error(`Error: ${errorData.message}`);
@@ -53,6 +55,9 @@ export default function UpdateRole({ open, onClose, roleId, onUpdateRole }) {
 
         }
     };
+    const handleCancel = () => {
+        onClose();
+    }
 
     if (!open) {
         return null;
@@ -67,10 +72,18 @@ export default function UpdateRole({ open, onClose, roleId, onUpdateRole }) {
 
                 <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl overflow-hidden transform transition-all sm:max-w-lg sm:w-full">
                     <form onSubmit={handleEditarRol}>
-                        <div className="bg-white dark:bg-gray-800 px-4 py-5 sm:px-6">
+                        <div className="flex justify-between items-center bg-white dark:bg-gray-800 px-4 py-5 sm:px-6">
                             <h3 className="text-lg font-medium leading-6 text-gray-900 dark:text-white">
                                 Editar Rol
                             </h3>
+                            <button
+                            type="button"
+                            className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                            onClick={handleCancel}
+                        >
+                            <X className="w-5 h-5" />
+                            <span className="sr-only">Cerrar modal</span>
+                        </button>
                         </div>
                         <div className="bg-gray-50 dark:bg-gray-700 px-4 py-5 sm:p-6">
                             <label htmlFor="description" className="block text-sm font-medium text-gray-700 dark:text-gray-300">

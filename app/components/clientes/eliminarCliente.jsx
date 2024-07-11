@@ -31,7 +31,7 @@ export default function EliminarCliente({ open, onClose, cliente,reloadTable }) 
             toast.success('Cliente eliminado satisfactoriamente');
             setTimeout(() => {
                 reloadTable();
-            }, 3000);
+            });
           }
           else{
             throw new Error(`Error al eliminar cliente: ${response.statusText}`);

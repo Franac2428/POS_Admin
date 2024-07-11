@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { X, CircleAlert } from "lucide-react";
 import { Toaster, toast } from 'sonner';
 
-export default function DeleteRol({ open, onClose, roleId, onDelete }) {
+export default function DeleteRol({ open, onClose, roleId, mutate }) {
     const [role, setRole] = useState(null);
 
     useEffect(() => {
@@ -34,24 +34,23 @@ export default function DeleteRol({ open, onClose, roleId, onDelete }) {
             const result = await response.json();
             if (response.ok) {
                 toast.success('Rol eliminado con éxito');
-                onDelete(roleId);
+                mutate('/api/role');
+                onClose();
             } else {
                 toast.error('Error al eliminar el rol');
             }
         } catch (error) {
-
+            console.error("Error al eliminar el rol:", error);
+            toast.error('Error al eliminar el rol');
         }
-        setTimeout(() => {
-            onClose();
-        }, 1000);
     };
 
     if (!open) {
-        return null;
+        return null; // Evitar renderizar el modal si no está abierto
     }
 
     return (
-        <div className={`fixed inset-0 overflow-y-auto overflow-x-hidden flex justify-center items-center z-50 bg-black bg-opacity-20 ${open ? 'visible' : 'invisible'}`}>
+        <div className="fixed inset-0 overflow-y-auto overflow-x-hidden flex justify-center items-center z-50 bg-black bg-opacity-20">
             <div className="relative bg-white rounded-lg shadow-xl transition-all transform scale-100 opacity-100 w-full max-w-md">
                 <button type="button" className="absolute top-3 right-3 p-2 rounded-lg text-gray-400 bg-white hover:bg-gray-50 hover:text-gray-600" onClick={onClose}>
                     <X />
