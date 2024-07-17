@@ -95,6 +95,40 @@ CREATE TABLE `ProductoVenta` (
     PRIMARY KEY (`idProductoVenta`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
+-- CreateTable
+CREATE TABLE `Horario` (
+    `Id` INTEGER NOT NULL AUTO_INCREMENT,
+    `Dia` VARCHAR(191) NOT NULL,
+    `HoraInicio` VARCHAR(191) NOT NULL,
+    `HoraFin` VARCHAR(191) NOT NULL,
+
+    PRIMARY KEY (`Id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `AsignacionHorario` (
+    `AsignacionID` INTEGER NOT NULL AUTO_INCREMENT,
+    `EmpleadoID` INTEGER NOT NULL,
+    `HorarioID` INTEGER NOT NULL,
+
+    PRIMARY KEY (`AsignacionID`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Pedido` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `proveedor` VARCHAR(191) NOT NULL,
+    `medioPedido` VARCHAR(191) NOT NULL,
+    `productos` JSON NOT NULL,
+    `observaciones` VARCHAR(191) NULL,
+    `estado` ENUM('EN_PROGRESO', 'CANCELADO', 'FINALIZADO') NOT NULL DEFAULT 'EN_PROGRESO',
+    `fechaFinalizacion` DATETIME(3) NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
 -- AddForeignKey
 ALTER TABLE `usuarios` ADD CONSTRAINT `usuarios_roleId_fkey` FOREIGN KEY (`roleId`) REFERENCES `roles`(`IdRole`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
@@ -103,3 +137,9 @@ ALTER TABLE `AuditoriaLogin` ADD CONSTRAINT `AuditoriaLogin_IdStatusAuditoriaLog
 
 -- AddForeignKey
 ALTER TABLE `ProductoVenta` ADD CONSTRAINT `ProductoVenta_idCategoriaProdVenta_fkey` FOREIGN KEY (`idCategoriaProdVenta`) REFERENCES `CategoriaProdVenta`(`idCategoriaProdVenta`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `AsignacionHorario` ADD CONSTRAINT `AsignacionHorario_EmpleadoID_fkey` FOREIGN KEY (`EmpleadoID`) REFERENCES `usuarios`(`Id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `AsignacionHorario` ADD CONSTRAINT `AsignacionHorario_HorarioID_fkey` FOREIGN KEY (`HorarioID`) REFERENCES `Horario`(`Id`) ON DELETE RESTRICT ON UPDATE CASCADE;

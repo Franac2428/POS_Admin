@@ -2,43 +2,43 @@ import { useState, useEffect } from 'react';
 import { X, CircleAlert } from "lucide-react";
 import { Toaster, toast } from 'sonner';
 
-export default function Eliminar({ open, onClose, proveedorId, mutate }) {
-  const [proveedor, setProveedor] = useState(null);
+export default function Eliminar({ open, onClose, categoriaId, mutate }) {
+  const [categoria, setCategoria] = useState(null);
 
   useEffect(() => {
-    if (proveedorId) {
-      fetch(`http://localhost:3000/api/proveedor/${proveedorId}`)
+    if (categoriaId) {
+      fetch(`http://localhost:3000/api/categorias/${categoriaId}`)
         .then(response => response.json())
-        .then(data => setProveedor(data))
+        .then(data => setCategoria(data))
         .catch(error => {
-          console.error('Error fetching proveedor:', error);
-          toast.error('Error al cargar los datos del proveedor');
+          console.error('Error fetching categoria:', error);
+          toast.error('Error al cargar los datos de la categoría');
         });
     }
-  }, [proveedorId]);
+  }, [categoriaId]);
 
   const handleEliminar = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/api/proveedor/${proveedorId}`, {
+      const response = await fetch(`http://localhost:3000/api/categorias/${categoriaId}`, {
         method: 'DELETE',
       });
 
       if (response.ok) {
-        toast.success('Proveedor eliminado con éxito');
+        toast.success('Categoría eliminada con éxito');
         mutate();  // Refresca los datos
         setTimeout(() => {
           onClose();
         }, 1500);
       } else {
         const result = await response.json();
-        toast.error(result.error || 'Error al eliminar el proveedor');
+        toast.error(result.error || 'Error al eliminar la categoría');
       }
     } catch (error) {
       toast.error('Error al conectar con el servidor');
     }
   };
 
-  if (!proveedor) return null;
+  if (!categoria) return null;
 
   return (
     <div onClick={onClose} className={`fixed inset-0 flex justify-center items-center transition-opacity ${open ? "visible bg-black bg-opacity-20 dark:bg-opacity-30" : "invisible"}`}>
@@ -52,37 +52,21 @@ export default function Eliminar({ open, onClose, proveedorId, mutate }) {
           </h2>
           <hr className="w-full border-t border-gray-300 dark:border-gray-600"></hr>
           <p className="text-md text-gray-800 my-4 dark:text-gray-200">
-            ¿Seguro que desea eliminar este proveedor?
+            ¿Seguro que desea eliminar esta categoría?
           </p>
           <div className="ml-5 my-4 w-full">
             <dl className="grid grid-cols-2 gap-x-4">
               <div className="mb-4">
                 <dt className="text-sm font-medium dark:text-gray-200 text-gray-700">ID</dt>
-                <dd className="mt-1 text-sm text-gray-900 dark:text-gray-200">{proveedor.ProveedorID}</dd>
+                <dd className="mt-1 text-sm text-gray-900 dark:text-gray-200">{categoria.CategoriaProductoID}</dd>
               </div>
               <div className="mb-4">
                 <dt className="text-sm font-medium text-gray-700 dark:text-gray-200">Nombre</dt>
-                <dd className="mt-1 text-sm text-gray-900 dark:text-gray-200">{proveedor.Nombre}</dd>
+                <dd className="mt-1 text-sm text-gray-900 dark:text-gray-200">{categoria.NombreCategoria}</dd>
               </div>
               <div className="mb-4">
-                <dt className="text-sm font-medium text-gray-700 dark:text-gray-200">Sitio Web</dt>
-                <dd className="mt-1 text-sm text-gray-900 dark:text-gray-200">{proveedor.Contacto}</dd>
-              </div>
-              <div className="mb-4">
-                <dt className="text-sm font-medium text-gray-700 dark:text-gray-200">Teléfono</dt>
-                <dd className="mt-1 text-sm text-gray-900 dark:text-gray-200">{proveedor.Telefono}</dd>
-              </div>
-              <div className="mb-4">
-                <dt className="text-sm font-medium text-gray-700 dark:text-gray-200">Tipo</dt>
-                <dd className="mt-1 text-sm text-gray-900 dark:text-gray-200">{proveedor.Tipo}</dd>
-              </div>
-              <div className="mb-4">
-                <dt className="text-sm font-medium text-gray-700 dark:text-gray-200">Correo</dt>
-                <dd className="mt-1 text-sm text-gray-900 dark:text-gray-200">{proveedor.Email}</dd>
-              </div>
-              <div className="mb-4">
-                <dt className="text-sm font-medium text-gray-700 dark:text-gray-200">Dirección</dt>
-                <dd className="mt-1 text-sm text-gray-900 dark:text-gray-200">{proveedor.Direccion}</dd>
+                <dt className="text-sm font-medium text-gray-700 dark:text-gray-200">Descripción</dt>
+                <dd className="mt-1 text-sm text-gray-900 dark:text-gray-200">{categoria.Descripcion}</dd>
               </div>
             </dl>
           </div>

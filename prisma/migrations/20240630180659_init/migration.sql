@@ -64,25 +64,6 @@ CREATE TABLE `RolPermiso` (
     PRIMARY KEY (`roleId`, `permissionId`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
--- CreateTable
-CREATE TABLE `Horario` (
-    `Id` INTEGER NOT NULL AUTO_INCREMENT,
-    `Dia` VARCHAR(191) NOT NULL,
-    `HoraInicio` DATETIME(3) NOT NULL,
-    `HoraFin` DATETIME(3) NOT NULL,
-
-    PRIMARY KEY (`Id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
-CREATE TABLE `AsignacionHorario` (
-    `AsignacionID` INTEGER NOT NULL AUTO_INCREMENT,
-    `EmpleadoID` INTEGER NOT NULL,
-    `HorarioID` INTEGER NOT NULL,
-
-    PRIMARY KEY (`AsignacionID`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
 -- AddForeignKey
 ALTER TABLE `AuditoriaLogin` ADD CONSTRAINT `AuditoriaLogin_IdStatusAuditoriaLogin_fkey` FOREIGN KEY (`IdStatusAuditoriaLogin`) REFERENCES `StatusAuditoriaLogin`(`IdStatusAuditoriaLogin`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
@@ -97,9 +78,3 @@ ALTER TABLE `RolPermiso` ADD CONSTRAINT `RolPermiso_roleId_fkey` FOREIGN KEY (`r
 
 -- AddForeignKey
 ALTER TABLE `RolPermiso` ADD CONSTRAINT `RolPermiso_permissionId_fkey` FOREIGN KEY (`permissionId`) REFERENCES `Permiso`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `AsignacionHorario` ADD CONSTRAINT `AsignacionHorario_EmpleadoID_fkey` FOREIGN KEY (`EmpleadoID`) REFERENCES `Usuarios`(`Id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `AsignacionHorario` ADD CONSTRAINT `AsignacionHorario_HorarioID_fkey` FOREIGN KEY (`HorarioID`) REFERENCES `Horario`(`Id`) ON DELETE RESTRICT ON UPDATE CASCADE;

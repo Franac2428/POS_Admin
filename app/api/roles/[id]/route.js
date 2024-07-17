@@ -5,7 +5,7 @@ export async function GET(request, { params }) {
     const { id } = params;
     
     try {
-      const role = await db.roles.findUnique({
+      const role = await db.role.findUnique({
         where: {
           RoleID: Number(id),
         },
@@ -21,7 +21,7 @@ export async function PUT(request, { params }) {
     const data = await request.json();
   
     try {
-      const updatedRole = await db.roles.update({
+      const updatedRole = await db.role.update({
         where: {
           RoleID: Number(id),
         },
@@ -37,7 +37,7 @@ export async function DELETE(request, { params }) {
     const { id } = params;
   
     try {
-      const deletedRole = await db.roles.delete({
+      const deletedRole = await db.role.delete({
         where: {
           RoleID: Number(id),
         },
