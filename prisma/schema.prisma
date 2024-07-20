@@ -28,8 +28,20 @@ model Usuarios {
   horarios AsignacionHorario[]
   roleId   Int
   Role     Role                @relation(fields: [roleId], references: [IdRole])
+ 
+  asistencias Asistencia[]
+
 
   @@map("usuarios")
+}
+
+model Asistencia {
+  id         Int       @id @default(autoincrement())
+  empleadoId Int
+  empleado   Usuarios  @relation(fields: [empleadoId], references: [Id])
+  entrada    DateTime
+  salida     DateTime?
+  fecha      DateTime  @unique
 }
 
 model StatusAuditoriaLogin {

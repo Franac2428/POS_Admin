@@ -1,30 +1,43 @@
 import React from 'react';
-import { Toaster, toast } from 'sonner';
 import * as AlertDialog from '@radix-ui/react-alert-dialog';
+import { toast } from 'sonner';
+import useSWR, { mutate } from 'swr';
 
-const Cancelar = ({ pedidoId, onEliminar }) => {
-  const handleEliminar = async () => {
+
+const Salida = ({ actual, asistenciaId, onAsistencia }) => {
+  const fecha = new Date();
+  const mes = String(fecha.getMonth() + 1).padStart(2, '0'); 
+  const dia = String(fecha.getDate()).padStart(2, '0'); 
+  const ano = fecha.getFullYear();
+  const millis = fecha.getMilliseconds();
+  const fechaLocal = `${ano}-${mes}-${dia}T${actual}.${millis}Z`;
+  const handleEditar = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/api/pedido/${pedidoId}`, {
-        method: 'DELETE',
+      const response = await fetch(`http://localhost:3000/api/marcar/${asistenciaId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ salida: fechaLocal }),
       });
-      const result = await response.json();
+
       if (response.ok) {
-        toast.success('Pedido eliminado con éxito');
-        onEliminar(pedidoId);
+        toast.success('Salida registrada con éxito');
+        mutate(`/api/marcar/${asistenciaId}`);
       } else {
-        toast.error('Error al eliminar el pedido');
+        const errorData = await response.json();
+        toast.error(`Error: ${errorData.message}`);
       }
     } catch (error) {
-      toast.error('Error al eliminar el pedido');
+      toast.error('Error al registrar salida');
     }
   };
 
   return (
     <AlertDialog.Root>
       <AlertDialog.Trigger asChild>
-        <button className="p-1.5 text-gray-900 dark:text-gray-200 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01] ease-in-out transform bg-red-600 bg-opacity-50 rounded-md">
-          Cancelar
+        <button className="px-4 py-2 text-gray-900 dark:text-gray-200 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01] ease-in-out transform bg-blue-600 bg-opacity-50 rounded-md">
+          Marcar Salida
         </button>
       </AlertDialog.Trigger>
       <AlertDialog.Portal>
@@ -34,7 +47,7 @@ const Cancelar = ({ pedidoId, onEliminar }) => {
             ¿Está seguro?
           </AlertDialog.Title>
           <AlertDialog.Description className="text-mauve11 mt-4 mb-5 text-[15px] leading-normal">
-            Esta acción cancela la realización del registro de este pedido
+            Realizar esta acción guarda tu hora de salida a las {actual}
           </AlertDialog.Description>
           <div className="flex justify-end gap-[25px]">
             <AlertDialog.Cancel asChild>
@@ -43,11 +56,8 @@ const Cancelar = ({ pedidoId, onEliminar }) => {
               </button>
             </AlertDialog.Cancel>
             <AlertDialog.Action asChild>
-              <button 
-                className="text-white bg-red-500 inline-flex h-[35px] items-center justify-center rounded-[4px] px-[15px] font-medium leading-none outline-none focus:shadow-[0_0_0_2px]"
-                onClick={handleEliminar}
-              >
-                Sí, descartar pedido
+              <button onClick={handleEditar} className="text-white bg-green-500 inline-flex h-[35px] items-center justify-center rounded-[4px] px-[15px] font-medium leading-none outline-none focus:shadow-[0_0_0_2px]">
+                Sí, marcar salida
               </button>
             </AlertDialog.Action>
           </div>
@@ -57,4 +67,4 @@ const Cancelar = ({ pedidoId, onEliminar }) => {
   );
 };
 
-export default Cancelar;
+export default Salida;
