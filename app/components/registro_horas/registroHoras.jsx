@@ -5,6 +5,7 @@ import Salida from './horaSalida';
 import { useSession } from "next-auth/react";
 import { Toaster, toast } from 'sonner';
 import { mutate } from 'swr';
+import MyCalendar from './vistaAsistencia';
 
 const RegistroHoras = () => {
     const fecha = new Date();
@@ -98,6 +99,10 @@ const RegistroHoras = () => {
                     </div>          
                 </div>
             </div>
+            <div className='pt-4'>
+                <MyCalendar />                
+            </div>
+           
             <Toaster richColors />
         </div>
     );
