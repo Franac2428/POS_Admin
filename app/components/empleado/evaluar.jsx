@@ -1,14 +1,41 @@
+'use client'
 import React, { useState } from "react";
+import { Toaster, toast } from 'sonner';
 
-const Evaluar = ({ show, onClose }) => {
+const Evaluar = ({ show, onClose, employeeId }) => {
     const [observation, setObservation] = useState("");
 
     const handleChange = (e) => {
         setObservation(e.target.value);
     };
 
-    const handleSubmit = () => {
-        console.log("Observación enviada:", observation);
+    const handleSubmit = async () => {
+        const metas = {
+            empleadoId: employeeId,
+            observaciones: observation,
+            fecha: new Date().toISOString(),
+        };
+
+        try {
+            const res = await fetch(`/api/metas`, {
+                method: 'POST',
+                body: JSON.stringify(metas),
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            if (res.ok) {
+                toast.success('observacion de entrada guardada con éxito');
+            } else {
+                const errorData = await res.json();
+                toast.error(`Error: ${errorData.message}`);
+            }
+        } catch (error) {
+            console.error("Error en la solicitud:", error);
+            toast.error('Error en la solicitud');
+        }
+
         setObservation("");
         onClose();
     };
@@ -26,6 +53,7 @@ const Evaluar = ({ show, onClose }) => {
                     <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                         <div className="sm:flex sm:items-start">
                             <div className="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-green-100 sm:mx-0 sm:h-10 sm:w-10">
+                                {/* Icon or image can go here */}
                             </div>
                             <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                                 <h3 className="text-lg leading-6 font-medium text-gray-900">Observación</h3>
@@ -59,9 +87,9 @@ const Evaluar = ({ show, onClose }) => {
                     </div>
                 </div>
             </div>
+            <Toaster richColors />
         </div>
     );
 };
 
 export default Evaluar;
-

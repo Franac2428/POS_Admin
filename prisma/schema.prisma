@@ -30,6 +30,7 @@ model Usuarios {
   Role     Role                @relation(fields: [roleId], references: [IdRole])
  
   asistencias Asistencia[]
+  metas Metas[]
 
 
   @@map("usuarios")
@@ -43,6 +44,15 @@ model Asistencia {
   salida     DateTime?
   fecha      DateTime  @unique
 }
+
+model Metas {
+  id         Int       @id @default(autoincrement())
+  empleadoId Int
+  empleado   Usuarios  @relation(fields: [empleadoId], references: [Id])
+  observaciones     String?
+  fecha      DateTime  
+}
+
 
 model StatusAuditoriaLogin {
   IdStatusAuditoriaLogin Int    @id @default(autoincrement())

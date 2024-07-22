@@ -15,17 +15,16 @@ const MyCalendar = () => {
 
     const onNavigate = useCallback((newDate) => setDate(newDate), []);
     const onView = useCallback((newView) => setView(newView), []);
-    const { data, error } = useSWR(`http://localhost:3000/api/calendario/${employeeId}`, async (url) => {
-      const response = await fetch(url);
-      const data = await response.json();
-      return data;
-  });
+    const { data, error } = useSWR(employeeId ? `http://localhost:3000/api/calendario/${employeeId}` : null, async (url) => {
+        const response = await fetch(url);
+        const data = await response.json();
+        return data;
+    });
 
-  if (error) return <div>Error al cargar los datos</div>;
-  if (!data) return <div>Cargando...</div>;
-  if (!data || !Array.isArray(data)) return <div>No hay datos disponibles</div>;    
+    if (error) return <div>Error al cargar los datos</div>;
+    if (!data) return <div>Cargando...</div>;
+    if (!data || !Array.isArray(data)) return <div>No hay datos disponibles</div>;    
 
-  
     const demoEvents = [];
     data.forEach((asistencia) => {
         demoEvents.push({

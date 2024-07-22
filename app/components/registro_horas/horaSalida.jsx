@@ -23,7 +23,9 @@ const Salida = ({ actual, asistenciaId, onAsistencia }) => {
 
       if (response.ok) {
         toast.success('Salida registrada con éxito');
-        mutate(`/api/marcar/${asistenciaId}`);
+        setTimeout(() => {
+          onAsistencia();
+        });      
       } else {
         const errorData = await response.json();
         toast.error(`Error: ${errorData.message}`);

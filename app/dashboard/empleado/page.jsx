@@ -111,7 +111,10 @@ export default function Empleado() {
                                                 setVer(true)
                                             }}><Eye size={15} strokeWidth={2.2} /> </button>
 
-                                            <button className="p-1.5 text-gray-900 dark:text-gray-200 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-yellow-600 bg-opacity-50 rounded-md" onClick={() => setEvaluar(true)}><SmilePlus size={15} strokeWidth={2.2} /></button>
+                                            <button className="p-1.5 text-gray-900 dark:text-gray-200 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-yellow-600 bg-opacity-50 rounded-md" onClick={() =>{ 
+                                                setSelectedEmployeeId(empleado.Id);
+                                                setEvaluar(true)
+                                            }}><SmilePlus size={15} strokeWidth={2.2} /></button>
                                             <button className="p-1.5 text-gray-900 dark:text-gray-200 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-red-600 bg-opacity-50 rounded-md" onClick={() => {
                                                 setSelectedEmployeeId(empleado.Id);
                                                 setOpen(true);
@@ -125,7 +128,7 @@ export default function Empleado() {
                 </div>
                 <Eliminar open={open} onClose={() => setOpen(false)} employeeId={selectedEmployeeId} onEliminar={eliminarEmpleado} />
                 <Agregar open={agregar} onClose={() => setAgregar(false)} mutate={mutate} />
-                <Evaluar show={evaluar} onClose={() => setEvaluar(false)} />
+                <Evaluar show={evaluar} onClose={() => setEvaluar(false)} employeeId={selectedEmployeeId}/>
                 <Editar open={editar} onClose={() => setEditar(false)} employeeId={selectedEmployeeId} mutate={mutate} />
                 <Ver open={ver} onClose={() => setVer(false)} employeeId={selectedEmployeeId} />
             </div>
