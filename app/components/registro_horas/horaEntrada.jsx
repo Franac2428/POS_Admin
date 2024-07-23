@@ -9,6 +9,8 @@ const Entrada = ({ actual, usuarioId, onAsistencia }) => {
     const ano = fecha.getFullYear();
     const millis = fecha.getMilliseconds();
     const fechaLocal = `${ano}-${mes}-${dia}T${actual}.${millis}Z`;
+    const horaCero ="00:00:00.000";
+    const fechaHoy = `${ano}-${mes}-${dia}T${horaCero}Z`;
 
     if (!usuarioId) {
         console.error("El ID del usuario no está disponible en la sesión");
@@ -19,6 +21,7 @@ const Entrada = ({ actual, usuarioId, onAsistencia }) => {
         const asistencia = {
             empleadoId: usuarioId,
             entrada: fechaLocal,
+            fecha : fechaHoy,
         };
         try {
             const res = await fetch(`/api/marcar`, {

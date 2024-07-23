@@ -106,7 +106,7 @@ export default function Agregar({ open, onClose, mutate }) {
                             </div>
                             <div className="mb-4">
                                 <label htmlFor="salario" className="block text-sm font-medium text-gray-700">Salario x hora</label>
-                                <input required type="number" id="salario" name="salario" className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" {...register("salario", { required: { value: true, message: 'El salario es requerido' } })} />
+                                <input type="number" id="salario" name="salario" className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" {...register("salario", { required: { value: true, message: 'El salario es requerido' } })} />
                                 {errors.salario && <span className="text-red-500">{errors.salario.message}</span>}
                             </div>
                             <div className="mb-4">

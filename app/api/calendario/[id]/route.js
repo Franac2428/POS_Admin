@@ -17,8 +17,9 @@ export async function GET(request, { params }) {
         if (!asistencias) {
             return NextResponse.json({ message: 'No se han registrado asistencias.' }, { status: 404 });
         }
-
+        
         return NextResponse.json(asistencias);
+
 
     } catch (error) {
         console.error('Error fetching asistencias:', error); 

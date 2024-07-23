@@ -5,10 +5,11 @@ import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import useSWR from 'swr';
 import { useSession } from "next-auth/react";
+import 'moment/locale/es'
 
 const MyCalendar = () => {
     const localizer = useMemo(() => momentLocalizer(moment), []);
-    const [date, setDate] = useState(new Date(2024, 6, 20)); 
+    const [date, setDate] = useState(new Date()); 
     const [view, setView] = useState(Views.WEEK);
     const { data: session, status } = useSession(); 
     const employeeId = session?.user?.id;
@@ -23,14 +24,17 @@ const MyCalendar = () => {
 
     if (error) return <div>Error al cargar los datos</div>;
     if (!data) return <div>Cargando...</div>;
-    if (!data || !Array.isArray(data)) return <div>No hay datos disponibles</div>;    
+    if (!Array.isArray(data)) return <div>No hay datos disponibles</div>;
 
-    const demoEvents = [];
-    data.forEach((asistencia) => {
-        demoEvents.push({
-            start: new Date(asistencia.entrada),
-            end: new Date(asistencia.salida),
-        });
+    const demoEvents = data.map((asistencia) => {
+        const entrada = moment(asistencia.entrada, "YYYY-MM-DDTHH:mm:ss").toDate();
+        const salida = moment(asistencia.salida, "YYYY-MM-DDTHH:mm:ss").toDate();
+
+        return {
+            title: asistencia.observacion,
+            start: entrada,
+            end: salida,
+        };
     });
 
     return (
@@ -42,6 +46,18 @@ const MyCalendar = () => {
                     startAccessor="start"
                     endAccessor="end"
                     style={{ height: 580 }}
+                    messages={{
+                        next: "Sig",
+                        previous: "Ant",
+                        today: "Hoy",
+                        month: "Mes",
+                        week: "Semana",
+                        noEventsInRange: 'No hay eventos en este rango.',
+                        day: "Día",
+                        date:"Fecha",
+                        event: "Nota",
+                        time: "Hora"
+                      }}
                     date={date}
                     view={view}
                     onNavigate={onNavigate}

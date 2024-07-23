@@ -30,7 +30,6 @@ export default function login() {
         } else {
             router.push('/dashboard/menu')
             console.log("Enviando a /dashboard");
-            console.log(session.user.role)
         }
 
         console.log(res);

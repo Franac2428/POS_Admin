@@ -12,10 +12,8 @@ export async function GET() {
 
 export async function POST(request) {
   const data = await request.json();
-  const { empleadoId, entrada } = data;  
+  const { empleadoId, entrada,fecha } = data;  
   try {
-    const fecha = new Date();
-    fecha.setUTCHours(0, 0, 0, 0);
 
     const existingAsistencia = await db.asistencia.findFirst({
       where: {

@@ -42,6 +42,7 @@ model Asistencia {
   empleado   Usuarios  @relation(fields: [empleadoId], references: [Id])
   entrada    DateTime
   salida     DateTime?
+  observacion     String?
   fecha      DateTime  @unique
 }
 

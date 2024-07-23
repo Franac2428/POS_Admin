@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import Entrada from './horaEntrada';
 import Salida from './horaSalida';
+import Nota from './observacion';
 import { useSession } from "next-auth/react";
 import { Toaster, toast } from 'sonner';
 import { mutate } from 'swr';
@@ -58,18 +59,16 @@ const RegistroHoras = () => {
     });
     useEffect(() => {
         fetchAsistencia();
-    }, [employeeId]);
-
-  
+    }, [employeeId]); 
       
     const horaEntrada = new Date(entrada).toUTCString().split(' ')[4];
     const horaSalida = new Date(salida).toUTCString().split(' ')[4];
     return (
         <div className="container mx-auto px-4 py-8 text-gray-900 dark:text-gray-100">
             <h1 className="text-2xl font-bold mb-4">Registro de horas para el día {dia}  {pru} de {mesEsp} del {ano}</h1>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-3 gap-4">
             <div className="shadow-lg bg-white dark:bg-gray-700 p-4 rounded-lg">
-                <h2 className="text-lg font-semibold mb-2">Hora de Entrada</h2>
+                <h2 className="text-lg font-semibold mb-2">Hora de entrada</h2>
                 <div>
                     {loading ? (
                     <p>Cargando...</p>
@@ -82,7 +81,7 @@ const RegistroHoras = () => {
                 </div>
                 </div>
                 <div className="shadow-lg bg-white dark:bg-gray-700 p-4 rounded-lg">
-                    <h2 className="text-lg font-semibold mb-2">Hora de Salida</h2>
+                    <h2 className="text-lg font-semibold mb-2">Hora de salida</h2>
                     <div>
                         {loading ? (
                             <p>Cargando...</p>
@@ -91,6 +90,22 @@ const RegistroHoras = () => {
                                 <p>{horaSalida}</p>
                             ) : (
                                 <Salida actual={horaLocal} asistenciaId={asistencia?.id} onAsistencia={fetchAsistencia} />
+                            )
+                        ) : (
+                            <p>Primero debe registrar su hora de entrada</p>
+                        )}
+                    </div>          
+                </div>
+                <div className="shadow-lg bg-white dark:bg-gray-700 p-4 rounded-lg">
+                    <h2 className="text-lg font-semibold mb-2">Agregar observación</h2>
+                    <div>
+                        {loading ? (
+                            <p>Cargando...</p>
+                        ) : entrada ? (
+                            salida ? (
+                                <p>Su horario de trabajo  finalizó</p>
+                            ) : (
+                                <Nota actual={horaLocal} asistenciaId={asistencia?.id} onAsistencia={fetchAsistencia} />
                             )
                         ) : (
                             <p>Primero debe registrar su hora de entrada</p>
