@@ -30,7 +30,7 @@ export async function POST(request) {
 export async function GET() {
    const clientes = await FindAll("clientes");
    return NextResponse.json(clientes);
- }
+}
 
  export async function GETBYID({id}) {
   const cliente = await FindById("clientes",id)

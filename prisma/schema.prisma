@@ -72,6 +72,7 @@ model Clientes {
   fechaCreacion     DateTime @default(now())
   idUsuarioCreacion Int
   rfc               String
+  facturas  Facturas[]
 }
 
 model CategoriaProdVenta {
@@ -95,6 +96,7 @@ model ProductoVenta {
   tipoImagen           String
 
   fk_CategoriaProdVenta CategoriaProdVenta @relation(fields: [idCategoriaProdVenta], references: [idCategoriaProdVenta])
+  fk_detallesFactura     DetallesFactura[] 
 }
 
 model Horario {
@@ -188,4 +190,54 @@ model CategoriasProducto {
   NombreCategoria     String
   Descripcion         String?
   Productos           Productos[]
+}
+
+model InfoEmpresa {
+  idEmpresa       Int     @id @default(autoincrement())
+  nombre          String
+  nombreComercial String
+  identificacion  String
+  correo          String
+  telefono        String
+  celular         String
+  direccion       String
+  logo            Bytes?  @default(dbgenerated("null"))
+  tipoImagen      String?
+}
+
+model MedioPago {
+  idMedioPago Int @id @default(autoincrement())
+  nombre      String
+}
+
+model Facturas {
+  idFactura     Int              @id @default(autoincrement())
+  clienteId     Int
+  fechaEmision  DateTime
+  documentoJson Json
+  observaciones String
+  idMedioPago   Int
+  total         Decimal @db.Decimal(18, 5)
+  pagadoCon Decimal @db.Decimal(18, 5)
+  vuelto Decimal @db.Decimal(18, 5)
+
+  cliente   Clientes   @relation(fields: [clienteId], references: [clienteId])
+  detalles  DetallesFactura[]
+
+  @@index([clienteId], name: "idx_idCliente")
+}
+
+model DetallesFactura {
+  idDetalleFactura Int @id @default(autoincrement())
+  idFactura        Int
+  cantidad         Decimal @db.Decimal(18, 5)
+  descripcion      String
+  precio           Decimal @db.Decimal(18, 5)
+  idProductoVenta  Int
+
+  fk_factura Facturas @relation(fields: [idFactura], references: [idFactura])
+  fk_productoVenta  ProductoVenta  @relation(fields: [idProductoVenta], references: [idProductoVenta])
+
+
+  @@index([idFactura], name: "idx_idFactura")
 }
