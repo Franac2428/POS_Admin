@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-const HtmlFormSelect = ({ id, legend, colSize, options, additionalClass, selectedValue }) => {
+const HtmlFormSelect = ({ id, legend, colSize, options, additionalClass, selectedValue, onChange }) => {
     const [selectedOption, setSelectedOption] = useState('');
 
     useEffect(() => {
@@ -11,6 +11,9 @@ const HtmlFormSelect = ({ id, legend, colSize, options, additionalClass, selecte
 
     const handleSelectChange = (event) => {
         setSelectedOption(event.target.value);
+        if (onChange) {
+            onChange(event);
+        }
     };
 
     return (
@@ -23,7 +26,7 @@ const HtmlFormSelect = ({ id, legend, colSize, options, additionalClass, selecte
                 name={id}
                 value={selectedOption}
                 onChange={handleSelectChange}
-                className={`${additionalClass} bg-gray-50 border border-gray-300 text-gray-900 text-md rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-800 dark: border border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}>
+                className={`${additionalClass} bg-gray-50 border border-gray-300 text-gray-900 text-md rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}>
                 <option value="">---Seleccionar---</option>
                 {options && options.map((option, index) => (
                     <option key={index} value={option.value}>
