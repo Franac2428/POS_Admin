@@ -1,13 +1,15 @@
 'use client';
 
+import { useEffect, useState, useRef } from 'react';
+import * as XLSX from 'xlsx';
 import Agregar from "@/app/components/inventario/crearProducto";
 import Eliminar from "../../components/inventario/eliminarProducto";
 import Editar from "../../components/inventario/editar";
 import Ver from "../../components/inventario/ver";
-
+import Pedidos from "../../components/inventario/pedidos";
+import FiltroMenu from "../../components/buscador/filtros";
 import Buscador from "../../components/buscador/buscar";
-import { CirclePlus, FileUp, Pencil, SlidersHorizontal, Trash, Eye } from "lucide-react";
-import { useState, useEffect } from "react";
+import { CirclePlus, FileUp, Pencil, Trash, Eye, ClipboardList, Filter } from "lucide-react";
 import useSWR from 'swr';
 
 const fetcher = (url) => fetch(url).then((res) => res.json());
@@ -19,6 +21,17 @@ export default function Inventario() {
   const [editar, setEditar] = useState(false);
   const [selectedProductoId, setSelectedProductoId] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
+  const [pedidosOpen, setPedidosOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false); 
+  const [filtros, setFiltros] = useState({
+    filterCategoria: '',
+    filterEstado: '',
+    filterProveedor: ''
+  });
+
+  const filterButtonRef = useRef(null);
+  const menuRef = useRef(null);
+
   const { data, error, mutate } = useSWR('http://localhost:3000/api/inventario', fetcher);
 
   useEffect(() => {
@@ -31,21 +44,64 @@ export default function Inventario() {
     setSearchTerm(term);
   };
 
+  const handleFilterChange = (newFilters) => {
+    setFiltros(newFilters);
+  };
+
+  const handleExport = () => {
+    if (typeof document !== 'undefined') {
+      generateExcelReport(filteredData);
+    }
+  };
+
+  const generateExcelReport = (data) => {
+    const worksheet = XLSX.utils.json_to_sheet(data);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Inventario");
+
+    const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
+    const dataBlob = new Blob([excelBuffer], { type: "application/octet-stream" });
+    const downloadLink = document.createElement("a");
+    downloadLink.href = URL.createObjectURL(dataBlob);
+    downloadLink.download = "inventario.xlsx";
+    downloadLink.click();
+  };
+
   const filteredData = data ? data.filter(producto => 
-    producto.Nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    producto.ProductoID.toString().includes(searchTerm)
+    (producto.Nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    producto.ProductoID.toString().includes(searchTerm)) &&
+    (filtros.filterCategoria ? producto.CategoriaID === filtros.filterCategoria : true) &&
+    (filtros.filterEstado ? producto.Estado === filtros.filterEstado : true) &&
+    (filtros.filterProveedor ? producto.ProveedorID === filtros.filterProveedor : true)
   ) : [];
+
+  useEffect(() => {
+    if (isMenuOpen) {
+      const handleClickOutside = (event) => {
+        if (menuRef.current && !menuRef.current.contains(event.target) && filterButtonRef.current && !filterButtonRef.current.contains(event.target)) {
+          setIsMenuOpen(false);
+        }
+      };
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+      };
+    }
+  }, [isMenuOpen]);
 
   if (error) return <div>Error al cargar los datos</div>;
   if (!data) return <div>Cargando...</div>;
 
   return (
     <>
-      <div className="w-full">
+      <div className="w-full relative">
         <div className="md:grid gap-4 max-w-7xl mx-auto py-4 md:w-auto flex flex-col md:grid-cols-10 mb-3 md:mb-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
           <h1 className="font-semibold col-span-10 text-3xl text-gray-900 dark:text-gray-100">Inventario</h1>
-          <div className="col-span-3">
+          <div className="col-span-3 flex items-center relative">
             <Buscador onSearch={handleSearch} />
+            <button ref={filterButtonRef} onClick={() => setIsMenuOpen(!isMenuOpen)} className="ml-2 p-2 t-0 rounded-md bg-gray-200 dark:bg-gray-700">
+              <Filter className="text-gray-900 dark:text-gray-100" />
+            </button>
           </div>
           <div className="col-start-8 space-x-4 col-span-3">
             <div className="sm:w-auto flex gap-4 flex-row mb-3 md:mb-0 md:items-center justify-end md:space-x-3 flex-shrink-0">
@@ -53,9 +109,13 @@ export default function Inventario() {
                 <CirclePlus className="text-white" />
                 Agregar
               </button>
-              <button className="flex gap-3 shadow-lg text-green-500 dark:text-green-400 font-semibold bg-white dark:bg-gray-700 px-4 py-2 active:scale-95 transition-transform ease-in-out duration-75 hover:scale-105 transform border border-green-500 dark:border-green-400 rounded-lg">
+              <button onClick={handleExport} className="flex gap-3 shadow-lg text-green-500 dark:text-green-400 font-semibold bg-white dark:bg-gray-700 px-4 py-2 active:scale-95 transition-transform ease-in-out duration-75 hover:scale-105 transform border border-green-500 dark:border-green-400 rounded-lg">
                 <FileUp className="text-green-500 dark:text-green-400" />
                 Exportar
+              </button>
+              <button className="flex items-center gap-3 shadow-lg active:scale-95 transition-transform ease-in-out duration-75 hover:scale-105 transform text-white font-semibold bg-blue-500 dark:bg-blue-600 px-4 py-2 rounded-lg" onClick={() => setPedidosOpen(true)}>
+                <ClipboardList className="text-white" />
+                Pedidos
               </button>
             </div>
           </div>
@@ -94,6 +154,19 @@ export default function Inventario() {
         <Agregar open={agregar} onClose={() => setAgregar(false)} mutate={mutate} />
         <Editar open={editar} onClose={() => setEditar(false)} productoId={selectedProductoId} mutate={mutate} />
         <Ver open={ver} onClose={() => setVer(false)} productoId={selectedProductoId} />
+        <Pedidos open={pedidosOpen} onClose={() => setPedidosOpen(false)} />
+        {isMenuOpen && (
+          <div
+            ref={menuRef}
+            style={{
+              position: 'absolute',
+              top: filterButtonRef.current ? filterButtonRef.current.getBoundingClientRect().bottom + window.scrollY - 50 : 0,
+              left: filterButtonRef.current ? filterButtonRef.current.getBoundingClientRect().left + window.scrollX + 50 : 20
+            }}
+          >
+            <FiltroMenu onFilterChange={handleFilterChange} />
+          </div>
+        )}
       </div>
     </>
   );

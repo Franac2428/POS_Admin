@@ -11,3 +11,7 @@ INSERT INTO statusauditorialogin(`Status`)
 VALUES('No Existe')
 
 INSERT INTO categoriaprodventa VALUES (1,'Pollo Frito',1),(2,'Comida Rápida',1),(3,'Bebidas',1),(4,'Postres',1),(5,'Otros',1);
+
+INSERT INTO `pos`.`mediopago` (`nombre`) VALUES ('Efectivo');
+INSERT INTO `pos`.`mediopago` (`nombre`) VALUES ('Tarjeta');
+INSERT INTO `pos`.`mediopago` (`nombre`) VALUES ('Transferencia / Sinpe');

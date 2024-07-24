@@ -32,3 +32,23 @@ export async function FindSpecificOptions(model, selectFields) {
 
   return await db[model].findMany(queryOptions);
 }
+
+
+export async function FindWithLike(model, value, dbParameters) {
+  const whereOptions = {
+    OR: dbParameters.map(param => ({
+      [param]: {
+        contains: value,
+      }
+    }))
+  };
+
+  const queryOptions = {
+    where: whereOptions
+  };
+
+  console.log(queryOptions)
+
+  return await prisma[model].findMany(queryOptions);
+}
+
