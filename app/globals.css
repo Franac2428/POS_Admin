@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+@import 'react-big-calendar/lib/css/react-big-calendar.css'; 
 
 body {
   background: #f1f1f1;

@@ -6,7 +6,7 @@ export default function EditarCliente({ open, onClose }) {
         toast.success('Acción realizada con éxito');
         setTimeout(() => {
             onClose();
-        }, 1500);
+        });
     };
 
     const cliente = {

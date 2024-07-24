@@ -4,7 +4,7 @@ import HtmlTableButton from "../HtmlHelpers/TableButton";
 import EditarProdVenta from "./editarProdVenta";
 import EliminarProdVenta from "./eliminarProdVenta";
 
-export default function CartaComida({ producto,reloadTable }) {
+export default function CartaComida({ producto,reloadTable,agregarProductoTabla  }) {
   const [modalEliminar, openModalEliminar] = useState(false);
   const [modalEditar, openModalEditar] = useState(false);
   const [productoSeleccionado, setProductoSeleccionado] = useState(null);
@@ -28,7 +28,7 @@ export default function CartaComida({ producto,reloadTable }) {
 
         <HtmlTableButton color={"blue"} icon={Pencil} onClick={() => { openModalEditar(true); setProductoSeleccionado(producto); }} />
 
-        <HtmlTableButton color={"green"} icon={Plus} />
+        <HtmlTableButton color={"green"} icon={Plus} onClick={() => agregarProductoTabla(producto) } />
       </div>
       <EliminarProdVenta onClose={() => openModalEliminar(false)} open={modalEliminar} reloadTable={reloadTable} productoVenta={productoSeleccionado} />
       <EditarProdVenta onClose={() => openModalEditar(false)} open={modalEditar} reloadProducts={reloadTable} productoVenta={productoSeleccionado} />

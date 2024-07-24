@@ -19,7 +19,7 @@ export default function AddRole({ open, onClose, mutate }) {
                 const newRole = await res.json();
                 if (newRole) {
                     toast.success('Nuevo rol guardado con éxito');
-                    mutate(currentData => [...currentData, newRole], false);
+                    mutate();
                     onClose();
                     reset();
                 } else {
@@ -31,7 +31,6 @@ export default function AddRole({ open, onClose, mutate }) {
             }
         } catch (error) {
             console.error("Error en la solicitud:", error);
-            toast.error('Error en la solicitud');
         }
     });
 
