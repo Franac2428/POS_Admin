@@ -46,7 +46,9 @@ model Asistencia {
   entrada    DateTime
   salida     DateTime?
   observacion     String?
-  fecha      DateTime  @unique
+  fecha      DateTime
+  
+  @@unique([empleadoId, fecha])
 }
 
 model Metas {
