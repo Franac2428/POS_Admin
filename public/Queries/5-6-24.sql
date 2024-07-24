@@ -43,3 +43,15 @@ INSERT INTO pos.infoempresa (
     LOAD_FILE('/path/to/logo.jpg'), 
     'image/jpeg'
 );
+INSERT INTO CategoriasProducto (NombreCategoria, Descripcion)
+VALUES
+  ('Carnes', 'Productos de carne y embutidos'),
+  ('Vegetales', 'Vegetales y hortalizas frescas'),
+  ('Bebidas', 'Bebidas alcohólicas y no alcohólicas'),
+  ('Utensilios de Cocina', 'Herramientas y utensilios para cocina');
+INSERT INTO Proveedores (Nombre, Tipo, Direccion, Telefono, Email, Contacto)
+VALUES
+  ('Proveedor de Carne', 'Alimentos', '123 Calle Principal', '123-456-7890', 'proveedorcarne@example.com', 'Juan Pérez'),
+  ('Proveedor de Vegetales', 'Alimentos', '456 Avenida Secundaria', '987-654-3210', 'proveedorvegetales@example.com', 'Ana Gómez'),
+  ('Proveedor de Bebidas', 'Alimentos', '789 Calle Terciaria', '555-555-5555', 'proveedorbebidas@example.com', 'Carlos Sánchez'),
+  ('Proveedor de Utensilios', 'Hogar', '321 Boulevard Cuarto', '111-111-1111', 'proveedorutensilios@example.com', 'María López');

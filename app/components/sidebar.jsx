@@ -1,5 +1,5 @@
 'use client';
-import { BookUser, AlarmClock, BadgeCent, BriefcaseBusiness, ChevronFirst, ChevronLast, FileLineChart, LockKeyhole, LogOut, MoreVertical, Truck, Users, Utensils, Warehouse } from "lucide-react";
+import { BookUser, AlarmClock, BadgeCent, BriefcaseBusiness, ChevronFirst, ChevronLast, FileLineChart, LockKeyhole, LogOut, MoreVertical, Truck, Flag, Utensils, Warehouse } from "lucide-react";
 import Link from "next/link";
 import { createContext, useContext, useState } from "react";
 import ThemeButton from "./theme/ChangeTheme";
@@ -38,12 +38,12 @@ export default function Sidebar() {
     { icon: <Warehouse size={20} />, text: "Inventario", link: "/dashboard/inventario", subItems: [{ text: "Inventario", link: "/dashboard/inventario" }, { text: "Proveedores", link: "/dashboard/proveedores" }, { text: "Categorías", link: "/dashboard/categorias" }] },
     session?.user?.role === "Administrador" && { icon: <FileLineChart size={20} />, text: "Reportes", link: "/dashboard/reporteria" },
     session?.user?.role === "Administrador" && { icon: <BadgeCent size={20} />, text: "Transacciones", link: "/dashboard/transacciones" },
-    session?.user?.role === "Administrador" && { icon: <BriefcaseBusiness size={20} />, text: "Empleados", link: "/dashboard/empleado" },
+    session?.user?.role === "Administrador" && { icon: <BriefcaseBusiness size={20} />, text: "Empleados", link: "/dashboard/empleado", subItems: [{ text: "Empleados", link: "/dashboard/empleado" }, { text: "Metas", link: "/dashboard/metas" }] },
     { icon: <BookUser size={20} />, text: "Clientes", link: "/dashboard/clientes" },
     session?.user?.role === "Administrador" && { icon: <LockKeyhole size={20} />, text: "Seguridad", link: "/dashboard/seguridad", subItems: [{ text: "Usuarios", link: "/dashboard/seguridad" }, { text: "Auditoría", link: "/dashboard/auditoria" }] },
     session?.user?.role === "Administrador" && { icon: <Truck size={20} />, text: "Pedidos", link: "/dashboard/pedido" },
     { icon: <AlarmClock size={20} />, text: "Monitorizar horarios", link: "/dashboard/horas" },
-    { icon: <hr className="my-3" /> },
+    { icon: <Flag size={20} />, text: "Marcar Hora", link: "/dashboard/marcar" },
     { icon: <LogOut size={20} />, text: "Cerrar Sesión", link: "/api/auth/signout" },
   ].filter(Boolean); // Filtrar elementos nulos
 
