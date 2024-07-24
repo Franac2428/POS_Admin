@@ -1,8 +1,6 @@
 import { X } from "lucide-react";
-import { useState } from "react";
 
 export default function PrintTicket({ open, onClose, json }) {
-    const [facturaObj, setFacturaObj] = useState(null);
 
     function imprimirFactura() {
         const contenidoModal = document.querySelector('#modalContent').innerHTML;
@@ -19,6 +17,7 @@ export default function PrintTicket({ open, onClose, json }) {
             .join('');
 
         const ventanaImpresion = window.open('', '_blank');
+        onClose();
         
         ventanaImpresion.document.write('<html><head><title>Impresión de Factura</title>');
         ventanaImpresion.document.write('<style>' + styles + '</style>');
