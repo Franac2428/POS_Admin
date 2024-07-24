@@ -25,9 +25,12 @@ model Usuarios {
   emailVerified          Boolean @default(false)
   emailVerificationToken String? @unique
 
-  horarios AsignacionHorario[]
+  horarioId   Int?
+  Horario     Horario?  @relation(fields: [horarioId], references: [Id])
+
+
   roleId   Int
-  Role     Role                @relation(fields: [roleId], references: [IdRole])
+  Role     Role       @relation(fields: [roleId], references: [IdRole])
  
   asistencias Asistencia[]
   metas Metas[]
@@ -125,18 +128,12 @@ model ProductoVenta {
 model Horario {
   Id         Int                 @id @default(autoincrement())
   Dia        String
-  HoraInicio String
-  HoraFin    String
-  empleados  AsignacionHorario[]
+  HoraInicio DateTime
+  HoraFin    DateTime
+  usuarios Usuarios[]
 }
 
-model AsignacionHorario {
-  AsignacionID Int      @id @default(autoincrement())
-  EmpleadoID   Int
-  HorarioID    Int
-  empleado     Usuarios @relation(fields: [EmpleadoID], references: [Id])
-  horario      Horario  @relation(fields: [HorarioID], references: [Id])
-}
+
 
 model Pedido {
   id                Int       @id @default(autoincrement())

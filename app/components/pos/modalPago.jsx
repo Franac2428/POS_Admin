@@ -7,33 +7,21 @@ import HtmlFormInput from "../HtmlHelpers/FormInput";
 import HtmlFormSelect from "../HtmlHelpers/FormSelect";
 import HtmlTextArea from "../HtmlHelpers/TextArea";
 
-
-
-export default function ModalRegistrarPago({ open, onClose, objFactura,onReload }) {
+export default function ModalRegistrarPago({ open, onClose, objFactura, onReload }) {
   const [pagaCon, setPagaCon] = useState("");
   const [vuelto, setVuelto] = useState(0);
   const [faltante, setFaltante] = useState(0);
   const [medioPagoSeleccionado, onSelect_MedioPago] = useState("");
   const [disableFields, onDisable_Fields] = useState(true);
-  const [observaciones,setObservaciones] = useState('');
+  const [observaciones, setObservaciones] = useState('');
   const [showBtn, onShow_Btn] = useState(false);
-  const [modalPrint,onModal_Print] = useState(false);
-  const [objectJson,onSet_ObjectJson] = useState(null);
+  const [modalPrint, onModal_Print] = useState(false);
+  const [objectJson, onSet_ObjectJson] = useState(null);
 
-
-  var listaMediosPago =[
-    {
-      IdMedioPago:1,
-      Nombre:"Efectivo"
-    },
-    {
-      IdMedioPago:2,
-      Nombre:"Tarjeta"
-    },
-    {
-      IdMedioPago:3,
-      Nombre:"Transferencia / Sinpe"
-    }
+  const listaMediosPago = [
+    { IdMedioPago: 1, Nombre: "Efectivo" },
+    { IdMedioPago: 2, Nombre: "Tarjeta" },
+    { IdMedioPago: 3, Nombre: "Transferencia / Sinpe" }
   ];
 
   const mediosPago = listaMediosPago.map(medio => ({
@@ -48,7 +36,7 @@ export default function ModalRegistrarPago({ open, onClose, objFactura,onReload 
   };
 
   const onChange_PagaCon = (value) => {
-    const total = objFactura.Total;
+    const total = objFactura ? objFactura.Total : 0;
     const pagaConNumber = Number(value);
 
     if (isNaN(pagaConNumber)) {
@@ -61,13 +49,11 @@ export default function ModalRegistrarPago({ open, onClose, objFactura,onReload 
       setVuelto(pagaConNumber - total);
       setFaltante(0);
       onShow_Btn(true);
-    } 
-    else if (pagaConNumber < total) {
+    } else if (pagaConNumber < total) {
       setFaltante((total - pagaConNumber) * -1);
       setVuelto(0);
       onShow_Btn(false);
-    } 
-    else {
+    } else {
       setVuelto(0);
       setFaltante(0);
       onShow_Btn(true);
@@ -76,74 +62,61 @@ export default function ModalRegistrarPago({ open, onClose, objFactura,onReload 
 
   const onChange_MedioPago = (event) => {
     const value = event.target.value;
-    onSelect_MedioPago(value)
-    onHideShow_Inputs(value)
+    onSelect_MedioPago(value);
+    onHideShow_Inputs(value);
+  };
 
-  }
-
-  
-  const onHideShow_Inputs = (val) =>{
-    if(val == ""){
-      setPagaCon(0)
+  const onHideShow_Inputs = (val) => {
+    if (val === "") {
+      setPagaCon(0);
       setVuelto(0);
       setFaltante(0);
       onDisable_Fields(true);
       onShow_Btn(false);
-
-    }
-    else if(val == "2" || val == "3"){
-      setPagaCon(objFactura.Total)
+    } else if (val === "2" || val === "3") {
+      setPagaCon(objFactura ? objFactura.Total : 0);
       setVuelto(0);
       setFaltante(0);
       onDisable_Fields(true);
       onShow_Btn(true);
-
-    }
-    else{
-      setPagaCon(objFactura.Total)
+    } else {
+      setPagaCon(objFactura ? objFactura.Total : 0);
       onDisable_Fields(false);
       onShow_Btn(true);
     }
-  }
+  };
 
-    //#region [OBSERVACIONES]
-    const onChange_Observaciones = (event) => {
-      setObservaciones(event.target.value); 
+  const onChange_Observaciones = (event) => {
+    setObservaciones(event.target.value);
+  };
+
+  const onValidate_GuardarFact = () => {
+    let nodeMedioPago = {
+      IdMedioPago: GetValueById("selMedioPago"),
+      DescripcionMedioPago: GetHtmlValueById("selMedioPago"),
+      MontoFactura: objFactura ? objFactura.Total : 0,
+      PagaCon: Number(GetValueById("txtPagaCon")),
+      Vuelto: Number(GetValueById("txtVueltoFact"))
     };
-  
-    //#endregion
 
-    //#region [FACTURAR]
-    function onValidate_GuardarFact(){
-      
-      let nodeMedioPago = {
-        IdMedioPago:GetValueById("selMedioPago"),
-        DescripcionMedioPago: GetHtmlValueById("selMedioPago"),
-        MontoFactura: objFactura.Total,
-        PagaCon:Number(GetValueById("txtPagaCon")) ,
-        Vuelto:Number(GetValueById("txtVueltoFact")) 
-      }
-      
-      objFactura.Pago = nodeMedioPago;
-      objFactura.Observaciones = observaciones;
+    objFactura.Pago = nodeMedioPago;
+    objFactura.Observaciones = observaciones;
 
-      console.log(objFactura)
-      onSet_ObjectJson(objFactura);
-      onSave_Factura(objFactura);
+    console.log(objFactura);
+    onSet_ObjectJson(objFactura);
+    onSave_Factura(objFactura);
+  };
 
-
-   }
-
-   async function onSave_Factura(documentoJson){
-    try{
-      const response = await fetch('/api/pos',{
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
+  const onSave_Factura = async (documentoJson) => {
+    try {
+      const response = await fetch('/api/pos', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(documentoJson)
       });
 
-      if(response.ok){
-        const data =  await response.json();
+      if (response.ok) {
+        const data = await response.json();
         console.log(data);
         onClose();
         toast.success('Factura registrada satisfactoriamente');
@@ -153,26 +126,20 @@ export default function ModalRegistrarPago({ open, onClose, objFactura,onReload 
           onSelect_MedioPago("");
           onModal_Print(true);
         }, 500);
-      }
-      else {
+      } else {
         throw new Error(`Error: ${response.statusText}`);
       }
-    }
-    catch(error){
+    } catch (error) {
       toast.error("Sucedió un error registrar la factura", error);
       console.error(error);
     }
-   }
-
-
-
-
+  };
 
   useEffect(() => {
     setVuelto(0);
     setFaltante(0);
-    if(objFactura){
-      setObservaciones("Dirección: " + objFactura.Receptor.Direccion.DireccionExacta + "\n")
+    if (objFactura) {
+      setObservaciones("Dirección: " + objFactura.Receptor.Direccion.DireccionExacta + "\n");
     }
   }, [open]);
 
@@ -184,15 +151,15 @@ export default function ModalRegistrarPago({ open, onClose, objFactura,onReload 
     <div
       onClick={onClose}
       className={`fixed inset-0 flex justify-center items-center transition-opacity ${open ? "visible bg-black bg-opacity-40 dark:bg-opacity-50" : "invisible"}`}>
-      <div 
-        onClick={(e) => e.stopPropagation()} 
+      <div
+        onClick={(e) => e.stopPropagation()}
         className={`bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 transition-all ${open ? "scale-100 opacity-100" : "scale-90 opacity-0"} max-w-3xl w-full md:w-2/3 lg:w-6/12`}>
-        <button 
-          onClick={onClose} 
+        <button
+          onClick={onClose}
           className="absolute top-4 right-4 p-2 rounded-lg text-gray-400 hover:bg-gray-100 hover:text-gray-600 dark:hover:bg-gray-700 dark:hover:text-gray-300">
           <X size={20} strokeWidth={2} />
         </button>
-        
+
         <div className="flex flex-col items-center">
           <div className="text-center w-full">
             <h2 className="text-xl font-bold flex gap-3 justify-center items-center text-gray-900 dark:text-gray-100">
@@ -201,8 +168,8 @@ export default function ModalRegistrarPago({ open, onClose, objFactura,onReload 
             <hr className="my-3 py-0.5 border-black dark:border-white" />
           </div>
           <div className="grid gap-4 mb-4 grid-cols-3">
-            <HtmlFormInput value={"₡ " + objFactura.Total} disabled={true} colSize={1} legend={"Monto Total"} />
-            <HtmlFormSelect legend={"Medio de Pago"} options={mediosPago} colSize={1} id={"selMedioPago"} onChange={onChange_MedioPago}/>
+            <HtmlFormInput value={"₡ " + (objFactura ? objFactura.Total : 0)} disabled={true} colSize={1} legend={"Monto Total"} />
+            <HtmlFormSelect legend={"Medio de Pago"} options={mediosPago} colSize={1} id={"selMedioPago"} onChange={onChange_MedioPago} />
             <HtmlFormInput id={"txtPagaCon"} type={"number"} disabled={disableFields} onChange={onChange_PagaConInput} value={pagaCon} colSize={1} legend={"Paga Con"} />
           </div>
 
@@ -221,11 +188,10 @@ export default function ModalRegistrarPago({ open, onClose, objFactura,onReload 
             />
           </div>
 
-
           <div className="grid gap-4 mt-4 grid-cols-4">
             <div className={`col-span-2`}>
-              {showBtn &&  (
-                <HtmlButton colSize={2} legend={"Facturar"} icon={File} color={"blue"} onClick={onValidate_GuardarFact}/>
+              {showBtn && (
+                <HtmlButton colSize={2} legend={"Facturar"} icon={File} color={"blue"} onClick={onValidate_GuardarFact} />
               )}
             </div>
             <div className={`col-span-2`}>
