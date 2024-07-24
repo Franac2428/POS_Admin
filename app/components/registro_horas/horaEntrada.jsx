@@ -1,4 +1,3 @@
-import React from 'react';
 import * as AlertDialog from '@radix-ui/react-alert-dialog';
 import { Toaster, toast } from 'sonner';
 
@@ -52,7 +51,7 @@ const Entrada = ({ actual, usuarioId, onAsistencia }) => {
             <AlertDialog.Root>
                 <AlertDialog.Trigger asChild>
                     <button className="px-4 py-2 text-gray-900 dark:text-gray-200 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01] ease-in-out transform bg-blue-600 bg-opacity-50 rounded-md">
-                        Marcar Entrada
+                        Marcar entrada
                     </button>
                 </AlertDialog.Trigger>
                 <AlertDialog.Portal>

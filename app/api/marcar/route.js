@@ -22,21 +22,26 @@ export async function POST(request) {
       },
     });
 
+    console.log("error findfirst: " + existingAsistencia);
+
     if (existingAsistencia) {
       return NextResponse.json({ error: 'Ya existe una asistencia registrada para este empleado en la misma fecha' }, { status: 400 });
-    }else{
-      
+    }
+    else{
+      const nuevoasistencia = await db.asistencia.create({
+        data: {
+          empleadoId,
+          entrada,
+          fecha,
+        },
+      });
+
+      return NextResponse.json(nuevoasistencia, { status: 201 });
+
     }
 
-    const nuevoasistencia = await db.asistencia.create({
-      data: {
-        empleadoId,
-        entrada,
-        fecha,
-      },
-    });
+    
 
-    return NextResponse.json(nuevoasistencia, { status: 201 });
   } catch (error) {
     console.error(error);
     return NextResponse.json({ error: 'Error al crear el asistencia' }, { status: 500 });

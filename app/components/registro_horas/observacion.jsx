@@ -1,8 +1,8 @@
 'use client'
 
 import * as Dialog from '@radix-ui/react-dialog';
-import React, { useState } from "react";
-import { Toaster, toast } from 'sonner';
+import { useState } from "react";
+import { toast } from 'sonner';
 
 
 const Nota = ({ actual, asistenciaId, onAsistencia }) => {
@@ -73,7 +73,7 @@ const Nota = ({ actual, asistenciaId, onAsistencia }) => {
             </Dialog.Close>
             <Dialog.Close asChild>
                 <button onClick={handleEditar} className="text-white bg-green-500 inline-flex h-[35px] items-center justify-center rounded-[4px] px-[15px] font-medium leading-none outline-none focus:shadow-[0_0_0_2px]">
-                    Sí, guardar notas
+                    Sí, guardar nota
                 </button>
             </Dialog.Close>
         </div>

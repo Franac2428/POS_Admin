@@ -19,8 +19,6 @@ export default function ModalRegistrarPago({ open, onClose, objFactura,onReload 
   const [showBtn, onShow_Btn] = useState(false);
   const [modalPrint,onModal_Print] = useState(false);
   const [objectJson,onSet_ObjectJson] = useState(null);
-  const [consecutivo,onSet_Consecutivo] = useState(null);
-
 
 
   var listaMediosPago =[
@@ -62,12 +60,17 @@ export default function ModalRegistrarPago({ open, onClose, objFactura,onReload 
     if (pagaConNumber > total) {
       setVuelto(pagaConNumber - total);
       setFaltante(0);
-    } else if (pagaConNumber < total) {
+      onShow_Btn(true);
+    } 
+    else if (pagaConNumber < total) {
       setFaltante((total - pagaConNumber) * -1);
       setVuelto(0);
-    } else {
+      onShow_Btn(false);
+    } 
+    else {
       setVuelto(0);
       setFaltante(0);
+      onShow_Btn(true);
     }
   };
 
@@ -118,7 +121,7 @@ export default function ModalRegistrarPago({ open, onClose, objFactura,onReload 
         DescripcionMedioPago: GetHtmlValueById("selMedioPago"),
         MontoFactura: objFactura.Total,
         PagaCon:Number(GetValueById("txtPagaCon")) ,
-        Vuelto:Number(GetValueById("txtVuelto")) 
+        Vuelto:Number(GetValueById("txtVueltoFact")) 
       }
       
       objFactura.Pago = nodeMedioPago;
@@ -149,7 +152,7 @@ export default function ModalRegistrarPago({ open, onClose, objFactura,onReload 
           onReload(objFactura);
           onSelect_MedioPago("");
           onModal_Print(true);
-        }, 2000);
+        }, 500);
       }
       else {
         throw new Error(`Error: ${response.statusText}`);
@@ -203,9 +206,9 @@ export default function ModalRegistrarPago({ open, onClose, objFactura,onReload 
             <HtmlFormInput id={"txtPagaCon"} type={"number"} disabled={disableFields} onChange={onChange_PagaConInput} value={pagaCon} colSize={1} legend={"Paga Con"} />
           </div>
 
-          <div className="grid gap-4 mb-4 grid-cols-12 w-full">
-            <HtmlFormInput id={"txtVuelto"} disabled={true} type={"number"} value={vuelto} colSize={6} legend={"Vuelto"} />
-            <HtmlFormInput id={"txtFaltante"} disabled={true} type={"number"} value={faltante} colSize={6} legend={"Faltante"} />
+          <div className="grid gap-4 mb-4 grid-cols-2">
+            <HtmlFormInput id={"txtVueltoFact"} disabled={true} type={"number"} value={vuelto} colSize={1} legend={"Vuelto"} />
+            <HtmlFormInput id={"txtFaltanteFact"} disabled={true} type={"number"} value={faltante} colSize={6} legend={"Faltante"} />
           </div>
 
           <div className="grid gap-4 mb-4 w-full">
