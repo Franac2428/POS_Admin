@@ -1,8 +1,10 @@
-import React from 'react';
-import Adjuntar from './adjuntar';
+'use client';
+
+import React, { useState } from 'react';
+import useSWR, { mutate } from 'swr';
 import Eliminar from './eliminar';
-import { ScrollText, Trash, ArrowDownToLine } from "lucide-react";
-import useSWR from 'swr';
+import DetallePedido from '@/app/components/inventario/detallePedido';
+import { Eye } from "lucide-react";
 
 const Historial = () => {
     const { data, error } = useSWR('http://localhost:3000/api/pedido', async (url) => {
@@ -11,15 +13,21 @@ const Historial = () => {
         return data;
     });
 
+    const [selectedPedido, setSelectedPedido] = useState(null);
+
     if (error) return <div>Error al cargar los datos</div>;
     if (!data) return <div>Cargando...</div>;
     if (!data || !Array.isArray(data)) return <div>No hay datos disponibles</div>;
 
-    // Filtrar los pedidos que están finalizados
     const pedidosFinalizados = data.filter(pedido => pedido.estado === 'FINALIZADO');
 
+    const eliminarPedido = (pedidoId) => {
+        // Actualiza los datos después de eliminar un pedido
+        mutate('http://localhost:3000/api/pedido', data.filter(pedido => pedido.id !== pedidoId), false);
+    };
+
     return (
-        <>  
+        <>
             <fieldset className="mb-[15px] w-full flex flex-col justify-start shadow-lg col-span-10 overflow-x-auto bg-white dark:bg-gray-700 px-5 py-4 rounded-lg">
                 <table className="w-full text-left">
                     <thead>
@@ -41,17 +49,17 @@ const Historial = () => {
                                 <td className="text-sm text-gray-900 dark:text-gray-200">{new Date(pedido.createdAt).toLocaleDateString()}</td>
                                 <td className="text-sm text-gray-900 dark:text-gray-200">{new Date(pedido.updatedAt).toLocaleDateString()}</td>
                                 <td className="flex gap-2 my-2">
-                                    <Adjuntar />
-                                    <button className="p-1.5 text-gray-900 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01] ease-in-out transform bg-yellow-600 bg-opacity-50 rounded-md" onClick={() => setDescarga(true)}>
-                                        <ArrowDownToLine size={15} strokeWidth={2.2} />
+                                    <button className="p-1.5 text-gray-900 dark:text-gray-200 bg-green-600 bg-opacity-50 rounded-md" onClick={() => setSelectedPedido(pedido)}>
+                                        <Eye size={15} strokeWidth={2.2} />
                                     </button>
-                                    <Eliminar />
+                                    <Eliminar pedidoId={pedido.id} onEliminar={eliminarPedido} />
                                 </td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
-            </fieldset>      
+            </fieldset>
+            <DetallePedido pedido={selectedPedido} onClose={() => setSelectedPedido(null)} />
         </>
     );
 }

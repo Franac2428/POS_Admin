@@ -12,6 +12,30 @@ body {
   border-bottom: 1px dashed black;
 }
 
+/* Estilos personalizados para los mensajes en modo oscuro */
+.rbc-toolbar button {
+  @apply dark:text-gray-200; /* Aplicar color de texto claro */
+}
+
+.rbc-toolbar .rbc-btn-group button {
+  @apply dark:bg-gray-800; /* Fondo oscuro y texto claro */
+}
+
+.rbc-toolbar .rbc-btn-group button {
+  @apply dark:text-gray-200; /* Fondo oscuro y texto claro */
+}
+.rbc-toolbar .rbc-btn-group button {
+  @apply dark:text-gray-200; /* Fondo oscuro y texto claro */
+}
+
+.rbc-toolbar .rbc-btn-group button:hover {
+  @apply dark:bg-gray-700; /* Fondo oscuro cuando se pasa el cursor */
+}
+
+.rbc-no-events {
+  @apply dark:text-gray-200; /* Texto claro para mensajes de no eventos */
+}
+
 
 /*CUSTOM
 

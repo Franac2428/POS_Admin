@@ -7,26 +7,16 @@ import useSWR from 'swr';
 import { useSession } from "next-auth/react";
 import 'moment/locale/es'
 
-const MyCalendar = () => {
+const MyCalendar = ({fechas}) => {
     const localizer = useMemo(() => momentLocalizer(moment), []);
     const [date, setDate] = useState(new Date()); 
     const [view, setView] = useState(Views.WEEK);
-    const { data: session, status } = useSession(); 
-    const employeeId = session?.user?.id;
 
     const onNavigate = useCallback((newDate) => setDate(newDate), []);
     const onView = useCallback((newView) => setView(newView), []);
-    const { data, error } = useSWR(employeeId ? `http://localhost:3000/api/calendario/${employeeId}` : null, async (url) => {
-        const response = await fetch(url);
-        const data = await response.json();
-        return data;
-    });
+   
 
-    if (error) return <div>Error al cargar los datos</div>;
-    if (!data) return <div>Cargando...</div>;
-    if (!Array.isArray(data)) return <div>No hay datos disponibles</div>;
-
-    const demoEvents = data.map((asistencia) => {
+    const demoEvents = fechas.map((asistencia) => {
         const entrada = moment(asistencia.entrada, "YYYY-MM-DDTHH:mm:ss").toDate();
         const salida = moment(asistencia.salida, "YYYY-MM-DDTHH:mm:ss").toDate();
 

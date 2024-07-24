@@ -15,6 +15,7 @@ export default function HorariosLista({ days, entryhours, exithours, importDate,
     useEffect(() => {
         initFlowbite(); // Inicializamos Flowbite una vez que el componente se ha montado
     }, []);
+    
 
     return (
         <>
