@@ -1,11 +1,10 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import { useSession } from "next-auth/react";
+import { useEffect, useState } from 'react';
+import { Toaster, toast } from 'sonner';
 import Entrada from './horaEntrada';
 import Salida from './horaSalida';
 import Nota from './observacion';
-import { useSession } from "next-auth/react";
-import { Toaster, toast } from 'sonner';
-import { mutate } from 'swr';
 import MyCalendar from './vistaAsistencia';
 
 const RegistroHoras = () => {
@@ -65,7 +64,7 @@ const RegistroHoras = () => {
     const horaSalida = new Date(salida).toUTCString().split(' ')[4];
     return (
         <div className="container mx-auto px-4 py-8 text-gray-900 dark:text-gray-100">
-            <h1 className="text-2xl font-bold mb-4">Registro de horas para el día {dia}  {pru} de {mesEsp} del {ano}</h1>
+            <h1 className="text-2xl font-bold mb-4">Registro de horas para el día {dia} de {mesEsp} del {ano}</h1>
             <div className="grid grid-cols-3 gap-4">
             <div className="shadow-lg bg-white dark:bg-gray-700 p-4 rounded-lg">
                 <h2 className="text-lg font-semibold mb-2">Hora de entrada</h2>
