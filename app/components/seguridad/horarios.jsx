@@ -22,6 +22,7 @@ export default function HorariosList() {
         return data;
     });
 
+
     if (error) return <div>Error al cargar los datos</div>;
     if (!data) return <div>Cargando...</div>;
     if (!Array.isArray(data)) return <div>No hay datos disponibles</div>;
@@ -70,8 +71,14 @@ export default function HorariosList() {
                                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                     {horario.Dia}
                                 </th>
-                                <td className="px-6 py-4">{horario.HoraInicio}</td>
-                                <td className="px-6 py-4">{horario.HoraFin}</td>
+                                <td className="px-6 py-4">{new Date(horario.HoraInicio).toLocaleTimeString('es-ES', {
+                                                                                                    hour: '2-digit',
+                                                                                                    minute: '2-digit',
+                                                                                                })}</td>
+                                <td className="px-6 py-4">{new Date(horario.HoraFin).toLocaleTimeString('es-ES', {
+                                                                                                    hour: '2-digit',
+                                                                                                    minute: '2-digit',
+                                                                                                })}</td>
                                 <td className="px-6 py-4 text-right">
                                     <button
                                         type='button'
