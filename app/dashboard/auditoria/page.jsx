@@ -18,7 +18,6 @@ export default function RegistroAuditoria() {
 
     return (
         <>
-        <section className="bg-gray-50 dark:bg-gray-900 p-3 sm:p-5">
         <div className="mx-auto max-w-screen-xl px-4 lg:px-12">
         {/* Start coding here */}
         <div className="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
@@ -55,138 +54,12 @@ export default function RegistroAuditoria() {
             </form>
         </div> */}
         <div className="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
-            <div className="flex items-center space-x-3 w-full md:w-auto">
-                <div
-                    id="actionsDropdown"
-                    className="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600"
-                    >
-                    <ul
-                    className="py-1 text-sm text-gray-700 dark:text-gray-200"
-                    aria-labelledby="actionsDropdownButton"
-                    >
-                    <li>
-                        <a
-                            href="#"
-                            className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                            >
-                        Mass Edit
-                        </a>
-                    </li>
-                    </ul>
-                    <div className="py-1">
-                    <a
-                        href="#"
-                        className="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-                        >
-                    Delete all
-                    </a>
-                    </div>
-                </div>
-                
-                <div
-                    id="filterDropdown"
-                    className="z-10 hidden w-48 p-3 bg-white rounded-lg shadow dark:bg-gray-700"
-                    >
-                    <h6 className="mb-3 text-sm font-medium text-gray-900 dark:text-white">
-                    Choose brand
-                    </h6>
-                    <ul
-                    className="space-y-2 text-sm"
-                    aria-labelledby="filterDropdownButton"
-                    >
-                    <li className="flex items-center">
-                        <input
-                            id="apple"
-                            type="checkbox"
-                            defaultValue=""
-                            className="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                            />
-                        <label
-                            htmlFor="apple"
-                            className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100"
-                            >
-                        Inicio Sesion (56)
-                        </label>
-                    </li>
-                    <li className="flex items-center">
-                        <input
-                            id="fitbit"
-                            type="checkbox"
-                            defaultValue=""
-                            className="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                            />
-                        <label
-                            htmlFor="fitbit"
-                            className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100"
-                            >
-                        Logout (56)
-                        </label>
-                    </li>
-                    <li className="flex items-center">
-                        <input
-                            id="razor"
-                            type="checkbox"
-                            defaultValue=""
-                            className="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                            />
-                        <label
-                            htmlFor="razor"
-                            className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100"
-                            >
-                        Usuario creado (4)
-                        </label>
-                    </li>
-                    <li className="flex items-center">
-                        <input
-                            id="nikon"
-                            type="checkbox"
-                            defaultValue=""
-                            className="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                            />
-                        <label
-                            htmlFor="nikon"
-                            className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100"
-                            >
-                        Horario modifi (12)
-                        </label>
-                    </li>
-                    <li className="flex items-center">
-                        <input
-                            id="benq"
-                            type="checkbox"
-                            defaultValue=""
-                            className="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                            />
-                        <label
-                            htmlFor="benq"
-                            className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100"
-                            >
-                        Fecha modifi (23)
-                        </label>
-                    </li>
-                    <li className="flex items-center">
-                        <input
-                            id="dell"
-                            type="checkbox"
-                            defaultValue=""
-                            className="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                            />
-                        <label
-                            htmlFor="dell"
-                            className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100"
-                            >
-                        Curso creado (15)
-                        </label>
-                    </li>
-                    </ul>
-                </div>
-            </div>
             <button
                 type="button"
                 onClick={RespaldarBase}
                 className="w-full md:w-auto flex items-center justify-center py-2 px-4 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-                > Respaldar Base de Datos</button>
-
+                > Respaldar Base de Datos
+                </button>
         </div>
         </div>
         <div className="overflow-x-auto">
@@ -232,7 +105,6 @@ export default function RegistroAuditoria() {
         </div>
         </div>
         </div>
-        </section>
         </>
     );
 }

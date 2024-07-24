@@ -1,28 +1,29 @@
+'use client'
 import React from 'react';
+import useSWR from 'swr';
+
+const fetcher = async (url) => {
+    const response = await fetch(url);
+    if (!response.ok) {
+        throw new Error('Error al cargar los datos');
+    }
+    const data = await response.json();
+    return data;
+};
 
 const EvaluacionesDesempeno = () => {
-    // Datos de ejemplo de evaluaciones y observaciones
-    const evaluaciones = [
-        {
-            id: 1,
-            empleado: 'Empleado 1',
-            fecha: '2024-04-10',
-            observacion: 'Buen desempeño en el proyecto X. Se destaca por su capacidad para trabajar en equipo.',
-        },
-        {
-            id: 2,
-            empleado: 'Empleado 2',
-            fecha: '2024-04-11',
-            observacion: 'El empleado ha mostrado una mejora constante en su rendimiento. Se recomienda continuar así.',
-        },
-        {
-            id: 3,
-            empleado: 'Empleado 3',
-            fecha: '2024-04-11',
-            observacion: 'Hubo pérdidas de inventario. Estamos en contacto.',
-        },
-        // Más evaluaciones...
-    ];
+    const { data, error } = useSWR('http://localhost:3000/api/metas', fetcher);
+
+    if (error) return <div>Error al cargar los datos</div>;
+    if (!data) return <div>Cargando...</div>;
+    if (!Array.isArray(data)) return <div>No hay datos disponibles</div>;
+
+    const evaluaciones = data.map((evaluacion) => ({
+        id: evaluacion.id,
+        empleado: evaluacion.empleado?.nombre || 'Desconocido',
+        fecha: new Date(evaluacion.fecha).toLocaleDateString(),
+        observacion: evaluacion.observaciones,
+    }));
 
     return (
         <div className="max-w-7xl mx-auto py-4">

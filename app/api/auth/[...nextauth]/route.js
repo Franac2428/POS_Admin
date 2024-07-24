@@ -53,7 +53,7 @@ const authOptions = {
                 } else {
                     await auditUpdate(scopeIdAuditoria, 3, "Ingreso satisfactorio")
                     return {
-                        id: userFound.id,
+                        id: userFound.Id,
                         name: userFound.nombre,
                         email: userFound.email,
                         role: userFound.Role.Descripcion
