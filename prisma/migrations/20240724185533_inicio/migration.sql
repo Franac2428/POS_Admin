@@ -24,6 +24,29 @@ CREATE TABLE `usuarios` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
+CREATE TABLE `Asistencia` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `empleadoId` INTEGER NOT NULL,
+    `entrada` DATETIME(3) NOT NULL,
+    `salida` DATETIME(3) NULL,
+    `observacion` VARCHAR(191) NULL,
+    `fecha` DATETIME(3) NOT NULL,
+
+    UNIQUE INDEX `Asistencia_fecha_key`(`fecha`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Metas` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `empleadoId` INTEGER NOT NULL,
+    `observaciones` VARCHAR(191) NULL,
+    `fecha` DATETIME(3) NOT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
 CREATE TABLE `StatusAuditoriaLogin` (
     `IdStatusAuditoriaLogin` INTEGER NOT NULL AUTO_INCREMENT,
     `Status` VARCHAR(191) NOT NULL,
@@ -202,12 +225,59 @@ CREATE TABLE `InfoEmpresa` (
     `identificacion` VARCHAR(191) NOT NULL,
     `correo` VARCHAR(191) NOT NULL,
     `telefono` VARCHAR(191) NOT NULL,
+    `celular` VARCHAR(191) NOT NULL,
+    `direccion` VARCHAR(191) NOT NULL,
+    `logo` LONGBLOB NULL DEFAULT null,
+    `tipoImagen` VARCHAR(191) NULL,
 
     PRIMARY KEY (`idEmpresa`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
+-- CreateTable
+CREATE TABLE `MedioPago` (
+    `idMedioPago` INTEGER NOT NULL AUTO_INCREMENT,
+    `nombre` VARCHAR(191) NOT NULL,
+
+    PRIMARY KEY (`idMedioPago`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Facturas` (
+    `idFactura` INTEGER NOT NULL AUTO_INCREMENT,
+    `clienteId` INTEGER NOT NULL,
+    `fechaEmision` DATETIME(3) NOT NULL,
+    `documentoJson` JSON NOT NULL,
+    `observaciones` VARCHAR(191) NOT NULL,
+    `idMedioPago` INTEGER NOT NULL,
+    `total` DECIMAL(18, 5) NOT NULL,
+    `pagadoCon` DECIMAL(18, 5) NOT NULL,
+    `vuelto` DECIMAL(18, 5) NOT NULL,
+
+    INDEX `idx_idCliente`(`clienteId`),
+    PRIMARY KEY (`idFactura`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `DetallesFactura` (
+    `idDetalleFactura` INTEGER NOT NULL AUTO_INCREMENT,
+    `idFactura` INTEGER NOT NULL,
+    `cantidad` DECIMAL(18, 5) NOT NULL,
+    `descripcion` VARCHAR(191) NOT NULL,
+    `precio` DECIMAL(18, 5) NOT NULL,
+    `idProductoVenta` INTEGER NOT NULL,
+
+    INDEX `idx_idFactura`(`idFactura`),
+    PRIMARY KEY (`idDetalleFactura`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
 -- AddForeignKey
 ALTER TABLE `usuarios` ADD CONSTRAINT `usuarios_roleId_fkey` FOREIGN KEY (`roleId`) REFERENCES `roles`(`IdRole`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Asistencia` ADD CONSTRAINT `Asistencia_empleadoId_fkey` FOREIGN KEY (`empleadoId`) REFERENCES `usuarios`(`Id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Metas` ADD CONSTRAINT `Metas_empleadoId_fkey` FOREIGN KEY (`empleadoId`) REFERENCES `usuarios`(`Id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `AuditoriaLogin` ADD CONSTRAINT `AuditoriaLogin_IdStatusAuditoriaLogin_fkey` FOREIGN KEY (`IdStatusAuditoriaLogin`) REFERENCES `StatusAuditoriaLogin`(`IdStatusAuditoriaLogin`) ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -235,3 +305,12 @@ ALTER TABLE `Productos` ADD CONSTRAINT `Productos_CategoriaID_fkey` FOREIGN KEY 
 
 -- AddForeignKey
 ALTER TABLE `Productos` ADD CONSTRAINT `Productos_ProveedorID_fkey` FOREIGN KEY (`ProveedorID`) REFERENCES `Proveedores`(`ProveedorID`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Facturas` ADD CONSTRAINT `Facturas_clienteId_fkey` FOREIGN KEY (`clienteId`) REFERENCES `Clientes`(`clienteId`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `DetallesFactura` ADD CONSTRAINT `DetallesFactura_idFactura_fkey` FOREIGN KEY (`idFactura`) REFERENCES `Facturas`(`idFactura`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `DetallesFactura` ADD CONSTRAINT `DetallesFactura_idProductoVenta_fkey` FOREIGN KEY (`idProductoVenta`) REFERENCES `ProductoVenta`(`idProductoVenta`) ON DELETE RESTRICT ON UPDATE CASCADE;

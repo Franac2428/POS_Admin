@@ -27,38 +27,49 @@ const BarChart = () => {
     const [chartOptions, setChartOptions] = useState({});
 
     useEffect(() => {
-        setChartData({
-            labels: ['L', 'K', 'M', 'J', 'V', 'S', 'D'],
-            datasets: [
-                {
-                    label: 'Ventas ₡',
-                    data: [18127, 22201, 19490, 17938, 24182, 17842, 22475],
-                    borderColor: 'rgb(53, 162, 235)',
-                    backgroundColor: 'rgb(53, 162, 235, 0.4',
-                },
-            ]
-        })
-        setChartOptions({
-            plugins: {
-                legend: {
-                    position: 'top',
-                },
-                title: {
-                    display: true,
-                    text: 'Ventas diarias semanales'
-                }
-            },
-            maintainAspectRatio: false,
-            responsive: true
-        })
-    }, [])
+        const fetchData = async () => {
+            const res = await fetch('/api/reportes');
+            const data = await res.json();
+
+            if (data.ventasDiarias) {
+                const labels = data.ventasDiarias.map(item => item.dia);
+                const ventasData = data.ventasDiarias.map(item => item.total_ventas);
+
+                setChartData({
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Ventas ₡',
+                            data: ventasData,
+                            borderColor: 'rgb(53, 162, 235)',
+                            backgroundColor: 'rgba(53, 162, 235, 0.4)',
+                        },
+                    ]
+                });
+
+                setChartOptions({
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Ventas diarias semanales'
+                        }
+                    },
+                    maintainAspectRatio: false,
+                    responsive: true
+                });
+            }
+        };
+
+        fetchData();
+    }, []);
 
     return (
-        <>
-            <div className='w-full md:col-span-2 relative lg:h-[70vh] h-[50vh] m-auto p-4 border rounded-lg bg-white'>
-                <Bar data={chartData} options={chartOptions} />
-            </div>
-        </>
+        <div className='w-full md:col-span-12 relative lg:h-[70vh] h-[50vh] m-auto p-4 border rounded-lg bg-white'>
+            <Bar data={chartData} options={chartOptions} />
+        </div>
     );
 };
 
