@@ -1,6 +1,6 @@
 'use client';
 import { useForm } from "react-hook-form";
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Toaster, toast } from 'sonner';
 
@@ -9,20 +9,27 @@ export default function AddHorario({ open, onClose, mutate }) {
     useEffect(() => {
         initFlowbite(); // Inicializamos Flowbite una vez que el componente se ha montado
     }, []);
-
-
-
-
+    const fecha = new Date();
+    const mes = String(fecha.getMonth() + 1).padStart(2, '0'); 
+    const dia = String(fecha.getDate()).padStart(2, '0'); 
+    const ano = fecha.getFullYear();
+    
     const handleAgregar = handleSubmit(async (data) => {
+        const inicio = `${ano}-${mes}-${dia}T${data.HoraInicio}:00.000Z`;
+        const fin = `${ano}-${mes}-${dia}T${data.HoraFin}:00.000Z`;
+        const horario = {
+            Dia: data.Dia,
+            HoraInicio: inicio,
+            HoraFin: fin,
+          };
         try {
             const res = await fetch(`http://localhost:3000/api/horario`, {
                 method: 'POST',
-                body: JSON.stringify(data),
+                body: JSON.stringify(horario),
                 headers: {
                     'Content-Type': 'application/json'
                 }
             });
-
             if (res.ok) {
                 const newHorario = await res.json();
                 toast.success('Nuevo horario guardado con éxito');
@@ -136,7 +143,7 @@ export default function AddHorario({ open, onClose, mutate }) {
                                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                         {...register("HoraFin", { required: true })}
                                         required
-                                    />
+                                        />
                                     {errors.HoraFin && <span className="text-sm text-red-600">Campo requerido</span>}
                                 </div>
                                 <div className="flex justify-end">

@@ -2,7 +2,7 @@ import * as AlertDialog from '@radix-ui/react-alert-dialog';
 import { Toaster, toast } from 'sonner';
 
 
-const Salida = ({ actual, asistenciaId, onAsistencia }) => {
+const Salida = ({ actual, asistenciaId, onAsistencia,onCalendario }) => {
   const fecha = new Date();
   const mes = String(fecha.getMonth() + 1).padStart(2, '0'); 
   const dia = String(fecha.getDate()).padStart(2, '0'); 
@@ -23,6 +23,7 @@ const Salida = ({ actual, asistenciaId, onAsistencia }) => {
         toast.success('Salida registrada con éxito');
         setTimeout(() => {
           onAsistencia();
+          onCalendario();
         });      
       } else {
         const errorData = await response.json();

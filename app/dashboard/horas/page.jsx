@@ -1,69 +1,64 @@
+'use client'
 import React from 'react';
+import useSWR from 'swr';
+
+const fetcher = async (url) => {
+    const response = await fetch(url);
+    if (!response.ok) {
+        throw new Error('Error al cargar los datos');
+    }
+    const data = await response.json();
+    return data;
+};
 
 const Monitorizacion = () => {
-    // Datos de ejemplo para horarios de entrada y salida
-    const horariosEntrada = [
-        { id: 1, empleado: 'Josue Bonilla Soto', hora: '08:00', fecha: '2024-04-08' },
-        { id: 2, empleado: 'Empleado 2', hora: '08:30', fecha: '2024-04-08' },
-        // Más horarios de entrada...
-    ];
+    const { data, error } = useSWR('http://localhost:3000/api/marcar', fetcher);
 
-    const horariosSalida = [
-        { id: 1, empleado: 'Josue Bonilla Soto', hora: '17:00', fecha: '2024-04-08' },
-        { id: 2, empleado: 'Empleado 2', hora: '17:30', fecha: '2024-04-08' },
-        // Más horarios de salida...
-    ];
+    if (error) return <div>Error al cargar los datos</div>;
+    if (!data) return <div>Cargando...</div>;
+    if (!Array.isArray(data)) return <div>No hay datos disponibles</div>;
 
+    const asistencias = data.map((asistencia) => ({
+        id: asistencia.id,
+        nombre: asistencia.empleado?.nombre || 'Desconocido',
+        apellido: asistencia.empleado?.apellido || 'Desconocido',
+        fecha: new Date(asistencia.fecha).toLocaleDateString(),
+        horaEntrada: new Date(asistencia?.entrada).toUTCString().split(' ')[4],
+        horaSalida: new Date(asistencia?.salida).toUTCString().split(' ')[4] || 'Aún no ha registrado salida',
+        nota: asistencia?.observacion || 'No observaciones en este turno',
+    }));
+;
     return (
         <div className="max-w-7xl mx-auto py-4">
-            <h1 className="font-semibold text-3xl text-gray-900">Monitorización de Horarios</h1>
-            <div className="mt-8">
-                <h2 className="text-lg font-semibold mb-2">Horarios de Entrada</h2>
-                <table className="w-full border-collapse border border-gray-200">
-                    <thead>
-                        <tr>
-                            <th className="px-4 py-2 bg-gray-100 border border-gray-200">ID</th>
-                            <th className="px-4 py-2 bg-gray-100 border border-gray-200">Empleado</th>
-                            <th className="px-4 py-2 bg-gray-100 border border-gray-200">Hora</th>
-                            <th className="px-4 py-2 bg-gray-100 border border-gray-200">Fecha</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {horariosEntrada.map(horario => (
-                            <tr key={horario.id}>
-                                <td className="px-4 py-2 border border-gray-200">{horario.id}</td>
-                                <td className="px-4 py-2 border border-gray-200">{horario.empleado}</td>
-                                <td className="px-4 py-2 border border-gray-200">{horario.hora}</td>
-                                <td className="px-4 py-2 border border-gray-200">{horario.fecha}</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
+            <h1 className="text-3xl text-gray-900 dark:text-gray-100 font-semibold mb-2">Monitorización de Horarios</h1>
+            <div className="shadow-lg col-span-10 bg-white dark:bg-gray-700 px-5 py-4 rounded-lg">
+                        <table className="w-full">
+                            <thead>
+                                <tr>
+                                    <th className="text-sm font-semibold text-gray-600 dark:text-gray-400 pb-4"> Nombre</th>
+                                    <th className="text-sm font-semibold text-gray-600 dark:text-gray-400 pb-4"> Apellido</th>
+                                    <th className="text-sm font-semibold text-gray-600 dark:text-gray-400 pb-4"> Día</th>
+                                    <th className="text-sm font-semibold text-gray-600 dark:text-gray-400 pb-4">  Hora de entrada </th>
+                                    <th className="text-sm font-semibold text-gray-600 dark:text-gray-400 pb-4">  Hora de salida </th>
+                                    <th className="text-sm font-semibold text-gray-600 dark:text-gray-400 pb-4"> Notas de empleado </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {asistencias.map((asistencia) => (
+                                    <tr className="" key={asistencia.id}>                                        
+                                        <td className="text-center text-sm text-gray-900 dark:text-gray-200"> {asistencia.nombre}</td>
+                                        <td className="text-center text-sm text-gray-900 dark:text-gray-200"> {asistencia.apellido}</td>
+                                        <td className="text-center text-sm text-gray-900 dark:text-gray-200"> {asistencia.fecha}</td>
+                                        <td className="text-center text-sm text-gray-900 dark:text-gray-200"> {asistencia.horaEntrada}</td>                                    
+                                        <td className="text-center text-sm text-gray-900 dark:text-gray-200"> {asistencia.horaSalida}</td>
+                                        <td className="text-center text-sm text-gray-900 dark:text-gray-200"> {asistencia.nota}</td>
 
-            <div className="mt-8">
-                <h2 className="text-lg font-semibold mb-2">Horarios de Salida</h2>
-                <table className="w-full border-collapse border border-gray-200">
-                    <thead>
-                        <tr>
-                            <th className="px-4 py-2 bg-gray-100 border border-gray-200">ID</th>
-                            <th className="px-4 py-2 bg-gray-100 border border-gray-200">Empleado</th>
-                            <th className="px-4 py-2 bg-gray-100 border border-gray-200">Hora</th>
-                            <th className="px-4 py-2 bg-gray-100 border border-gray-200">Fecha</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {horariosSalida.map(horario => (
-                            <tr key={horario.id}>
-                                <td className="px-4 py-2 border border-gray-200">{horario.id}</td>
-                                <td className="px-4 py-2 border border-gray-200">{horario.empleado}</td>
-                                <td className="px-4 py-2 border border-gray-200">{horario.hora}</td>
-                                <td className="px-4 py-2 border border-gray-200">{horario.fecha}</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+
         </div>
     );
 };

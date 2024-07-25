@@ -3,7 +3,11 @@ import { NextResponse } from 'next/server';
 
 export async function GET() {
   try {
-    const asistencias = await db.asistencia.findMany();
+    const asistencias = await db.asistencia.findMany({
+      include: {
+        empleado: true,
+      },
+    });
     return NextResponse.json(asistencias);
   } catch (error) {
     return NextResponse.json({ error: 'Error al obtener los asistencias' }, { status: 500 });
