@@ -38,7 +38,7 @@ export default function Sidebar() {
     { icon: <Warehouse size={20} />, text: "Inventario", link: "/dashboard/inventario", subItems: [{ text: "Inventario", link: "/dashboard/inventario" }, { text: "Proveedores", link: "/dashboard/proveedores" }, session?.user?.role === "Administrador" && { text: "Categorías", link: "/dashboard/categorias" }] },
     session?.user?.role === "Administrador" && { icon: <FileLineChart size={20} />, text: "Reportes", link: "/dashboard/reporteria" },
     session?.user?.role === "Administrador" && { icon: <BadgeCent size={20} />, text: "Transacciones", link: "/dashboard/transacciones" },
-    session?.user?.role === "Administrador" && { icon: <BriefcaseBusiness size={20} />, text: "Empleados", link: "/dashboard/empleado" },
+    session?.user?.role === "Administrador" && { icon: <BriefcaseBusiness size={20} />, text: "Empleados", link: "/dashboard/empleado", subItems: [{ text: "Empleados", link: "/dashboard/empleado" }, { text: "Metas", link: "/dashboard/metas" }] },
     { icon: <BookUser size={20} />, text: "Clientes", link: "/dashboard/clientes" },
     session?.user?.role === "Administrador" && { icon: <LockKeyhole size={20} />, text: "Seguridad", link: "/dashboard/seguridad", subItems: [{ text: "Usuarios", link: "/dashboard/seguridad" }, { text: "Auditoría", link: "/dashboard/auditoria" }] },
     session?.user?.role === "Administrador" && { icon: <Truck size={20} />, text: "Pedidos", link: "/dashboard/pedido" },
