@@ -9,6 +9,7 @@ import Ver from "../../components/inventario/ver";
 import Pedidos from "../../components/inventario/pedidos";
 import FiltroMenu from "../../components/buscador/filtros";
 import Buscador from "../../components/buscador/buscar";
+import Estados from "../../components/inventario/estados";
 import { CirclePlus, FileUp, Pencil, Trash, Eye, ClipboardList, Filter } from "lucide-react";
 import useSWR from 'swr';
 
@@ -22,7 +23,7 @@ export default function Inventario() {
   const [selectedProductoId, setSelectedProductoId] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [pedidosOpen, setPedidosOpen] = useState(false);
-  const [isMenuOpen, setIsMenuOpen] = useState(false); 
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [filtros, setFiltros] = useState({
     filterCategoria: '',
     filterEstado: '',
@@ -67,9 +68,9 @@ export default function Inventario() {
     downloadLink.click();
   };
 
-  const filteredData = data ? data.filter(producto => 
+  const filteredData = data ? data.filter(producto =>
     (producto.Nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    producto.ProductoID.toString().includes(searchTerm)) &&
+      producto.ProductoID.toString().includes(searchTerm)) &&
     (filtros.filterCategoria ? producto.CategoriaID === filtros.filterCategoria : true) &&
     (filtros.filterEstado ? producto.Estado === filtros.filterEstado : true) &&
     (filtros.filterProveedor ? producto.ProveedorID === filtros.filterProveedor : true)
@@ -123,9 +124,9 @@ export default function Inventario() {
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
               {filteredData.map((producto) => (
                 <div key={producto.ProductoID} className="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
-                  <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100">{producto.Nombre}</h2>
+                  <h2 className="bg-gray-300 dark:bg-gray-900 text-lg font-bold text-gray-900 dark:text-gray-100 px-2 rounded-r-lg rounded-l-lg">{producto.Nombre}</h2>
                   <p className="text-sm text-gray-500 dark:text-gray-400">ID: {producto.ProductoID}</p>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">Estado: <span className={getEstadoClass(producto.Estado)}>{producto.Estado}</span></p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">Estado: <Estados fechaCaducidad={producto.FechaCaducidad} productoId={producto.ProductoID} mutate={mutate} /></p>
                   <p className="text-sm text-gray-500 dark:text-gray-400">Proveedor: {producto.ProveedorID}</p>
                   <p className="text-sm text-gray-500 dark:text-gray-400">Cantidad: {producto.Stock}</p>
                   <p className="text-sm text-gray-500 dark:text-gray-400">Fecha ingreso: {new Date(producto.FechaIngreso).toLocaleDateString()}</p>
@@ -170,19 +171,4 @@ export default function Inventario() {
       </div>
     </>
   );
-}
-
-function getEstadoClass(estado) {
-  switch (estado) {
-    case 'Vigente':
-      return 'text-blue-800 dark:text-blue-200';
-    case 'Por caducar':
-      return 'text-yellow-800 dark:text-yellow-200';
-    case 'Caducado':
-      return 'text-red-800 dark:text-red-200';
-    case 'Fresco':
-      return 'text-green-800 dark:text-green-200';
-    default:
-      return 'text-gray-800 dark:text-gray-200';
-  }
 }
