@@ -129,15 +129,6 @@ export default function Agregar({ open, onClose, mutate }) {
                 <label htmlFor="FechaCaducidad" className="block text-sm font-medium text-gray-700 dark:text-gray-200">Fecha de Caducidad</label>
                 <input type="date" id="FechaCaducidad" name="FechaCaducidad" value={formData.FechaCaducidad} onChange={handleChange} className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
               </div>
-              <div className="mb-4">
-                <label htmlFor="Estado" className="block text-sm font-medium text-gray-700 dark:text-gray-200">Estado</label>
-                <select required id="Estado" name="Estado" value={formData.Estado} onChange={handleChange} className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
-                  <option value="Vigente">Vigente</option>
-                  <option value="Por caducar">Por caducar</option>
-                  <option value="Caducado">Caducado</option>
-                  <option value="Fresco">Fresco</option>
-                </select>
-              </div>
             </div>
             <div className="flex justify-end gap-4 mr-5">
               <button type="submit" className="bg-green-500 font-semibold rounded-md py-2 px-6 text-white">Agregar</button>
