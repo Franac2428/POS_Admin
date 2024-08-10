@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { ESTADOS } from '../../components/inventario/estadosConfig';
 
 const FiltroMenu = ({ onFilterChange }) => {
   const [filterCategoria, setFilterCategoria] = useState('');
@@ -13,7 +14,7 @@ const FiltroMenu = ({ onFilterChange }) => {
         const response = await fetch('http://localhost:3000/api/categorias');
         if (!response.ok) throw new Error('Network response was not ok');
         const data = await response.json();
-        console.log("Categorias: ", data); // Agrega logs para verificar los datos
+        console.log("Categorias: ", data); 
         setCategorias(data);
       } catch (error) {
         console.error('Error fetching categorias:', error);
@@ -25,7 +26,7 @@ const FiltroMenu = ({ onFilterChange }) => {
         const response = await fetch('http://localhost:3000/api/proveedor');
         if (!response.ok) throw new Error('Network response was not ok');
         const data = await response.json();
-        console.log("Proveedores: ", data); // Agrega logs para verificar los datos
+        console.log("Proveedores: ", data); 
         setProveedores(data);
       } catch (error) {
         console.error('Error fetching proveedores:', error);
@@ -43,7 +44,7 @@ const FiltroMenu = ({ onFilterChange }) => {
   return (
     <div className="absolute top-16 right-16 bg-white dark:bg-gray-800 p-4 rounded-lg shadow-lg w-72">
       <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Filtros</h3>
-      {/* <div className="mb-4">
+      <div className="mb-4">
         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Categoría</label>
         <select
           onChange={(e) => setFilterCategoria(e.target.value)}
@@ -66,19 +67,17 @@ const FiltroMenu = ({ onFilterChange }) => {
             <option key={proveedor.ProveedorID} value={proveedor.ProveedorID}>{proveedor.Nombre}</option>
           ))}
         </select>
-      </div> */}
+      </div>
       <div>
-        <label className="block 
-         font-medium text-gray-700 dark:text-gray-300">Estado</label>
+        <label className="block font-medium text-gray-700 dark:text-gray-300">Estado</label>
         <select
           onChange={(e) => setFilterEstado(e.target.value)}
           className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white dark:bg-gray-700 font-medium text-gray-700 dark:text-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
         >
           <option value="">Todos</option>
-          <option value="Vigente">Vigente</option>
-          <option value="Por caducar">Por caducar</option>
-          <option value="Caducado">Caducado</option>
-          <option value="Fresco">Fresco</option>
+          {ESTADOS.map((estado, index) => (
+            <option key={index} value={estado}>{estado}</option>
+          ))}
         </select>
       </div>
     </div>
