@@ -22,17 +22,21 @@ export async function GET(request, { params }) {
 
 export async function PUT(request, { params }) {
   const data = await request.json();
+
   try {
+    const updateData = {
+      ...data,
+      FechaIngreso: data.FechaIngreso ? new Date(data.FechaIngreso).toISOString() : undefined,
+      FechaCaducidad: data.FechaCaducidad ? new Date(data.FechaCaducidad).toISOString() : undefined,
+    };
+
     const productoActualizado = await db.productos.update({
       where: {
         ProductoID: Number(params.id),
       },
-      data: {
-        ...data,
-        FechaIngreso: data.FechaIngreso ? new Date(data.FechaIngreso).toISOString() : null,
-        FechaCaducidad: data.FechaCaducidad ? new Date(data.FechaCaducidad).toISOString() : null
-      }
+      data: updateData,
     });
+
     return NextResponse.json(productoActualizado);
   } catch (error) {
     console.error('Error al actualizar el producto:', error);
