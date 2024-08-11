@@ -1,5 +1,5 @@
 'use client';
-import { Flag, BookUser, AlarmClock, BadgeCent, BriefcaseBusiness, ChevronFirst, ChevronLast, FileLineChart, LockKeyhole, LogOut, MoreVertical, Truck, Users, Utensils, Warehouse } from "lucide-react";
+import { Flag, BookUser,ScrollText, AlarmClock, BadgeCent, BriefcaseBusiness, ChevronFirst, ChevronLast, FileLineChart, LockKeyhole, LogOut, MoreVertical, Truck, Users, Utensils, Warehouse } from "lucide-react";
 import Link from "next/link";
 import { createContext, useContext, useState } from "react";
 import ThemeButton from "./theme/ChangeTheme";
@@ -35,6 +35,7 @@ export default function Sidebar() {
 
   const sidebarItems = [
     { icon: <Utensils size={20} />, text: "POS", link: "/dashboard/menu" },
+    { icon: <ScrollText size={20} />, text: "Facturas", link: "/dashboard/factura" },
     { icon: <Warehouse size={20} />, text: "Inventario", link: "/dashboard/inventario", subItems: [{ text: "Inventario", link: "/dashboard/inventario" }, { text: "Proveedores", link: "/dashboard/proveedores" }, session?.user?.role === "Administrador" && { text: "Categorías", link: "/dashboard/categorias" }] },
     session?.user?.role === "Administrador" && { icon: <FileLineChart size={20} />, text: "Reportes", link: "/dashboard/reporteria" },
     session?.user?.role === "Administrador" && { icon: <BadgeCent size={20} />, text: "Transacciones", link: "/dashboard/transacciones" },
