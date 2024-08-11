@@ -15,14 +15,20 @@ export async function GET() {
       }
     });
 
+    // Verifica si hay detalles
+    if (!Array.isArray(detalles) || detalles.length === 0) {
+      return NextResponse.json({ error: 'No se encontraron detalles de factura' }, { status: 404 });
+    }
+
+    // Agrupa por factura y filtra atributos
     const agrupadoPorFactura = detalles.reduce((acc, detalle) => {
       if (!acc[detalle.idFactura]) {
         acc[detalle.idFactura] = {
           idFactura: detalle.fk_factura.idFactura,
           fechaEmision: detalle.fk_factura.fechaEmision,
           cliente: detalle.fk_factura.cliente,
-          total: detalle.fk_factura.total, // Añade el total
-          estadoFac: detalle.fk_factura.estadoFac, // Añade el total
+          total: detalle.fk_factura.total,
+          estadoFac: detalle.fk_factura.estadoFac,
           detalles: [] // Inicializa una lista de detalles
         };
       }
@@ -32,7 +38,10 @@ export async function GET() {
         cantidad: detalle.cantidad,
         descripcion: detalle.descripcion,
         precio: detalle.precio,
-        producto: detalle.fk_productoVenta
+        producto: {
+          nombre: detalle.fk_productoVenta.nombre,
+          cantidad: detalle.fk_productoVenta.cantidad
+        }
       });
 
       return acc;
@@ -42,7 +51,7 @@ export async function GET() {
 
     return NextResponse.json(resultados);
   } catch (error) {
-    console.error('Error al obtener los detalles de factura:', error);
+    console.error('Error al obtener los detalles de factura:', error.message || error);
     return NextResponse.json({ error: 'Error al obtener los detalles de factura' }, { status: 500 });
   }
 }

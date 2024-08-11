@@ -1,50 +1,26 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
-const EstadoFac = ({ idFactura, mutate }) => {
+const EstadoFac = ({ idFactura, estadoFac, mutate }) => {
+  const [estado, setEstado] = useState(estadoFac);
 
-  useEffect(() => {
-    const actualizarEstadoEnBD = async () => {
-      try {
-        const response = await fetch(`http://localhost:3000/api/inventario/${idFactura}`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ Estado: estado }),
-        });
 
-        if (response.ok) {
-          const data = await response.json();
-          toast.success('Estado actualizado con éxito');
-          console.log('Estado actualizado en la base de datos:', data);
-          mutate();
-        } else {
-          const errorData = await response.json();
-          throw new Error(`Error al actualizar el estado en la base de datos: ${errorData.error}`);
-        }
-      } catch (error) {
-        console.error('Error al actualizar el estado en la base de datos:', error);
-      }
-    };
-
-    if (idFactura && !isNaN(idFactura)) {
-      actualizarEstadoEnBD();
-    }
-  }, [estadoFac, idFactura, mutate]);
-
-  return <span className={getEstadoClass(estado)}>{estado}</span>;
+  return (
+    <span className={getEstadoClass(estado)}>
+      {idFactura.toString().padStart(6, '0')}
+    </span>
+  );
 };
 
 function getEstadoClass(estado) {
   switch (estado) {
-    case 'Activa':
-      return 'bg-green-500 text-white font-semibold px-2 py-0 rounded-r-lg rounded-l-lg';
-    case 'Pagada':
-      return 'bg-blue-500 text-white font-semibold px-2 py-0 rounded-r-lg rounded-l-lg';
-    case 'Nula':
-      return 'bg-gray-500 text-white font-semibold px-2 py-0 rounded-r-lg rounded-l-lg';
+    case 'ACTIVA':
+      return 'bg-green-500 text-white py-2 px-4 rounded-lg';
+    case 'PAGADA':
+      return 'bg-blue-500 text-white py-2 px-4 rounded-lg';
+    case 'CANCELADO':
+      return 'bg-gray-500 text-white py-2 px-4 rounded-lg';
     default:
-      return 'bg-gray-500 text-white font-semibold px-2 py-0 rounded-r-lg rounded-l-lg';
+      return 'bg-gray-500 text-white py-2 px-4 rounded-lg';
   }
 }
 
