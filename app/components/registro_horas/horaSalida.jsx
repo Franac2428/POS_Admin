@@ -59,7 +59,7 @@ const Salida = ({ actual, asistenciaId, onAsistencia,onCalendario }) => {
                     </AlertDialog.Cancel>
                     <AlertDialog.Action asChild>
                         <button onClick={handleEditar} className="text-white bg-green-500 inline-flex h-[35px] items-center justify-center rounded-[4px] px-[15px] font-medium leading-none outline-none focus:shadow-[0_0_0_2px]">
-                            Sí, marcar entrada
+                            Sí, marcar salida
                         </button>
                     </AlertDialog.Action>
                 </div>

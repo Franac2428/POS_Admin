@@ -16,6 +16,7 @@ export default function Reporteria() {
                             <div className='w-full h-full'>
                                 <BarChart />
                             </div>
+
                         </div>
                         <div className="col-span-1">
                             <div className='w-full h-full'>

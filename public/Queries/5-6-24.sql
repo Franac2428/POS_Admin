@@ -55,3 +55,19 @@ VALUES
   ('Proveedor de Vegetales', 'Alimentos', '456 Avenida Secundaria', '987-654-3210', 'proveedorvegetales@example.com', 'Ana Gómez'),
   ('Proveedor de Bebidas', 'Alimentos', '789 Calle Terciaria', '555-555-5555', 'proveedorbebidas@example.com', 'Carlos Sánchez'),
   ('Proveedor de Utensilios', 'Hogar', '321 Boulevard Cuarto', '111-111-1111', 'proveedorutensilios@example.com', 'María López');
+
+
+INSERT INTO estadomovimiento(nombre)
+VALUES('Entrada')
+
+INSERT INTO estadomovimiento(nombre)
+VALUES('Salida')
+
+INSERT INTO estadomovimiento(nombre)
+VALUES('Pendiente')
+
+INSERT INTO estadomovimiento(nombre)
+VALUES('Pagado')
+
+INSERT INTO estadomovimiento(nombre)
+VALUES('Anulado')

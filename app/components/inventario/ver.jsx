@@ -63,53 +63,53 @@ export default function Ver({ open, onClose, productoId }) {
         </button>
         <div className="flex flex-col items-center">
           <h2 className="text-xl font-bold flex items-center gap-3 text-gray-900 dark:text-gray-100 my-4">Detalles del Producto</h2>
-          <hr className="my-3 mr-7 py-0.2 border border-black" />
+          <hr className="my-3 w-full border-t border-gray-300 dark:border-gray-600" />
         </div>
         <div className="ml-5 my-4 w-full">
           <dl className="grid grid-cols-2 gap-x-4">
             <div className="mb-4">
-              <dt className="text-sm font-medium dark:text-gray-200 text-gray-700">ID</dt>
-              <dd className="mt-1 text-sm text-gray-900 dark:text-gray-200">{producto?.ProductoID}</dd>
+              <dt className="inline-block bg-gray-600 text-sm text-white font-medium px-2 rounded-r-lg rounded-l-lg">ID</dt>
+              <dd className="mt-1 text-sm text-gray-900 dark:text-gray-200 p-2">{producto?.ProductoID}</dd>
             </div>
             <div className="mb-4">
-              <dt className="text-sm font-medium text-gray-700 dark:text-gray-200">Nombre</dt>
-              <dd className="mt-1 text-sm text-gray-900 dark:text-gray-200">{producto?.Nombre}</dd>
+              <dt className="inline-block bg-gray-600 text-sm text-white font-medium px-2 rounded-r-lg rounded-l-lg">Nombre</dt>
+              <dd className="mt-1 text-sm text-gray-900 dark:text-gray-200 p-2">{producto?.Nombre}</dd>
             </div>
             <div className="mb-4">
-              <dt className="text-sm font-medium text-gray-700 dark:text-gray-200">Descripción</dt>
-              <dd className="mt-1 text-sm text-gray-900 dark:text-gray-200">{producto?.Descripcion}</dd>
+              <dt className="inline-block bg-gray-600 text-sm text-white font-medium px-2 rounded-r-lg rounded-l-lg">Descripción</dt>
+              <dd className="mt-1 text-sm text-gray-900 dark:text-gray-200 p-2">{producto?.Descripcion}</dd>
             </div>
             <div className="mb-4">
-              <dt className="text-sm font-medium text-gray-700 dark:text-gray-200">Precio de Compra</dt>
-              <dd className="mt-1 text-sm text-gray-900 dark:text-gray-200">{producto?.PrecioCompra}</dd>
+              <dt className="inline-block bg-gray-600 text-sm text-white font-medium px-2 rounded-r-lg rounded-l-lg">Precio de Compra</dt>
+              <dd className="mt-1 text-sm text-gray-900 dark:text-gray-200 p-2">{producto?.PrecioCompra}</dd>
             </div>
             <div className="mb-4">
-              <dt className="text-sm font-medium text-gray-700 dark:text-gray-200">Precio de Venta</dt>
-              <dd className="mt-1 text-sm text-gray-900 dark:text-gray-200">{producto?.PrecioVenta}</dd>
+              <dt className="inline-block bg-gray-600 text-sm text-white font-medium px-2 rounded-r-lg rounded-l-lg">Precio de Venta</dt>
+              <dd className="mt-1 text-sm text-gray-900 dark:text-gray-200 p-2">{producto?.PrecioVenta}</dd>
             </div>
             <div className="mb-4">
-              <dt className="text-sm font-medium text-gray-700 dark:text-gray-200">Stock</dt>
-              <dd className="mt-1 text-sm text-gray-900 dark:text-gray-200">{producto?.Stock}</dd>
+              <dt className="inline-block bg-gray-600 text-sm text-white font-medium px-2 rounded-r-lg rounded-l-lg">Stock</dt>
+              <dd className="mt-1 text-sm text-gray-900 dark:text-gray-200 p-2">{producto?.Stock}</dd>
             </div>
             <div className="mb-4">
-              <dt className="text-sm font-medium text-gray-700 dark:text-gray-200">Categoría</dt>
-              <dd className="mt-1 text-sm text-gray-900 dark:text-gray-200">{producto?.CategoriaID}</dd>
+              <dt className="inline-block bg-gray-600 text-sm text-white font-medium px-2 rounded-r-lg rounded-l-lg">Categoría</dt>
+              <dd className="mt-1 text-sm text-gray-900 dark:text-gray-200 p-2">{producto?.CategoriaID}</dd>
             </div>
             <div className="mb-4">
-              <dt className="text-sm font-medium text-gray-700 dark:text-gray-200">Proveedor</dt>
-              <dd className="mt-1 text-sm text-gray-900 dark:text-gray-200">{producto?.ProveedorID}</dd>
+              <dt className="inline-block bg-gray-600 text-sm text-white font-medium px-2 rounded-r-lg rounded-l-lg">Proveedor</dt>
+              <dd className="mt-1 text-sm text-gray-900 dark:text-gray-200 p-2">{producto?.ProveedorID}</dd>
             </div>
             <div className="mb-4">
-              <dt className="text-sm font-medium text-gray-700 dark:text-gray-200">Estado</dt>
-              <dd className="mt-1 text-sm text-gray-900 dark:text-gray-200">{producto?.Estado}</dd>
+              <dt className="inline-block bg-gray-600 text-sm text-white font-medium px-2 rounded-r-lg rounded-l-lg">Estado</dt>
+              <dd className="mt-1 text-sm text-gray-900 dark:text-gray-200 p-2">{producto?.Estado}</dd>
             </div>
             <div className="mb-4">
-              <dt className="text-sm font-medium text-gray-700 dark:text-gray-200">Fecha de Ingreso</dt>
-              <dd className="mt-1 text-sm text-gray-900 dark:text-gray-200">{producto?.FechaIngreso ? new Date(producto.FechaIngreso).toLocaleDateString() : 'N/A'}</dd>
+              <dt className="inline-block bg-gray-600 text-sm text-white font-medium px-2 rounded-r-lg rounded-l-lg">Fecha de Ingreso</dt>
+              <dd className="mt-1 text-sm text-gray-900 dark:text-gray-200 p-2">{producto?.FechaIngreso ? new Date(producto.FechaIngreso).toLocaleDateString() : 'N/A'}</dd>
             </div>
             <div className="mb-4">
-              <dt className="text-sm font-medium text-gray-700 dark:text-gray-200">Fecha de Caducidad</dt>
-              <dd className="mt-1 text-sm text-gray-900 dark:text-gray-200">{producto?.FechaCaducidad ? new Date(producto.FechaCaducidad).toLocaleDateString() : 'N/A'}</dd>
+              <dt className="inline-block bg-gray-600 text-sm text-white font-medium px-2 rounded-r-lg rounded-l-lg">Fecha de Caducidad</dt>
+              <dd className="mt-1 text-sm text-gray-900 dark:text-gray-200 p-2">{producto?.FechaCaducidad ? new Date(producto.FechaCaducidad).toLocaleDateString() : 'N/A'}</dd>
             </div>
           </dl>
         </div>
