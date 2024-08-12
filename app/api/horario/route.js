@@ -11,19 +11,31 @@ export async function GET() {
 }
 
 export async function POST(request) {
-  const data = await request.json();
-  const { Dia, HoraInicio, HoraFin } = data;
-
   try {
-    const newHorario = await db.horario.create({
-      data: {
-        Dia,
-        HoraInicio,
-        HoraFin,
-      },
-    });
-    return NextResponse.json(newHorario, { status: 201 });
+    const data = await request.json();
+    const { usuarioId, horarios } = data;
+
+    if (!usuarioId || !Array.isArray(horarios)) {
+      return NextResponse.json({ error: 'Datos incompletos' }, { status: 400 });
+    }
+
+    const newHorarios = await Promise.all(
+      horarios.map(horario =>
+        db.horario.create({
+          data: {
+            usuarioId,
+            dia: horario.Dia, // Asegúrate de que el nombre del campo coincide con el modelo Prisma
+            inicio: horario.HoraInicio,
+            fin: horario.HoraFin,
+            esDiaLibre: horario.esDiaLibre
+          }
+        })
+      )
+    );
+
+    return NextResponse.json(newHorarios, { status: 201 });
   } catch (error) {
-    return NextResponse.json({ error: 'Error al crear el horario' }, { status: 500 });
+    console.error('Error al crear los horarios:', error);
+    return NextResponse.json({ error: 'Error al crear los horarios' }, { status: 500 });
   }
 }

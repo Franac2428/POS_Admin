@@ -5,7 +5,7 @@ export async function GET(request, { params }) {
   try {
     const horario = await db.horario.findUnique({
       where: {
-        Id: Number(params.id),
+        usuarioId: Number(params.id),
       },
     });
     return NextResponse.json(horario);
