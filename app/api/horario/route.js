@@ -24,7 +24,7 @@ export async function POST(request) {
         db.horario.create({
           data: {
             usuarioId,
-            dia: horario.Dia, // Asegúrate de que el nombre del campo coincide con el modelo Prisma
+            dia: horario.Dia, 
             inicio: horario.HoraInicio,
             fin: horario.HoraFin,
             esDiaLibre: horario.esDiaLibre
