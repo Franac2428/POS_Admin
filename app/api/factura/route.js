@@ -3,7 +3,6 @@ import db from '@/app/lib/db';
 
 export async function GET() {
   try {
-    // Obtén todos los detalles de factura con la información de la factura y productos
     const detalles = await db.detallesFactura.findMany({
       include: {
         fk_factura: {
@@ -15,12 +14,10 @@ export async function GET() {
       }
     });
 
-    // Verifica si hay detalles
     if (!Array.isArray(detalles) || detalles.length === 0) {
       return NextResponse.json({ error: 'No se encontraron detalles de factura' }, { status: 404 });
     }
 
-    // Agrupa por factura y filtra atributos
     const agrupadoPorFactura = detalles.reduce((acc, detalle) => {
       if (!acc[detalle.idFactura]) {
         acc[detalle.idFactura] = {
@@ -28,6 +25,7 @@ export async function GET() {
           fechaEmision: detalle.fk_factura.fechaEmision,
           cliente: detalle.fk_factura.cliente,
           total: detalle.fk_factura.total,
+          idMedioPago: detalle.fk_factura.idMedioPago,
           estadoFac: detalle.fk_factura.estadoFac,
           detalles: [] // Inicializa una lista de detalles
         };

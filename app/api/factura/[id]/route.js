@@ -19,3 +19,24 @@ export async function GET(request, { params }) {
       return NextResponse.json({ error: 'Error al obtener el producto' }, { status: 500 });
     }
   }
+
+export async function PUT(request, { params }) {
+  try {
+    console.log('ID recibido:', params.id); 
+
+    const data = await request.json();
+    console.log('Datos recibidos:', data); 
+
+    const facturaActualizado = await db.facturas.update({
+      where: {
+        idFactura: Number(params.id),
+      },
+      data: data,
+    });
+
+    return NextResponse.json(facturaActualizado);
+  } catch (error) {
+    console.error('Error al actualizar la factura:', error); 
+    return NextResponse.json({ error: 'Error al actualizar el factura' }, { status: 500 });
+  }
+}

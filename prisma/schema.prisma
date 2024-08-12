@@ -158,7 +158,7 @@ enum Estado {
 enum EstadoFac {
   ACTIVA
   PAGADA
-  CANCELADO
+  NULA
 }
 model Proveedores {
   ProveedorID   Int             @id @default(autoincrement())
