@@ -11,7 +11,7 @@ const TopCards = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const res = await fetch('/api/reportes');
+            const res = await fetch('/api/reportes/cards');
             const result = await res.json();
             setData(result.topCardsData);
         };

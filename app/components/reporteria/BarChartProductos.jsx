@@ -1,0 +1,89 @@
+import React, { useState, useEffect } from 'react';
+import { Bar } from 'react-chartjs-2';
+import {
+    Chart as ChartJS,
+    CategoryScale,
+    LinearScale,
+    BarElement,
+    Title,
+    Tooltip,
+    Legend,
+} from 'chart.js';
+
+ChartJS.register(
+    CategoryScale,
+    LinearScale,
+    BarElement,
+    Title,
+    Tooltip,
+    Legend
+);
+
+const BarChartProductos = () => {
+    const [chartData, setChartData] = useState({
+        datasets: [],
+    });
+    const [chartOptions, setChartOptions] = useState({});
+    const [periodo, setPeriodo] = useState('diario');
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const res = await fetch(`/api/reportes/productos?periodo=${periodo}`);
+            const data = await res.json();
+
+            if (data.ventasProductos) {
+                // Extrae los periodos y productos
+                const labels = [...new Set(data.ventasProductos.map(item => item.periodo))];
+                const productos = [...new Set(data.ventasProductos.map(item => item.producto))];
+
+                // Construye los datasets para cada producto
+                const datasets = productos.map(producto => {
+                    return {
+                        label: producto,
+                        data: labels.map(label => {
+                            const venta = data.ventasProductos.find(item => item.periodo === label && item.producto === producto);
+                            return venta ? venta.total_ventas : 0;
+                        }),
+                        borderColor: 'rgb(75, 192, 192)',
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    };
+                });
+
+                setChartData({
+                    labels: labels,
+                    datasets: datasets,
+                });
+
+                setChartOptions({
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: `Ventas de productos (${periodo})`
+                        }
+                    },
+                    maintainAspectRatio: false,
+                    responsive: true,
+                });
+            }
+        };
+
+        fetchData();
+    }, [periodo]);
+
+    return (
+        <div className='w-full md:col-span-12 relative lg:h-[70vh] h-[50vh] m-auto p-4 border rounded-lg bg-white'>
+            <div className="flex justify-center space-x-4 mb-4">
+                <button onClick={() => setPeriodo('diario')}>Diario</button>
+                <button onClick={() => setPeriodo('semanal')}>Semanal</button>
+                <button onClick={() => setPeriodo('mensual')}>Mensual</button>
+                <button onClick={() => setPeriodo('anual')}>Anual</button>
+            </div>
+            <Bar data={chartData} options={chartOptions} />
+        </div>
+    );
+};
+
+export default BarChartProductos;

@@ -25,49 +25,93 @@ const BarChart = () => {
     });
 
     const [chartOptions, setChartOptions] = useState({});
+    const [selectedTab, setSelectedTab] = useState('diario');
 
     useEffect(() => {
         const fetchData = async () => {
-            const res = await fetch('/api/reportes');
-            const data = await res.json();
+            try {
+                const res = await fetch(`/api/reportes?periodo=${selectedTab}`);
+                const data = await res.json();
 
-            if (data.ventasDiarias) {
-                const labels = data.ventasDiarias.map(item => item.dia);
-                const ventasData = data.ventasDiarias.map(item => item.total_ventas);
-
-                setChartData({
-                    labels: labels,
-                    datasets: [
-                        {
-                            label: 'Ventas ₡',
-                            data: ventasData,
-                            borderColor: 'rgb(53, 162, 235)',
-                            backgroundColor: 'rgba(53, 162, 235, 0.4)',
-                        },
-                    ]
-                });
-
-                setChartOptions({
-                    plugins: {
-                        legend: {
-                            position: 'top',
-                        },
-                        title: {
-                            display: true,
-                            text: 'Ventas diarias semanales'
+                if (data.ventas) {
+                    const labels = data.ventas.map(item => {
+                        switch (selectedTab) {
+                            case 'diario':
+                                return item.dia;
+                            case 'semanal':
+                                return `Semana ${item.semana}`;
+                            case 'mensual':
+                                return `Mes ${item.mes}`;
+                            case 'anual':
+                                return `Año ${item.año}`;
+                            default:
+                                return '';
                         }
-                    },
-                    maintainAspectRatio: false,
-                    responsive: true
-                });
+                    });
+                    const ventasData = data.ventas.map(item => item.total_ventas);
+
+                    setChartData({
+                        labels: labels,
+                        datasets: [
+                            {
+                                label: 'Ventas ₡',
+                                data: ventasData,
+                                borderColor: 'rgb(53, 162, 235)',
+                                backgroundColor: 'rgba(53, 162, 235, 0.4)',
+                            },
+                        ]
+                    });
+
+                    setChartOptions({
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                            },
+                            title: {
+                                display: true,
+                                text: `Ventas ${selectedTab}`
+                            }
+                        },
+                        maintainAspectRatio: false,
+                        responsive: true
+                    });
+                }
+            } catch (error) {
+                console.error("Error fetching data:", error);
             }
         };
 
         fetchData();
-    }, []);
+    }, [selectedTab]);
 
     return (
-        <div className='w-full md:col-span-12 relative lg:h-[70vh] h-[50vh] m-auto p-4 border rounded-lg bg-white'>
+        <div className="w-full md:col-span-12 relative lg:h-[70vh] h-[50vh] m-auto p-4 border rounded-lg bg-white">
+            <div className="flex justify-center space-x-4 mb-4">
+                <button
+                    className={`py-2 px-4 rounded ${selectedTab === 'diario' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+                    onClick={() => setSelectedTab('diario')}
+                >
+                    Diario
+                </button>
+                <button
+                    className={`py-2 px-4 rounded ${selectedTab === 'semanal' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+                    onClick={() => setSelectedTab('semanal')}
+                >
+                    Semanal
+                </button>
+                <button
+                    className={`py-2 px-4 rounded ${selectedTab === 'mensual' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+                    onClick={() => setSelectedTab('mensual')}
+                >
+                    Mensual
+                </button>
+                <button
+                    className={`py-2 px-4 rounded ${selectedTab === 'anual' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+                    onClick={() => setSelectedTab('anual')}
+                >
+                    Anual
+                </button>
+            </div>
             <Bar data={chartData} options={chartOptions} />
         </div>
     );

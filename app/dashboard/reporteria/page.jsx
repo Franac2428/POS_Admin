@@ -1,7 +1,7 @@
 'use client'
 import TopCards from '@/app/components/reporteria/TopCards'
 import BarChart from '@/app/components/reporteria/BarChart';
-
+import BarChartProductos from '@/app/components/reporteria/BarChartProductos'; // Asegúrate de importar el nuevo componente
 
 export default function Reporteria() {
     return (
@@ -11,10 +11,15 @@ export default function Reporteria() {
                     <div>
                         <TopCards />
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-12 mt-8 mx-auto">
-                        <div className="col-span-12">
-                            <div className='w-full'>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8 mx-auto">
+                        <div className="col-span-1">
+                            <div className='w-full h-full'>
                                 <BarChart />
+                            </div>
+                        </div>
+                        <div className="col-span-1">
+                            <div className='w-full h-full'>
+                                <BarChartProductos />
                             </div>
                         </div>
                     </div>
@@ -22,4 +27,4 @@ export default function Reporteria() {
             </div>
         </>
     );
-}   
+}
