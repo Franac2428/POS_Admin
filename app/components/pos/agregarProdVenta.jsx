@@ -5,7 +5,7 @@ import HtmlFormInput from "../HtmlHelpers/FormInput";
 import HtmlFormSelect from "../HtmlHelpers/FormSelect";
 
 
-export default function AgregarProductoVenta({ open, onClose, reloadProducts }) {
+export default function AgregarProductoVenta({ open, onClose, reloadProducts,infoEmpresa }) {
   const [catalogoCategoria, setCatalogoCategorias] = useState([]);
   const [imagePreview, setImagePreview] = useState(null);
   const [imageType, setImageType] = useState(null);
@@ -111,6 +111,7 @@ export default function AgregarProductoVenta({ open, onClose, reloadProducts }) 
   async function agregarProdVenta(){
     var bytesImage;
     var typeImage;
+    console.log(infoEmpresa)
     if (imagePreview && imageType) {
       if (imageType === 'image/png') {
         bytesImage = imagePreview.replace(/^data:image\/png;base64,/, '');
@@ -118,6 +119,12 @@ export default function AgregarProductoVenta({ open, onClose, reloadProducts }) 
         bytesImage = imagePreview.replace(/^data:image\/jpeg;base64,/, '');
       }
       typeImage = imageType;
+    }
+
+    if(imagePreview == null){
+      const bufferImagen = Buffer.from(infoEmpresa.logo.data);
+      bytesImage = bufferImagen.toString('base64');
+      typeImage = infoEmpresa.tipoImagen;
     }
 
     let model = {
@@ -143,7 +150,7 @@ export default function AgregarProductoVenta({ open, onClose, reloadProducts }) 
         toast.success('Producto registrado satisfactoriamente');
         setTimeout(() => {
           reloadProducts();
-      }, 3000);
+      }, 1000);
       }
       else {
         throw new Error(`Error: ${response.statusText}`);

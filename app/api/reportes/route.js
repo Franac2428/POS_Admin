@@ -7,12 +7,18 @@ export async function GET() {
     try {
         const ventasDiarias = await prisma.$queryRaw`
             SELECT
-                DATE_FORMAT(fechaEmision, '%W') AS dia,
-                SUM(total) AS total_ventas
-            FROM Facturas
-            WHERE fechaEmision >= DATE_SUB(CURDATE(), INTERVAL 1 WEEK)
-            GROUP BY dia
-            ORDER BY dia;
+                dia,
+                total_ventas
+            FROM (
+                SELECT
+                    DATE_FORMAT(DATE_SUB(fechaEmision, INTERVAL 6 HOUR), '%W') AS dia,
+                    SUM(total) AS total_ventas,
+                    WEEKDAY(DATE_SUB(fechaEmision, INTERVAL 6 HOUR)) AS weekday
+                FROM Facturas
+                WHERE fechaEmision >= DATE_SUB(DATE_SUB(CURDATE(), INTERVAL 6 HOUR), INTERVAL 1 WEEK)
+                GROUP BY dia, weekday
+            ) AS subquery
+            ORDER BY weekday;
         `;
 
         const productosInventario = await prisma.productoVenta.count({
@@ -51,7 +57,7 @@ export async function GET() {
             ventasDiarias,
             topCardsData
         };
-
+        console.log(data);
         return NextResponse.json(data);
     } catch (error) {
         return NextResponse.json({ error: error.message }, { status: 500 });

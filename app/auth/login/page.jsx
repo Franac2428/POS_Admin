@@ -3,7 +3,6 @@
 import CambioClave from "@/app/(auth)/olvidoClave";
 import { signIn } from "next-auth/react";
 import Image from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -28,7 +27,7 @@ export default function login() {
         if (res.error) {
             alert(res.error);
         } else {
-            router.push('/dashboard/menu')
+            router.push('/dashboard/reporteria')
             console.log("Enviando a /dashboard");
         }
 
