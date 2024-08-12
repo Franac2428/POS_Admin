@@ -40,8 +40,8 @@ export async function POST(request) {
       total: parseFloat(d.Total),
       pagadoCon: parseFloat(d.Pago.PagaCon),
       vuelto: parseFloat(d.Pago.Vuelto),
-      idInfoCaja:d.idInfoCaja
-      estadoFac: estadoFac, 
+      idInfoCaja: d.idInfoCaja,
+      estadoFac: estadoFac,
     };
 
     const detallesData = d.Detalles.map(item => ({
@@ -53,7 +53,7 @@ export async function POST(request) {
 
     const result = await prisma.$transaction(async (prisma) => {
       const factura = await prisma.facturas.create({ data: facturaData });
-      
+
       await prisma.detallesFactura.createMany({
         data: detallesData.map(detalle => ({
           ...detalle,
@@ -78,11 +78,11 @@ export async function POST(request) {
     });
 
     return NextResponse.json({ id: result.idFactura });
-  } 
+  }
   catch (error) {
     console.error(error);
     return NextResponse.json({ error: error.message }, { status: 500 });
-  } 
+  }
   finally {
     await prisma.$disconnect();
   }
