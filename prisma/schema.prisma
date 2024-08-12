@@ -25,20 +25,18 @@ model Usuarios {
   emailVerified          Boolean @default(false)
   emailVerificationToken String? @unique
 
-  horarioId   Int?
-  Horario     Horario?  @relation(fields: [horarioId], references: [Id])
-
 
   roleId   Int
   Role     Role       @relation(fields: [roleId], references: [IdRole])
- 
+
+
   asistencias Asistencia[]
   metas Metas[]
 
+  horarios   Horario[]
 
   @@map("usuarios")
 }
-
 model Asistencia {
   id         Int       @id @default(autoincrement())
   empleadoId Int
@@ -128,14 +126,16 @@ model ProductoVenta {
 }
 
 model Horario {
-  Id         Int                 @id @default(autoincrement())
-  Dia        String
-  HoraInicio DateTime
-  HoraFin    DateTime
-  usuarios Usuarios[]
+  id            Int      @id @default(autoincrement())
+  usuarioId     Int
+  dia           String   // Puede ser 'lunes', 'martes', etc.
+  inicio        String?  // Hora de inicio (opcional si es día libre)
+  fin           String?  // Hora de fin (opcional si es día libre)
+  esDiaLibre    Boolean  // Si es un día libre
+  usuario       Usuarios @relation(fields: [usuarioId], references: [Id])
+
+  @@unique([usuarioId, dia]) // Asegura que cada usuario tenga solo un horario por día
 }
-
-
 
 model Pedido {
   id                Int       @id @default(autoincrement())
@@ -155,6 +155,11 @@ enum Estado {
   FINALIZADO
 }
 
+enum EstadoFac {
+  ACTIVA
+  PAGADA
+  NULA
+}
 model Proveedores {
   ProveedorID   Int             @id @default(autoincrement())
   Nombre        String
@@ -245,6 +250,7 @@ model Facturas {
 
   cliente   Clientes   @relation(fields: [clienteId], references: [clienteId])
   detalles  DetallesFactura[]
+  estadoFac EstadoFac
 
   @@index([clienteId], name: "idx_idCliente")
 }

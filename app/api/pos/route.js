@@ -27,15 +27,20 @@ export async function POST(request) {
     const r = d.Receptor;
 
     console.log("JSON: " + JSON.stringify(d));
+
+    const medioPago = d.Pago.IdMedioPago;
+    const estadoFac = medioPago === "3" ? 'ACTIVA' : 'PAGADA';
+
     const facturaData = {
       clienteId: r.ClienteId,
       fechaEmision: new Date(d.FechaEmision),
       documentoJson: JSON.stringify(d),
       observaciones: d.Observaciones,
-      idMedioPago: parseInt(d.Pago.IdMedioPago, 10),
+      idMedioPago: parseInt(medioPago, 10),
       total: parseFloat(d.Total),
       pagadoCon: parseFloat(d.Pago.PagaCon),
-      vuelto: parseFloat(d.Pago.Vuelto)
+      vuelto: parseFloat(d.Pago.Vuelto),
+      estadoFac: estadoFac, 
     };
 
     const detallesData = d.Detalles.map(item => ({
@@ -48,7 +53,6 @@ export async function POST(request) {
     const result = await prisma.$transaction(async (prisma) => {
       const factura = await prisma.facturas.create({ data: facturaData });
       
-      // Insertar detalles de la factura
       await prisma.detallesFactura.createMany({
         data: detallesData.map(detalle => ({
           ...detalle,
@@ -56,7 +60,6 @@ export async function POST(request) {
         }))
       });
 
-      // Actualizar la cantidad en productoVenta
       for (const detalle of detallesData) {
         await prisma.productoVenta.update({
           where: {
