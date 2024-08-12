@@ -46,7 +46,7 @@ export default function DetallePedido({ pedido, onClose }) {
                 </div>
                 <div className="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg shadow">
                     <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Fecha de Finalización</h3>
-                    <p className="text-gray-700 dark:text-gray-300">{new Date(pedido.fechaFinalizacion).toLocaleDateString()}</p>
+                    <p className="text-gray-700 dark:text-gray-300">{new Date(pedido.updatedAt).toLocaleDateString()}</p>
                 </div>
             </div>
         </div>

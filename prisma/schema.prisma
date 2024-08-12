@@ -242,9 +242,11 @@ model Facturas {
   total         Decimal @db.Decimal(18, 5)
   pagadoCon Decimal @db.Decimal(18, 5)
   vuelto Decimal @db.Decimal(18, 5)
+  idInfoCaja Int
 
   cliente   Clientes   @relation(fields: [clienteId], references: [clienteId])
   detalles  DetallesFactura[]
+  infoCafa InfoCaja @relation(fields: [idInfoCaja], references: [idInfoCaja])
 
   @@index([clienteId], name: "idx_idCliente")
 }
@@ -262,4 +264,48 @@ model DetallesFactura {
 
 
   @@index([idFactura], name: "idx_idFactura")
+}
+
+model InfoCaja {
+  idInfoCaja Int @id @default(autoincrement())
+  fechaApertura DateTime
+  fechaCierre DateTime?
+  idUsuario Int
+  fechaConsultaCaja DateTime
+  montoInicioCaja Decimal @db.Decimal(18, 5)
+  montoCierreCaja Decimal? @db.Decimal(18, 5)
+
+  facturas Facturas[]
+  movimientos Movimientos[]
+}
+
+model TipoMovimiento{
+  idTipoMovimiento Int @id @default(autoincrement())
+  nombre String
+
+  tiposMovimientos Movimientos []
+}
+
+model EstadoMovimiento{
+  idEstadoMovimiento Int @id @default(autoincrement())
+  nombre String
+  estadosMovimientos Movimientos []
+}
+
+
+model Movimientos{
+  idMovimiento Int @id @default(autoincrement())
+  idTipoMovimiento Int
+  idEstadoMovimiento Int
+  fechaCreacion DateTime
+  idUsuarioCreacion Int
+  motivo String
+  idInfoCaja Int
+  monto Decimal @db.Decimal(18, 5)
+
+  TipoMovimiento TipoMovimiento @relation(fields: [idTipoMovimiento], references: [idTipoMovimiento])
+  EstadoMovimiento EstadoMovimiento @relation(fields: [idEstadoMovimiento], references: [idEstadoMovimiento])
+  MovimientosInfoCaja InfoCaja @relation(fields: [idInfoCaja], references: [idInfoCaja])
+
+
 }

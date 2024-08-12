@@ -35,7 +35,8 @@ export async function POST(request) {
       idMedioPago: parseInt(d.Pago.IdMedioPago, 10),
       total: parseFloat(d.Total),
       pagadoCon: parseFloat(d.Pago.PagaCon),
-      vuelto: parseFloat(d.Pago.Vuelto)
+      vuelto: parseFloat(d.Pago.Vuelto),
+      idInfoCaja:d.idInfoCaja
     };
 
     const detallesData = d.Detalles.map(item => ({

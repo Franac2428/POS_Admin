@@ -1,8 +1,7 @@
 
 'use client';
-import { useSession, signIn } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 import { useEffect } from 'react';
-import { useRouter } from 'next/router';
 
 export default function DashboardPage() {
     const { data: session, status } = useSession();
