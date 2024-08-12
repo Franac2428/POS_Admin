@@ -1,6 +1,7 @@
 'use client';
-import { AlarmClock, BadgeCent, BookUser, BriefcaseBusiness, ChevronFirst, ChevronLast, Computer, FileLineChart, Flag, LockKeyhole, LogOut, MoreVertical, Truck, Utensils, Warehouse } from "lucide-react";
+import { AlarmClock,ScrollText, BadgeCent, BookUser, BriefcaseBusiness, ChevronFirst, ChevronLast, Computer, FileLineChart, Flag, LockKeyhole, LogOut, MoreVertical, Truck, Utensils, Warehouse } from "lucide-react";
 import { useSession } from "next-auth/react";
+
 import Link from "next/link";
 import { createContext, useEffect, useState } from "react";
 import ThemeButton from "./theme/ChangeTheme";
@@ -35,6 +36,7 @@ export default function Sidebar() {
   const sidebarItems = [
     { icon: <Computer  size={20} />, text: "Inicio/Cierre Caja", link: "/dashboard/caja" },
     { icon: <Utensils size={20} />, text: "POS", link: "/dashboard/menu" },
+    { icon: <ScrollText size={20} />, text: "Facturas", link: "/dashboard/factura" },
     { icon: <Warehouse size={20} />, text: "Inventario", link: "/dashboard/inventario", subItems: [{ text: "Inventario", link: "/dashboard/inventario" }, { text: "Proveedores", link: "/dashboard/proveedores" }, session?.user?.role === "Administrador" && { text: "Categorías", link: "/dashboard/categorias" }] },
     session?.user?.role === "Administrador" && { icon: <FileLineChart size={20} />, text: "Reportes", link: "/dashboard/reporteria" },
     session?.user?.role === "Administrador" && { icon: <BadgeCent size={20} />, text: "Transacciones", link: "/dashboard/transacciones" },

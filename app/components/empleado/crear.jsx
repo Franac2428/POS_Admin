@@ -2,10 +2,11 @@ import { useForm } from "react-hook-form";
 import { X } from "lucide-react";
 import { Toaster, toast } from 'sonner';
 import { useState, useEffect } from 'react';
-
+import { CalendarClock } from "lucide-react";
 export default function Agregar({ open, onClose, mutate }) {
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
     const [roles, setRoles] = useState([]);
+
 
     useEffect(() => {
         const fetchRoles = async () => {
@@ -110,16 +111,6 @@ export default function Agregar({ open, onClose, mutate }) {
                                 {errors.salario && <span className="text-red-500">{errors.salario.message}</span>}
                             </div>
                             <div className="mb-4">
-                                <label htmlFor="horario" className="block text-sm font-medium text-gray-700">Horario</label>
-                                <select required id="horario" name="horario" className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" {...register("horario", { required: { value: true, message: 'El horario es requerido' } })}>
-                                    <option value="completo">L-S 12md-6pm</option>
-                                    <option value="medio">L-S 12md-4pm</option>
-                                    <option value="fines">L-S 6pm-11pm</option>
-                                    <option value="entre">D-J 12md-7pm</option>
-                                </select>
-                                {errors.horario && <span className="text-red-500">{errors.horario.message}</span>}
-                            </div>
-                            <div className="mb-4">
                                 <label htmlFor="roleId" className="block text-sm font-medium text-gray-700">Rol</label>
                                 <select required id="roleId" name="roleId" className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" {...register("roleId", { required: { value: true, message: 'El rol es requerido' } })}>
                                     {roles.map((role) => (
@@ -143,6 +134,7 @@ export default function Agregar({ open, onClose, mutate }) {
                     </form>
                 </div>
             </div>
+
             <Toaster position="top-right" />
         </div>
     );

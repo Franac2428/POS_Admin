@@ -1,7 +1,7 @@
 'use client';
 
 import Agregar from "@/app/components/empleado/crear";
-import { CirclePlus, FileUp, Pencil, SlidersHorizontal, Trash, Eye, SmilePlus } from "lucide-react";
+import { CirclePlus, FileUp, Pencil, SlidersHorizontal, Trash, Eye, SmilePlus, CalendarClock } from "lucide-react";
 import { useState } from "react";
 import Eliminar from "../../components/empleado/eliminar";
 import Buscador from "../../components/pos/buscador";
@@ -10,6 +10,8 @@ import Editar from "@/app/components/empleado/editar";
 import Ver from "@/app/components/empleado/ver";
 import useSWR from 'swr';
 import { useSession } from "next-auth/react";
+import Horario from "@/app/components/empleado/horario";
+import HorarioEdit from "@/app/components/empleado/horarioEdit";
 
 export default function Empleado() {
     const [open, setOpen] = useState(false);
@@ -18,6 +20,9 @@ export default function Empleado() {
     const [editar, setEditar] = useState(false);
     const [evaluar, setEvaluar] = useState(false);
     const [selectedEmployeeId, setSelectedEmployeeId] = useState(null);
+    
+    const [horarioOpen, setHorarioOpen] = useState(false);
+    const [horarioEditOpen, setHorarioEditOpen] = useState(false);
 
     const { data: session, status } = useSession();
     const { data, error, mutate } = useSWR('http://localhost:3000/api/empleado', async (url) => {
@@ -35,17 +40,24 @@ export default function Empleado() {
     }
 
     if (!session || session.user.role !== "Administrador") {
-        return <div className="flex justify-center items-center h-screen">
-            <p className="text-red-600 text-center">No estás autorizado para ver esta página.</p>
-        </div>;
+        return (
+            <div className="flex justify-center items-center h-screen">
+                <p className="text-red-600 text-center">No estás autorizado para ver esta página.</p>
+            </div>
+        );
     }
 
     if (error) return <div>Error al cargar los datos</div>;
-    if (!data) return <div>Cargando...</div>;
     if (!data || !Array.isArray(data)) return <div>No hay datos disponibles</div>;
 
+    // Asegúrate de que horarios es siempre un array
+    const empleados = data.map(empleado => ({
+        ...empleado,
+        horarios: empleado.horarios || [] // Asegúrate de que horarios es siempre un array
+    }));
+
     const eliminarEmpleado = (employeeId) => {
-        mutate(data.filter(empleado => empleado.Id !== employeeId), false);
+        mutate(empleados.filter(empleado => empleado.Id !== employeeId), false);
         setOpen(false);
     };
 
@@ -72,49 +84,82 @@ export default function Empleado() {
                             </button>
                         </div>
                     </div>
-                    <div className="shadow-lg col-span-10 bg-white dark:bg-gray-700 px-5 py-4 rounded-lg">
-                        <table className="w-full">
+                    <div className="shadow-lg col-span-10 bg-white dark:bg-gray-700 px-5 py-4 rounded-lg overflow-x-auto">
+                        <table className="w-full min-w-[600px]">
                             <thead>
                                 <tr>
-                                    <th className="text-sm font-semibold text-gray-600 dark:text-gray-400 pb-4">  Id </th>
-                                    <th className="text-sm font-semibold text-gray-600 dark:text-gray-400 pb-4">  Cedula </th>
-                                    <th className="text-sm font-semibold text-gray-600 dark:text-gray-400 pb-4"> Nombre</th>
-                                    <th className="text-sm font-semibold text-gray-600 dark:text-gray-400 pb-4"> Apellido</th>
-                                    <th className="text-sm font-semibold text-gray-600 dark:text-gray-400 pb-4"> Puesto</th>
-                                    <th className="text-sm font-semibold text-gray-600 dark:text-gray-400 pb-4">  Correo   </th>
-                                    <th className="text-sm font-semibold text-gray-600 dark:text-gray-400 pb-4">  # Telefono   </th>
-                                    <th className="text-sm font-semibold text-gray-600 dark:text-gray-400 pb-4"> Acciones  </th>
+                                    <th className="text-sm font-semibold text-gray-600 dark:text-gray-400 pb-4">Id</th>
+                                    <th className="text-sm font-semibold text-gray-600 dark:text-gray-400 pb-4">Nombre</th>
+                                    <th className="text-sm font-semibold text-gray-600 dark:text-gray-400 pb-4">Apellido</th>
+                                    <th className="text-sm font-semibold text-gray-600 dark:text-gray-400 pb-4">Correo</th>
+                                    <th className="text-sm font-semibold text-gray-600 dark:text-gray-400 pb-4"># Telefono</th>
+                                    <th className="text-sm font-semibold text-gray-600 dark:text-gray-400 pb-4">Horario</th>
+                                    <th className="text-sm font-semibold text-gray-600 dark:text-gray-400 pb-4">Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {data.map((empleado) => (
-                                    <tr className="" key={empleado.Id}>
-                                        <td className=" text-center text-sm text-gray-700 whitespace-nowrap">
-                                            <a href="#" className="font-bold text-blue-700 hover:underline"> {empleado.Id}</a>
+                                {empleados.map((empleado) => (
+                                    <tr key={empleado.Id}>
+                                        <td className="text-center text-sm text-gray-700 whitespace-nowrap">
+                                            <a href="#" className="font-bold text-blue-700 hover:underline">{empleado.Id}</a>
                                         </td>
-                                        <td className="text-center text-sm text-gray-900 dark:text-gray-200 py-4">78930292</td>
-                                        <td className="text-center text-sm text-gray-900 dark:text-gray-200"> {empleado.nombre}</td>
-                                        <td className="text-center text-sm text-gray-900 dark:text-gray-200"> {empleado.apellido}</td>
-                                        <td className=" text-center text-sm text-gray-700 whitespace-nowrap">
-                                            <span className="p-1.5 text-xs font-medium uppercase tracking-wider text-gray-800 bg-red-200 dark:text-red-200 dark:bg-red-800 rounded-lg bg-opacity-50">Cocina</span>
+                                        <td className="text-center text-sm text-gray-900 dark:text-gray-200">{empleado.nombre}</td>
+                                        <td className="text-center text-sm text-gray-900 dark:text-gray-200">{empleado.apellido}</td>
+                                        <td className="text-center text-sm text-gray-900 dark:text-gray-200">{empleado.email}</td>
+                                        <td className="text-center text-sm text-gray-900 dark:text-gray-200">{empleado.telefono}</td>
+                                        <td className="text-center text-sm text-gray-900 dark:text-gray-200">
+                                            {empleado.horarios.length === 0 ? 
+                                                <button
+                                                    className="flex items-center gap-3 shadow-lg active:scale-95 transition-transform ease-in-out duration-75 hover:scale-105 transform text-white font-semibold bg-blue-500 dark:bg-blue-600 px-4 py-2 rounded-lg"
+                                                    onClick={() => {
+                                                        setSelectedEmployeeId(empleado.Id);
+                                                        setHorarioOpen(true);
+                                                    }}
+                                                >
+                                                    Asignar                                               
+                                                </button>                                            
+                                                :
+                                                <button
+                                                    className="flex items-center gap-3 shadow-lg active:scale-95 transition-transform ease-in-out duration-75 hover:scale-105 transform text-white font-semibold bg-blue-500 dark:bg-blue-600 px-4 py-2 rounded-lg"
+                                                    onClick={() => {
+                                                        setSelectedEmployeeId(empleado.Id);
+                                                        setHorarioEditOpen(true);
+                                                    }}
+                                                >
+                                                    Editar
+                                                </button> }
                                         </td>
-                                        <td className="text-center text-sm text-gray-900 dark:text-gray-200"> {empleado.email}</td>
-                                        <td className="text-center text-sm text-gray-900 dark:text-gray-200"> {empleado.telefono}</td>
-                                        <td className=" flex gap-1 justify-evenly my-1 whitespace-nowrap">
-                                            <button className="p-1.5 text-gray-900 dark:text-gray-200 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-blue-600 bg-opacity-50 rounded-md " onClick={() => {
-                                                setSelectedEmployeeId(empleado.Id);
-                                                setEditar(true)
-                                            }}><Pencil size={15} strokeWidth={2.2} /></button>
-
-                                            <button className="p-1.5 text-gray-900 dark:text-gray-200 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-green-600 bg-opacity-50 rounded-md" onClick={() => {
-                                                setSelectedEmployeeId(empleado.Id);
-                                                setVer(true)
-                                            }}><Eye size={15} strokeWidth={2.2} /> </button>
-                                            <button>   <Evaluar employeeId={empleado.Id}/></button>
-                                            <button className="p-1.5 text-gray-900 dark:text-gray-200 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform bg-red-600 bg-opacity-50 rounded-md" onClick={() => {
-                                                setSelectedEmployeeId(empleado.Id);
-                                                setOpen(true);
-                                            }}><Trash size={15} strokeWidth={2.2} /> </button>
+                                        <td className="flex gap-2 justify-center my-1 whitespace-nowrap">
+                                            <button
+                                                className="p-1.5 text-gray-900 dark:text-gray-200 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01] ease-in-out transform bg-blue-600 bg-opacity-50 rounded-md"
+                                                onClick={() => {
+                                                    setSelectedEmployeeId(empleado.Id);
+                                                    setEditar(true);
+                                                }}
+                                            >
+                                                <Pencil size={15} strokeWidth={2.2} />
+                                            </button>
+                                            <button
+                                                className="p-1.5 text-gray-900 dark:text-gray-200 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01] ease-in-out transform bg-green-600 bg-opacity-50 rounded-md"
+                                                onClick={() => {
+                                                    setSelectedEmployeeId(empleado.Id);
+                                                    setVer(true);
+                                                }}
+                                            >
+                                                <Eye size={15} strokeWidth={2.2} />
+                                            </button>
+                                            <button>
+                                                <Evaluar employeeId={empleado.Id} />
+                                            </button>
+                                            <button
+                                                className="p-1.5 text-gray-900 dark:text-gray-200 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01] ease-in-out transform bg-red-600 bg-opacity-50 rounded-md"
+                                                onClick={() => {
+                                                    setSelectedEmployeeId(empleado.Id);
+                                                    setOpen(true);
+                                                }}
+                                            >
+                                                <Trash size={15} strokeWidth={2.2} />
+                                            </button>
                                         </td>
                                     </tr>
                                 ))}
@@ -126,6 +171,8 @@ export default function Empleado() {
                 <Agregar open={agregar} onClose={() => setAgregar(false)} mutate={mutate} />
                 <Editar open={editar} onClose={() => setEditar(false)} employeeId={selectedEmployeeId} mutate={mutate} />
                 <Ver open={ver} onClose={() => setVer(false)} employeeId={selectedEmployeeId} />
+                <Horario open={horarioOpen} onClose={() => setHorarioOpen(false)}  mutate={mutate} employeeId={selectedEmployeeId} />
+                <HorarioEdit open={horarioEditOpen} onClose={() => setHorarioEditOpen(false)}  mutate={mutate} employeeId={selectedEmployeeId} />
             </div>
         </>
     );
