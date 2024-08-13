@@ -413,15 +413,6 @@ export default function App() {
             <div className="mt-1">
               {
                 existeCajaAbierta ? (
-                  <HtmlButton color={"yellow"} legend={"Facturas"} icon={Files} />
-                ) : null
-              }
-            </div>
-          </div>
-          <div className="md:col-span-2">
-            <div className="mt-1">
-              {
-                existeCajaAbierta ? (
                   <HtmlButton color={"purple"} legend={"Productos"} icon={HandPlatter} onClick={() => openModalAgregar(true)} />
                 ) : null
               }

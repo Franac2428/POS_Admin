@@ -44,7 +44,7 @@ const Historial = () => {
                         {pedidosFinalizados.map((pedido) => (
                             <tr className="border-b dark:border-gray-600" key={pedido.id}>
                                 <td className="text-sm font-bold text-blue-700 hover:underline py-4">{pedido.id}</td>
-                                <td className="text-sm text-gray-900 dark:text-gray-200">{pedido.proveedor}</td>
+                                <td className="text-sm text-gray-900 dark:text-gray-200">{pedido.proveedores.Nombre}</td>
                                 <td className="text-sm text-gray-900 dark:text-gray-200">{pedido.medioPedido}</td>
                                 <td className="text-sm text-gray-900 dark:text-gray-200">{new Date(pedido.createdAt).toLocaleDateString()}</td>
                                 <td className="text-sm text-gray-900 dark:text-gray-200">{new Date(pedido.updatedAt).toLocaleDateString()}</td>

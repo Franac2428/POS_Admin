@@ -2,11 +2,9 @@ import { NextResponse } from 'next/server';
 import db from '@/app/lib/db';
 
 export async function GET(request, { params }) {
-    console.log('Received params:', params); // debugging
 
     try {
         const empleadoId = Number(params.id);
-        console.log('Parsed empleadoId:', empleadoId); //  debugging
 
         const asistencias = await db.asistencia.findMany({
             where: {

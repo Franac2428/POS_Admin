@@ -16,8 +16,10 @@ const Realizar = ({ AccordionItem, AccordionTrigger, AccordionContent }) => {
   const selectedProveedorId = watch("proveedor");
 
   const handleAgregar = handleSubmit(async (data) => {
+    const proveedorId = parseInt(data.proveedor, 10); 
+
     const pedido = {
-      proveedor: data.proveedor,
+      proveedorId: proveedorId,
       medioPedido: tipoRadio,
       productos: tipoRadio === 'correo' ? JSON.stringify(productos) : null, 
       observaciones: data.descripcion,

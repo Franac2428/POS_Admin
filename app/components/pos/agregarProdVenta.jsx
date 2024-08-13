@@ -19,6 +19,13 @@ export default function AgregarProductoVenta({ open, onClose, reloadProducts,inf
       element.classList.remove('is-valid');
     });
     setImagePreview(null);
+        const fileInput = document.getElementById("txtImagenProducto");
+        if (fileInput) {
+          fileInput.value = "";
+        }    
+        setImagePreview(null);
+        setImageType(null);
+    
   };
 
   useEffect(() => {
@@ -148,6 +155,8 @@ export default function AgregarProductoVenta({ open, onClose, reloadProducts,inf
         const data =  await response.json();
         onClose();
         toast.success('Producto registrado satisfactoriamente');
+        limpiarCamposForm(); 
+
         setTimeout(() => {
           reloadProducts();
       }, 1000);
