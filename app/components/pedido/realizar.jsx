@@ -2,19 +2,24 @@ import { useState, useEffect } from 'react';
 import { useForm } from "react-hook-form";
 import { Toaster, toast } from 'sonner';
 import useSWR, { mutate } from 'swr';
+import { Delete } from "lucide-react";
 
 const Realizar = ({ AccordionItem, AccordionTrigger, AccordionContent }) => {
   const [nombre, setNombre] = useState('');
   const [cantidad, setCantidad] = useState('');
   const [productos, setProductos] = useState([]);
   const [tipoRadio, setTipoRadio] = useState('correo'); 
-  const { register, handleSubmit, formState: { errors }, reset } = useForm();
+  const { register, handleSubmit, formState: { errors }, reset, watch } = useForm();
   const [proveedores, setProveedores] = useState([]);
+  const [sitioWeb, setSitioWeb] = useState('');
 
+  const selectedProveedorId = watch("proveedor");
 
   const handleAgregar = handleSubmit(async (data) => {
+    const proveedorId = parseInt(data.proveedor, 10); 
+
     const pedido = {
-      proveedor: data.proveedor,
+      proveedorId: proveedorId,
       medioPedido: tipoRadio,
       productos: tipoRadio === 'correo' ? JSON.stringify(productos) : null, 
       observaciones: data.descripcion,
@@ -34,7 +39,7 @@ const Realizar = ({ AccordionItem, AccordionTrigger, AccordionContent }) => {
         const newPedido = await res.json();
         toast.success('Nuevo pedido realizado con éxito');
         reset();
-
+        setProductos([]); // Limpiar lista de productos después de realizar el pedido
         mutate('http://localhost:3000/api/pedido', (currentData) => [...currentData, newPedido], false);
       } else {
         const errorData = await res.json();
@@ -45,7 +50,7 @@ const Realizar = ({ AccordionItem, AccordionTrigger, AccordionContent }) => {
       toast.error('Error en la solicitud');
     }
   });
-  
+
   useEffect(() => {
     fetch('http://localhost:3000/api/proveedor')
       .then(response => response.json())
@@ -53,6 +58,12 @@ const Realizar = ({ AccordionItem, AccordionTrigger, AccordionContent }) => {
       .catch(error => console.error('Error fetching proveedores:', error));
   }, []);
 
+  useEffect(() => {
+    if (selectedProveedorId) {
+      const proveedor = proveedores.find(p => p.ProveedorID === parseInt(selectedProveedorId, 10));
+      setSitioWeb(proveedor.SitioWeb);
+    }
+  }, [selectedProveedorId, proveedores]);
 
   const handleRadioChange = (event) => {
     setTipoRadio(event.target.value);
@@ -76,6 +87,10 @@ const Realizar = ({ AccordionItem, AccordionTrigger, AccordionContent }) => {
     }
   };
 
+  const eliminarProducto = (index) => {
+    setProductos(productos.filter((_, i) => i !== index));
+  };
+
   const limpiarCampos = () => {
     reset();
     setProductos([]);
@@ -94,9 +109,9 @@ const Realizar = ({ AccordionItem, AccordionTrigger, AccordionContent }) => {
                 <label htmlFor="proveedor" className="block text-sm font-medium text-gray-700 dark:text-gray-200">Proveedor</label>
                 <select required id="proveedor" name="proveedor" className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" {...register("proveedor", { required: true })}>
                   <option value="">Selecciona un proveedor</option>
-                    {proveedores.map((proveedor) => (
-                      <option key={proveedor.ProveedorID} value={proveedor.ProveedorID}>{proveedor.Nombre}</option>
-                    ))}
+                  {proveedores.map((proveedor) => (
+                    <option key={proveedor.ProveedorID} value={proveedor.ProveedorID}>{proveedor.Nombre}</option>
+                  ))}
                 </select>                       
               </div>  
               <div className='mb-4'>      
@@ -149,6 +164,7 @@ const Realizar = ({ AccordionItem, AccordionTrigger, AccordionContent }) => {
                           <tr>
                             <th className="text-sm font-semibold text-gray-600 dark:text-gray-400 pb-4">Producto</th>
                             <th className="text-sm font-semibold text-gray-600 dark:text-gray-400 pb-4">Cantidad</th>
+                            <th className="text-sm font-semibold text-gray-600 dark:text-gray-400 pb-4">Eliminar</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -156,6 +172,11 @@ const Realizar = ({ AccordionItem, AccordionTrigger, AccordionContent }) => {
                             <tr className="border-b dark:border-gray-600" key={index}>
                               <td className="text-sm text-gray-900 dark:text-gray-200">{producto.nombre}</td>
                               <td className="text-sm text-gray-900 dark:text-gray-200">{producto.cantidad}</td>
+                              <td className="text-sm text-gray-900 dark:text-gray-200">
+                                <button type="button" onClick={() => eliminarProducto(index)} className="text-red-500 hover:text-red-700">
+                                <Delete />
+                                </button>
+                              </td>
                             </tr>
                           ))}
                         </tbody>
@@ -164,10 +185,17 @@ const Realizar = ({ AccordionItem, AccordionTrigger, AccordionContent }) => {
                   </div>
                 )}
                 {tipoRadio === 'sitio_web' && (
-                  <div id="sitio-web-text">
-                    <p className='mt-4 dark:text-gray-200'>Sitio web: ejemplo@ejemplo.com</p>
-                  </div>
-                )}
+                    <div id="sitio-web-text">
+                      <p> Sitio web: </p>
+                      {sitioWeb ? (
+                        <a href={`http://${sitioWeb}`} target="_blank" rel="noopener noreferrer" className="mt-4 text-blue-500 dark:text-blue-300">
+                         {sitioWeb}
+                        </a>
+                      ) : (
+                        <p className='mt-4 dark:text-gray-200'>N/A</p>
+                      )}
+                    </div>
+                  )}
               </div>   
             </div>
             <div className="mb-4 mr-5">

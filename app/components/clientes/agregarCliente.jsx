@@ -88,6 +88,7 @@ export default function AgregarCliente({ open, onClose, reloadTable }) {
         const data =  await response.json();
         onClose();
         toast.success('Cliente registrado satisfactoriamente');
+        limpiarCamposForm(); 
         setTimeout(() => {
           if(reloadTable){
             reloadTable();

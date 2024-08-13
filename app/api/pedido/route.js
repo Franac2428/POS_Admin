@@ -3,7 +3,12 @@ import { NextResponse } from 'next/server';
 
 export async function GET() {
     try {
-      const pedidos = await db.pedido.findMany();
+      const pedidos = await db.pedido.findMany
+      ({
+        include: {
+          proveedores: true, 
+        },
+    });
       return NextResponse.json(pedidos);
     } catch (error) {
       return NextResponse.json({ error: 'Error al obtener los pedidos' }, { status: 500 });
@@ -12,12 +17,12 @@ export async function GET() {
 
 export async function POST(request) {
     const data = await request.json();
-    const { proveedor, medioPedido, productos, observaciones, estado, fechaFinalizacion } = data;
+    const { proveedorId, medioPedido, productos, observaciones, estado, fechaFinalizacion } = data;
   
     try {
       const nuevoPedido = await db.pedido.create({
         data: {
-          proveedor,
+          proveedorId,
           medioPedido,
           productos,
           observaciones,

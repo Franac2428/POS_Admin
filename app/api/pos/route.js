@@ -40,7 +40,7 @@ export async function POST(request) {
       total: parseFloat(d.Total),
       pagadoCon: parseFloat(d.Pago.PagaCon),
       vuelto: parseFloat(d.Pago.Vuelto),
-      idInfoCaja:d.idInfoCaja
+      idInfoCaja:d.idInfoCaja,
       estadoFac: estadoFac, 
     };
 

@@ -54,7 +54,7 @@ export default function Inventario() {
   if (!data) return <div>Cargando...</div>;
 
   const filteredData = data.filter(factura => {
-    const nombreCliente = factura.cliente.nombre.toLowerCase();
+    const nombreCliente = factura.cliente.nombre.toLowerCase() + factura.cliente.apellido.toLowerCase();
     const facturaId = factura.idFactura.toString().padStart(6, '0');
     const searchLower = searchTerm.toLowerCase();
 

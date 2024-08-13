@@ -14,7 +14,6 @@ CREATE TABLE `usuarios` (
     `resetPasswordTokenExpiry` DATETIME(3) NULL,
     `emailVerified` BOOLEAN NOT NULL DEFAULT false,
     `emailVerificationToken` VARCHAR(191) NULL,
-    `horarioId` INTEGER NULL,
     `roleId` INTEGER NOT NULL,
 
     UNIQUE INDEX `usuarios_email_key`(`email`),
@@ -121,12 +120,15 @@ CREATE TABLE `ProductoVenta` (
 
 -- CreateTable
 CREATE TABLE `Horario` (
-    `Id` INTEGER NOT NULL AUTO_INCREMENT,
-    `Dia` VARCHAR(191) NOT NULL,
-    `HoraInicio` DATETIME(3) NOT NULL,
-    `HoraFin` DATETIME(3) NOT NULL,
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `usuarioId` INTEGER NOT NULL,
+    `dia` VARCHAR(191) NOT NULL,
+    `inicio` VARCHAR(191) NULL,
+    `fin` VARCHAR(191) NULL,
+    `esDiaLibre` BOOLEAN NOT NULL,
 
-    PRIMARY KEY (`Id`)
+    UNIQUE INDEX `Horario_usuarioId_dia_key`(`usuarioId`, `dia`),
+    PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
@@ -244,6 +246,8 @@ CREATE TABLE `Facturas` (
     `total` DECIMAL(18, 5) NOT NULL,
     `pagadoCon` DECIMAL(18, 5) NOT NULL,
     `vuelto` DECIMAL(18, 5) NOT NULL,
+    `idInfoCaja` INTEGER NOT NULL,
+    `estadoFac` ENUM('ACTIVA', 'PAGADA', 'NULA') NOT NULL,
 
     INDEX `idx_idCliente`(`clienteId`),
     PRIMARY KEY (`idFactura`)
@@ -266,34 +270,44 @@ CREATE TABLE `DetallesFactura` (
 CREATE TABLE `InfoCaja` (
     `idInfoCaja` INTEGER NOT NULL AUTO_INCREMENT,
     `fechaApertura` DATETIME(3) NOT NULL,
-    `fechaCierre` DATETIME(3) NOT NULL,
+    `fechaCierre` DATETIME(3) NULL,
     `idUsuario` INTEGER NOT NULL,
     `fechaConsultaCaja` DATETIME(3) NOT NULL,
     `montoInicioCaja` DECIMAL(18, 5) NOT NULL,
+    `montoCierreCaja` DECIMAL(18, 5) NULL,
 
     PRIMARY KEY (`idInfoCaja`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `InfoCajaDetalleTipos` (
-    `idInfoCajaDetalleTipo` INTEGER NOT NULL AUTO_INCREMENT,
+CREATE TABLE `TipoMovimiento` (
+    `idTipoMovimiento` INTEGER NOT NULL AUTO_INCREMENT,
     `nombre` VARCHAR(191) NOT NULL,
 
-    PRIMARY KEY (`idInfoCajaDetalleTipo`)
+    PRIMARY KEY (`idTipoMovimiento`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `InfoCajaDetalle` (
-    `idInfoCajaDetalle` INTEGER NOT NULL AUTO_INCREMENT,
-    `idInfoCaja` INTEGER NOT NULL,
-    `idInfoCajaDetalleTipo` INTEGER NOT NULL,
-    `monto` DECIMAL(18, 5) NOT NULL,
+CREATE TABLE `EstadoMovimiento` (
+    `idEstadoMovimiento` INTEGER NOT NULL AUTO_INCREMENT,
+    `nombre` VARCHAR(191) NOT NULL,
 
-    PRIMARY KEY (`idInfoCajaDetalle`)
+    PRIMARY KEY (`idEstadoMovimiento`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
--- AddForeignKey
-ALTER TABLE `usuarios` ADD CONSTRAINT `usuarios_horarioId_fkey` FOREIGN KEY (`horarioId`) REFERENCES `Horario`(`Id`) ON DELETE SET NULL ON UPDATE CASCADE;
+-- CreateTable
+CREATE TABLE `Movimientos` (
+    `idMovimiento` INTEGER NOT NULL AUTO_INCREMENT,
+    `idTipoMovimiento` INTEGER NOT NULL,
+    `idEstadoMovimiento` INTEGER NOT NULL,
+    `fechaCreacion` DATETIME(3) NOT NULL,
+    `idUsuarioCreacion` INTEGER NOT NULL,
+    `motivo` VARCHAR(191) NOT NULL,
+    `idInfoCaja` INTEGER NOT NULL,
+    `monto` DECIMAL(18, 5) NOT NULL,
+
+    PRIMARY KEY (`idMovimiento`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey
 ALTER TABLE `usuarios` ADD CONSTRAINT `usuarios_roleId_fkey` FOREIGN KEY (`roleId`) REFERENCES `roles`(`IdRole`) ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -309,6 +323,9 @@ ALTER TABLE `AuditoriaLogin` ADD CONSTRAINT `AuditoriaLogin_IdStatusAuditoriaLog
 
 -- AddForeignKey
 ALTER TABLE `ProductoVenta` ADD CONSTRAINT `ProductoVenta_idCategoriaProdVenta_fkey` FOREIGN KEY (`idCategoriaProdVenta`) REFERENCES `CategoriaProdVenta`(`idCategoriaProdVenta`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Horario` ADD CONSTRAINT `Horario_usuarioId_fkey` FOREIGN KEY (`usuarioId`) REFERENCES `usuarios`(`Id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Pedidos` ADD CONSTRAINT `Pedidos_ProveedorID_fkey` FOREIGN KEY (`ProveedorID`) REFERENCES `Proveedores`(`ProveedorID`) ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -329,13 +346,19 @@ ALTER TABLE `Productos` ADD CONSTRAINT `Productos_ProveedorID_fkey` FOREIGN KEY 
 ALTER TABLE `Facturas` ADD CONSTRAINT `Facturas_clienteId_fkey` FOREIGN KEY (`clienteId`) REFERENCES `Clientes`(`clienteId`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE `Facturas` ADD CONSTRAINT `Facturas_idInfoCaja_fkey` FOREIGN KEY (`idInfoCaja`) REFERENCES `InfoCaja`(`idInfoCaja`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE `DetallesFactura` ADD CONSTRAINT `DetallesFactura_idFactura_fkey` FOREIGN KEY (`idFactura`) REFERENCES `Facturas`(`idFactura`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `DetallesFactura` ADD CONSTRAINT `DetallesFactura_idProductoVenta_fkey` FOREIGN KEY (`idProductoVenta`) REFERENCES `ProductoVenta`(`idProductoVenta`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `InfoCajaDetalle` ADD CONSTRAINT `InfoCajaDetalle_idInfoCaja_fkey` FOREIGN KEY (`idInfoCaja`) REFERENCES `InfoCaja`(`idInfoCaja`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `Movimientos` ADD CONSTRAINT `Movimientos_idTipoMovimiento_fkey` FOREIGN KEY (`idTipoMovimiento`) REFERENCES `TipoMovimiento`(`idTipoMovimiento`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `InfoCajaDetalle` ADD CONSTRAINT `InfoCajaDetalle_idInfoCajaDetalleTipo_fkey` FOREIGN KEY (`idInfoCajaDetalleTipo`) REFERENCES `InfoCajaDetalleTipos`(`idInfoCajaDetalleTipo`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `Movimientos` ADD CONSTRAINT `Movimientos_idEstadoMovimiento_fkey` FOREIGN KEY (`idEstadoMovimiento`) REFERENCES `EstadoMovimiento`(`idEstadoMovimiento`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Movimientos` ADD CONSTRAINT `Movimientos_idInfoCaja_fkey` FOREIGN KEY (`idInfoCaja`) REFERENCES `InfoCaja`(`idInfoCaja`) ON DELETE RESTRICT ON UPDATE CASCADE;
