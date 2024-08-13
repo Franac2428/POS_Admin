@@ -3,11 +3,7 @@
 import { Users, FileUp, Pencil, SlidersHorizontal, Trash } from "lucide-react";
 import React from 'react';
 import TabsDemo from "../../components/pedido/contenido";
-
-
-
 export default function Pedido() {
-
   return (
     <>
       <div className="w-full ">

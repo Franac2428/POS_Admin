@@ -167,6 +167,7 @@ model Proveedores {
   Direccion     String?
   Telefono      String?
   Email         String          @unique
+  SitioWeb      String?         @unique
   Contacto      String?
   Pedidos       Pedidos[]
   Productos     Productos[]

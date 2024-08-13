@@ -8,6 +8,7 @@ export default function Agregar({ open, onClose, mutate }) {
     Tipo: 'Bebidas',
     Telefono: '',
     Email: '',
+    SitioWeb: '',
     Direccion: '',
     Contacto: ''
   });
@@ -79,6 +80,10 @@ export default function Agregar({ open, onClose, mutate }) {
             <div className="mb-4 mr-5">
               <label htmlFor="Email" className="block text-sm font-medium text-gray-700 dark:text-gray-200">Correo</label>
               <input required type="email" id="Email" name="Email" value={formData.Email} onChange={handleChange} className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
+            </div>
+            <div className="mb-4 mr-5">
+              <label htmlFor="SitioWeb" className="block text-sm font-medium text-gray-700 dark:text-gray-200">SitioWeb:</label>
+              <input required type="text" id="SitioWeb" name="SitioWeb" value={formData.SitioWeb} onChange={handleChange} className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
             </div>
             <div className="mb-4 mr-5">
               <label htmlFor="Direccion" className="block text-sm font-medium text-gray-700 dark:text-gray-200">Dirección</label>
