@@ -8,10 +8,12 @@ import Buscador from "../../components/buscador/buscar";
 import Editar from "@/app/components/categorias/editar";
 import Ver from "@/app/components/categorias/ver";
 import useSWR from 'swr';
+import { useSession } from 'next-auth/react'; // Importar useSession para obtener la sesión actual
 
 const fetcher = (url) => fetch(url).then((res) => res.json());
 
 export default function Categorias() {
+    const { data: session } = useSession(); // Obtener la sesión actual
     const [open, setOpen] = useState(false);
     const [agregar, setAgregar] = useState(false);
     const [ver, setVer] = useState(false);
@@ -52,6 +54,10 @@ export default function Categorias() {
         mutate(data.filter(categoria => categoria.CategoriaProductoID !== categoriaId), false);
         setOpen(false);
     };
+
+    if (!session || session.user.role !== 'Administrador') {
+        return <div>No tienes autorización para ver esta página</div>;
+    }
 
     return (
         <>

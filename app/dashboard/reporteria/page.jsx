@@ -1,9 +1,29 @@
-'use client'
-import TopCards from '@/app/components/reporteria/TopCards'
+'use client';
+
+import { useSession } from 'next-auth/react';
+import TopCards from '@/app/components/reporteria/TopCards';
 import BarChart from '@/app/components/reporteria/BarChart';
 import BarChartProductos from '@/app/components/reporteria/BarChartProductos'; // Asegúrate de importar el nuevo componente
 
 export default function Reporteria() {
+    const { data: session, status } = useSession();
+
+    if (status === 'loading') {
+        return <div>Cargando...</div>;
+    }
+
+    if (status === 'error') {
+        return <div>Error al cargar la sesión</div>;
+    }
+
+    if (!session || session.user.role !== 'Administrador') {
+        return (
+            <div className="flex justify-center items-center h-screen">
+                <p className="text-red-600 text-center">No estás autorizado para ver esta página.</p>
+            </div>
+        );
+    }
+
     return (
         <>
             <div className='mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10'>
@@ -16,7 +36,6 @@ export default function Reporteria() {
                             <div className='w-full h-full'>
                                 <BarChart />
                             </div>
-
                         </div>
                         <div className="col-span-1">
                             <div className='w-full h-full'>

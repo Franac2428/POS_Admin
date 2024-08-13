@@ -19,9 +19,10 @@ export async function GET(req) {
                 ventas = await prisma.$queryRaw`
                     SELECT
                         DATE_FORMAT(DATE_SUB(fechaEmision, INTERVAL 6 HOUR), '%Y-%m-%d') AS dia,
-                        SUM(total) AS total_ventas
+                        ROUND(SUM(total), 2) AS total_ventas
                     FROM Facturas
-                    WHERE fechaEmision >= DATE_SUB(DATE_SUB(CURDATE(), INTERVAL 6 HOUR), INTERVAL 1 WEEK)
+                    WHERE fechaEmision >= DATE_SUB(CURDATE(), INTERVAL 1 DAY)
+                      AND estadoFac IN ('ACTIVA', 'PAGADA')
                     GROUP BY dia
                     ORDER BY dia;
                 `;
@@ -31,9 +32,10 @@ export async function GET(req) {
                 ventas = await prisma.$queryRaw`
                     SELECT
                         DATE_FORMAT(DATE_SUB(fechaEmision, INTERVAL 6 HOUR), '%x-%v') AS semana,
-                        SUM(total) AS total_ventas
+                        ROUND(SUM(total), 2) AS total_ventas
                     FROM Facturas
-                    WHERE fechaEmision >= DATE_SUB(DATE_SUB(CURDATE(), INTERVAL 6 HOUR), INTERVAL 1 MONTH)
+                    WHERE fechaEmision >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
+                      AND estadoFac IN ('ACTIVA', 'PAGADA')
                     GROUP BY semana
                     ORDER BY semana;
                 `;
@@ -43,9 +45,10 @@ export async function GET(req) {
                 ventas = await prisma.$queryRaw`
                     SELECT
                         DATE_FORMAT(DATE_SUB(fechaEmision, INTERVAL 6 HOUR), '%Y-%m') AS mes,
-                        SUM(total) AS total_ventas
+                        ROUND(SUM(total), 2) AS total_ventas
                     FROM Facturas
-                    WHERE fechaEmision >= DATE_SUB(DATE_SUB(CURDATE(), INTERVAL 6 HOUR), INTERVAL 1 YEAR)
+                    WHERE fechaEmision >= DATE_SUB(CURDATE(), INTERVAL 1 YEAR)
+                      AND estadoFac IN ('ACTIVA', 'PAGADA')
                     GROUP BY mes
                     ORDER BY mes;
                 `;
@@ -55,9 +58,10 @@ export async function GET(req) {
                 ventas = await prisma.$queryRaw`
                     SELECT
                         DATE_FORMAT(DATE_SUB(fechaEmision, INTERVAL 6 HOUR), '%Y') AS año,
-                        SUM(total) AS total_ventas
+                        ROUND(SUM(total), 2) AS total_ventas
                     FROM Facturas
-                    WHERE fechaEmision >= DATE_SUB(DATE_SUB(CURDATE(), INTERVAL 6 HOUR), INTERVAL 5 YEAR)
+                    WHERE fechaEmision >= DATE_SUB(CURDATE(), INTERVAL 5 YEAR)
+                      AND estadoFac IN ('ACTIVA', 'PAGADA')
                     GROUP BY año
                     ORDER BY año;
                 `;
