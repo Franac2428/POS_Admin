@@ -17,11 +17,12 @@ export async function GET() {
 
 export async function POST(request) {
     const data = await request.json();
-    const { empleadoId, observaciones, fecha } = data;  
+    const { empleadoId,asunto, observaciones, fecha } = data;  
     try {
       const newMeta = await db.metas.create({
         data: {
             empleadoId,
+            asunto,
             observaciones,
             fecha,
         },
