@@ -15,6 +15,7 @@ export async function POST(request) {
         Tipo: data.Tipo,
         Telefono: data.Telefono,
         Email: data.Email,
+        SitioWeb: data.SitioWeb,
         Direccion: data.Direccion,
         Contacto: data.Contacto,
       },

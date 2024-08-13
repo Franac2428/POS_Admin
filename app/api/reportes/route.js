@@ -3,66 +3,69 @@ import { NextResponse } from 'next/server';
 
 const prisma = new PrismaClient();
 
-export async function GET() {
+export async function GET(req) {
+    const { searchParams } = new URL(req.url);
+    const periodo = searchParams.get('periodo');
+
+    if (!['diario', 'semanal', 'mensual', 'anual'].includes(periodo)) {
+        return NextResponse.json({ error: 'Parámetro de período no válido' }, { status: 400 });
+    }
+
     try {
-        const ventasDiarias = await prisma.$queryRaw`
-            SELECT
-                DATE_FORMAT(fechaEmision, '%W') AS dia,
-                SUM(total) AS total_ventas
-            FROM Facturas
-            WHERE fechaEmision >= DATE_SUB(CURDATE(), INTERVAL 1 WEEK)
-            GROUP BY dia
-            ORDER BY dia;
-        `;
+        let ventas;
 
-        const productosInventario = await prisma.productoVenta.count({
-            where: { eliminado: false }
-        });
+        switch (periodo) {
+            case 'diario':
+                ventas = await prisma.$queryRaw`
+                    SELECT
+                        DATE_FORMAT(DATE_SUB(fechaEmision, INTERVAL 6 HOUR), '%Y-%m-%d') AS dia,
+                        SUM(total) AS total_ventas
+                    FROM Facturas
+                    WHERE fechaEmision >= DATE_SUB(DATE_SUB(CURDATE(), INTERVAL 6 HOUR), INTERVAL 1 WEEK)
+                    GROUP BY dia
+                    ORDER BY dia;
+                `;
+                break;
 
-        const totalClientes = await prisma.clientes.count({
-            where: { eliminado: false }
-        });
+            case 'semanal':
+                ventas = await prisma.$queryRaw`
+                    SELECT
+                        DATE_FORMAT(DATE_SUB(fechaEmision, INTERVAL 6 HOUR), '%x-%v') AS semana,
+                        SUM(total) AS total_ventas
+                    FROM Facturas
+                    WHERE fechaEmision >= DATE_SUB(DATE_SUB(CURDATE(), INTERVAL 6 HOUR), INTERVAL 1 MONTH)
+                    GROUP BY semana
+                    ORDER BY semana;
+                `;
+                break;
 
-        const ventasTotales = await prisma.facturas.aggregate({
-            _sum: {
-                total: true,
-            }
-        });
+            case 'mensual':
+                ventas = await prisma.$queryRaw`
+                    SELECT
+                        DATE_FORMAT(DATE_SUB(fechaEmision, INTERVAL 6 HOUR), '%Y-%m') AS mes,
+                        SUM(total) AS total_ventas
+                    FROM Facturas
+                    WHERE fechaEmision >= DATE_SUB(DATE_SUB(CURDATE(), INTERVAL 6 HOUR), INTERVAL 1 YEAR)
+                    GROUP BY mes
+                    ORDER BY mes;
+                `;
+                break;
 
-        const ventasMensuales = await prisma.facturas.aggregate({
-            _sum: {
-                total: true,
-            },
-            where: {
-                fechaEmision: {
-                    gte: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
-                }
-            }
-        });
+            case 'anual':
+                ventas = await prisma.$queryRaw`
+                    SELECT
+                        DATE_FORMAT(DATE_SUB(fechaEmision, INTERVAL 6 HOUR), '%Y') AS año,
+                        SUM(total) AS total_ventas
+                    FROM Facturas
+                    WHERE fechaEmision >= DATE_SUB(DATE_SUB(CURDATE(), INTERVAL 6 HOUR), INTERVAL 5 YEAR)
+                    GROUP BY año
+                    ORDER BY año;
+                `;
+                break;
+        }
 
-        const topCardsData = {
-            productosInventario,
-            totalClientes,
-            ventasTotales: ventasTotales._sum.total || 0,
-            ventasMensuales: ventasMensuales._sum.total || 0,
-        };
-
-        const data = {
-            ventasDiarias,
-            topCardsData
-        };
-
-        return NextResponse.json(data);
+        return NextResponse.json({ ventas });
     } catch (error) {
         return NextResponse.json({ error: error.message }, { status: 500 });
-    }
-}
-
-export default async function handler(req, res) {
-    if (req.method === 'GET') {
-        return GET(req, res);
-    } else {
-        res.setHeader('Allow', ['GET']);
-        return res.status(405).end(`Method ${req.method} Not Allowed`);
     }
 }

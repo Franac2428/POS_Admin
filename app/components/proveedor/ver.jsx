@@ -83,6 +83,12 @@ export default function Ver({ open, onClose, proveedorId }) {
                                 <dd className="mt-1 text-sm text-gray-900 dark:text-gray-200">{proveedor?.Email}</dd>
                             </div>
                             <div className="mb-4">
+                                <dt className="text-sm font-medium text-gray-700 dark:text-gray-200">Sitio Web</dt>
+                                <dd className="mt-1 text-sm text-gray-900 dark:text-gray-200">
+                                    {proveedor?.SitioWeb ? proveedor.SitioWeb : "N/A"}
+                                </dd>
+                            </div>
+                            <div className="mb-4">
                                 <dt className="text-sm font-medium text-gray-700 dark:text-gray-200">Dirección</dt>
                                 <dd className="mt-1 text-sm text-gray-900 dark:text-gray-200">{proveedor?.Direccion}</dd>
                             </div>

@@ -32,7 +32,7 @@ CREATE TABLE `Asistencia` (
     `observacion` VARCHAR(191) NULL,
     `fecha` DATETIME(3) NOT NULL,
 
-    UNIQUE INDEX `Asistencia_fecha_key`(`fecha`),
+    UNIQUE INDEX `Asistencia_empleadoId_fecha_key`(`empleadoId`, `fecha`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -120,21 +120,15 @@ CREATE TABLE `ProductoVenta` (
 
 -- CreateTable
 CREATE TABLE `Horario` (
-    `Id` INTEGER NOT NULL AUTO_INCREMENT,
-    `Dia` VARCHAR(191) NOT NULL,
-    `HoraInicio` VARCHAR(191) NOT NULL,
-    `HoraFin` VARCHAR(191) NOT NULL,
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `usuarioId` INTEGER NOT NULL,
+    `dia` VARCHAR(191) NOT NULL,
+    `inicio` VARCHAR(191) NULL,
+    `fin` VARCHAR(191) NULL,
+    `esDiaLibre` BOOLEAN NOT NULL,
 
-    PRIMARY KEY (`Id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
-CREATE TABLE `AsignacionHorario` (
-    `AsignacionID` INTEGER NOT NULL AUTO_INCREMENT,
-    `EmpleadoID` INTEGER NOT NULL,
-    `HorarioID` INTEGER NOT NULL,
-
-    PRIMARY KEY (`AsignacionID`)
+    UNIQUE INDEX `Horario_usuarioId_dia_key`(`usuarioId`, `dia`),
+    PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
@@ -252,6 +246,8 @@ CREATE TABLE `Facturas` (
     `total` DECIMAL(18, 5) NOT NULL,
     `pagadoCon` DECIMAL(18, 5) NOT NULL,
     `vuelto` DECIMAL(18, 5) NOT NULL,
+    `idInfoCaja` INTEGER NOT NULL,
+    `estadoFac` ENUM('ACTIVA', 'PAGADA', 'NULA') NOT NULL,
 
     INDEX `idx_idCliente`(`clienteId`),
     PRIMARY KEY (`idFactura`)
@@ -270,6 +266,49 @@ CREATE TABLE `DetallesFactura` (
     PRIMARY KEY (`idDetalleFactura`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
+-- CreateTable
+CREATE TABLE `InfoCaja` (
+    `idInfoCaja` INTEGER NOT NULL AUTO_INCREMENT,
+    `fechaApertura` DATETIME(3) NOT NULL,
+    `fechaCierre` DATETIME(3) NULL,
+    `idUsuario` INTEGER NOT NULL,
+    `fechaConsultaCaja` DATETIME(3) NOT NULL,
+    `montoInicioCaja` DECIMAL(18, 5) NOT NULL,
+    `montoCierreCaja` DECIMAL(18, 5) NULL,
+
+    PRIMARY KEY (`idInfoCaja`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `TipoMovimiento` (
+    `idTipoMovimiento` INTEGER NOT NULL AUTO_INCREMENT,
+    `nombre` VARCHAR(191) NOT NULL,
+
+    PRIMARY KEY (`idTipoMovimiento`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `EstadoMovimiento` (
+    `idEstadoMovimiento` INTEGER NOT NULL AUTO_INCREMENT,
+    `nombre` VARCHAR(191) NOT NULL,
+
+    PRIMARY KEY (`idEstadoMovimiento`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Movimientos` (
+    `idMovimiento` INTEGER NOT NULL AUTO_INCREMENT,
+    `idTipoMovimiento` INTEGER NOT NULL,
+    `idEstadoMovimiento` INTEGER NOT NULL,
+    `fechaCreacion` DATETIME(3) NOT NULL,
+    `idUsuarioCreacion` INTEGER NOT NULL,
+    `motivo` VARCHAR(191) NOT NULL,
+    `idInfoCaja` INTEGER NOT NULL,
+    `monto` DECIMAL(18, 5) NOT NULL,
+
+    PRIMARY KEY (`idMovimiento`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
 -- AddForeignKey
 ALTER TABLE `usuarios` ADD CONSTRAINT `usuarios_roleId_fkey` FOREIGN KEY (`roleId`) REFERENCES `roles`(`IdRole`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
@@ -286,10 +325,7 @@ ALTER TABLE `AuditoriaLogin` ADD CONSTRAINT `AuditoriaLogin_IdStatusAuditoriaLog
 ALTER TABLE `ProductoVenta` ADD CONSTRAINT `ProductoVenta_idCategoriaProdVenta_fkey` FOREIGN KEY (`idCategoriaProdVenta`) REFERENCES `CategoriaProdVenta`(`idCategoriaProdVenta`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `AsignacionHorario` ADD CONSTRAINT `AsignacionHorario_EmpleadoID_fkey` FOREIGN KEY (`EmpleadoID`) REFERENCES `usuarios`(`Id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `AsignacionHorario` ADD CONSTRAINT `AsignacionHorario_HorarioID_fkey` FOREIGN KEY (`HorarioID`) REFERENCES `Horario`(`Id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `Horario` ADD CONSTRAINT `Horario_usuarioId_fkey` FOREIGN KEY (`usuarioId`) REFERENCES `usuarios`(`Id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Pedidos` ADD CONSTRAINT `Pedidos_ProveedorID_fkey` FOREIGN KEY (`ProveedorID`) REFERENCES `Proveedores`(`ProveedorID`) ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -310,7 +346,19 @@ ALTER TABLE `Productos` ADD CONSTRAINT `Productos_ProveedorID_fkey` FOREIGN KEY 
 ALTER TABLE `Facturas` ADD CONSTRAINT `Facturas_clienteId_fkey` FOREIGN KEY (`clienteId`) REFERENCES `Clientes`(`clienteId`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE `Facturas` ADD CONSTRAINT `Facturas_idInfoCaja_fkey` FOREIGN KEY (`idInfoCaja`) REFERENCES `InfoCaja`(`idInfoCaja`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE `DetallesFactura` ADD CONSTRAINT `DetallesFactura_idFactura_fkey` FOREIGN KEY (`idFactura`) REFERENCES `Facturas`(`idFactura`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `DetallesFactura` ADD CONSTRAINT `DetallesFactura_idProductoVenta_fkey` FOREIGN KEY (`idProductoVenta`) REFERENCES `ProductoVenta`(`idProductoVenta`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Movimientos` ADD CONSTRAINT `Movimientos_idTipoMovimiento_fkey` FOREIGN KEY (`idTipoMovimiento`) REFERENCES `TipoMovimiento`(`idTipoMovimiento`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Movimientos` ADD CONSTRAINT `Movimientos_idEstadoMovimiento_fkey` FOREIGN KEY (`idEstadoMovimiento`) REFERENCES `EstadoMovimiento`(`idEstadoMovimiento`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Movimientos` ADD CONSTRAINT `Movimientos_idInfoCaja_fkey` FOREIGN KEY (`idInfoCaja`) REFERENCES `InfoCaja`(`idInfoCaja`) ON DELETE RESTRICT ON UPDATE CASCADE;

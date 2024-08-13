@@ -188,10 +188,6 @@ export default function SeguridadGeneral() {
                         <div className="rounded-lg dark:border-gray-600">
                             <RoleTable />
                         </div>
-
-                        <div className="rounded-lg dark:border-gray-600 h-48 lg:h-72">
-                            <HorariosList />
-                        </div>
                     </div>
                 </main>
             </section>
