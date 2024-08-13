@@ -51,7 +51,6 @@ export default function Empleado() {
     if (error) return <div>Error al cargar los datos</div>;
     if (!data || !Array.isArray(data)) return <div>No hay datos disponibles</div>;
 
-    // Asegúrate de que horarios es siempre un array
     const empleados = data.map(empleado => ({
         ...empleado,
         horarios: empleado.horarios || [] // Asegúrate de que horarios es siempre un array
@@ -62,7 +61,6 @@ export default function Empleado() {
         setOpen(false);
     };
 
-    // Filtra los empleados según el término de búsqueda
     const filteredData = empleados.filter(empleado => {
         const nombreCompleto = `${empleado.nombre.toLowerCase()} ${empleado.apellido.toLowerCase()}`;
         return nombreCompleto.includes(searchTerm.toLowerCase()) || empleado.Id.toString().includes(searchTerm);

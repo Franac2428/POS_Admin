@@ -139,7 +139,8 @@ model Horario {
 
 model Pedido {
   id                Int       @id @default(autoincrement())
-  proveedor         String
+  proveedorId         Int 
+  proveedores       Proveedores   @relation(fields: [proveedorId], references: [ProveedorID])
   medioPedido       String
   productos         Json
   observaciones     String?
@@ -148,6 +149,7 @@ model Pedido {
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt
 }
+
 
 enum Estado {
   EN_PROGRESO
@@ -169,7 +171,7 @@ model Proveedores {
   Email         String          @unique
   SitioWeb      String?         @unique
   Contacto      String?
-  Pedidos       Pedidos[]
+  Pedido       Pedido[]
   Productos     Productos[]
 }
 
@@ -180,7 +182,6 @@ model Pedidos {
   FechaRecepcion DateTime?
   Estado         String
   Observaciones  String?
-  Proveedor      Proveedores     @relation(fields: [ProveedorID], references: [ProveedorID])
   Detalles       DetallesPedido[]
 }
 

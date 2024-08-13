@@ -5,7 +5,13 @@ import { X } from 'lucide-react';
 export default function DetallePedido({ pedido, onClose }) {
     if (!pedido) return null;
 
-    const productos = JSON.parse(pedido.productos);
+    let productos = [];
+    try {
+        productos = JSON.parse(pedido.productos) || [];
+    } catch (e) {
+        console.error("Error al parsear productos:", e);
+        productos = [];
+    }
 
     return (
         <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
@@ -19,7 +25,7 @@ export default function DetallePedido({ pedido, onClose }) {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                     <div className="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg shadow">
                         <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Proveedor</h3>
-                        <p className="text-gray-700 dark:text-gray-300">{pedido.proveedor}</p>
+                        <p className="text-gray-700 dark:text-gray-300">{pedido.proveedores.Nombre}</p>
                     </div>
                     <div className="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg shadow">
                         <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Estado</h3>
@@ -35,9 +41,13 @@ export default function DetallePedido({ pedido, onClose }) {
                 <div className="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg shadow mb-4">
                     <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Productos</h3>
                     <ul className="list-disc list-inside">
-                        {productos.map((producto, index) => (
-                            <li key={index} className="text-gray-700 dark:text-gray-300">{producto.nombre} | Cantidad: {producto.cantidad}</li>
-                        ))}
+                        {productos.length > 0 ? (
+                            productos.map((producto, index) => (
+                                <li key={index} className="text-gray-700 dark:text-gray-300">{producto.nombre} | Cantidad: {producto.cantidad}</li>
+                            ))
+                        ) : (
+                            <li className="text-gray-700 dark:text-gray-300">No hay productos disponibles</li>
+                        )}
                     </ul>
                 </div>
                 <div className="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg shadow mb-4">
