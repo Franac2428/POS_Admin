@@ -53,17 +53,18 @@ export default function Inventario() {
   if (error) return <div className="text-red-500">Error al cargar los datos</div>;
   if (!data) return <div>Cargando...</div>;
 
-  const filteredData = data.filter(factura => {
-    const nombreCliente = factura.cliente.nombre.toLowerCase() + factura.cliente.apellido.toLowerCase();
-    const facturaId = factura.idFactura.toString().padStart(6, '0');
-    const searchLower = searchTerm.toLowerCase();
+// Verifica que `data` es un array antes de filtrar
+const filteredData = Array.isArray(data) ? data.filter(factura => {
+  const nombreCliente = factura.cliente.nombre.toLowerCase() + factura.cliente.apellido.toLowerCase();
+  const facturaId = factura.idFactura.toString().padStart(6, '0');
+  const searchLower = searchTerm.toLowerCase();
 
-    return (nombreCliente.includes(searchLower) || facturaId.includes(searchTerm)) &&
-      (filtros === '' || 
+  return (nombreCliente.includes(searchLower) || facturaId.includes(searchTerm)) &&
+    (filtros === '' || 
       (filtros === 'activa' && factura.estadoFac === 'ACTIVA') ||
       (filtros === 'pagada' && factura.estadoFac === 'PAGADA') ||
       (filtros === 'nula' && factura.estadoFac === 'NULA'));
-  });
+}) : [];
 
   const handleVerMasClick = (factura) => {
     setFacturaSeleccionada(factura);
@@ -103,7 +104,7 @@ export default function Inventario() {
         <div className="col-span-3 flex items-center relative">
           {[
             { key: '', label: 'Todas', color: 'gray-700', hoverColor: 'gray-600' },
-            { key: 'activa', label: 'Activas', color: 'green-500', hoverColor: 'green-600' },
+            { key: 'activa', label: 'Pendientes', color: 'green-500', hoverColor: 'green-600' },
             { key: 'pagada', label: 'Pagadas', color: 'blue-500', hoverColor: 'blue-600' },
             { key: 'nula', label: 'Nulas', color: 'gray-500', hoverColor: 'gray-600' },
           ].map(({ key, label, color, hoverColor }) => (
