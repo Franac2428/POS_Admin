@@ -1,9 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { X } from 'lucide-react';
 import { Toaster, toast } from 'sonner';
 
+
 export default function Horario({ open, onClose, mutate, employeeId }) {
-  const initialHorario = {
+  // Memoiza la inicialización de 'initialHorario'
+  const initialHorario = useMemo(() => ({
     lunes: { inicio: '', fin: '', es_dia_libre: false },
     martes: { inicio: '', fin: '', es_dia_libre: false },
     miércoles: { inicio: '', fin: '', es_dia_libre: false },
@@ -11,7 +13,7 @@ export default function Horario({ open, onClose, mutate, employeeId }) {
     viernes: { inicio: '', fin: '', es_dia_libre: false },
     sábado: { inicio: '', fin: '', es_dia_libre: false },
     domingo: { inicio: '', fin: '', es_dia_libre: false }
-  };
+  }), []);
 
   const [horario, setHorario] = useState(initialHorario);
   const [errors, setErrors] = useState({});
@@ -47,7 +49,7 @@ export default function Horario({ open, onClose, mutate, employeeId }) {
       };
       fetchHorario();
     }
-  }, [open, employeeId, initialHorario]); // Añadido initialHorario
+  }, [open, employeeId, initialHorario]);// Añadido initialHorario
 
   const handleChange = (dia, tipo, valor) => {
     setHorario(prev => ({
