@@ -14,6 +14,7 @@ export default function Orden() {
                 {orden.map((item) => (
 
                     <div key={item.id} className="grid grid-cols-4 gap-2 items-center bg-yellow-100 dark:bg-yellow-900 rounded-lg p-2">
+
                         <Image className="col-span-1 w-full max-w-[4rem] h-auto object-cover rounded-lg" src={item.img} alt={item.nombre} height={200} width={200} />
                         <div className="col-span-3 md:col-span-2 flex flex-col md:flex-row justify-between items-center md:items-start">
                             <div>
