@@ -19,7 +19,7 @@ export default function ListaMovimientos({ open, onClose }) {
     const [selectedItem, setSelectedItem] = useState(null);
     const ticketRef = useRef();
     const [printReady, setPrintReady] = useState(false);
-    const [cajaActual,onSet_CajaActual] = useState();
+    const [cajaActual, onSet_CajaActual] = useState();
 
 
     useEffect(() => {
@@ -71,7 +71,7 @@ export default function ListaMovimientos({ open, onClose }) {
             }
 
         } catch (error) {
-            console.log('Error al obtener los movimientos:'+ error);
+            console.log('Error al obtener los movimientos:' + error);
             onSet_onLoading(false);
             toast.error('Sucedió un error al obtener los movimientos');
         } finally {
@@ -253,28 +253,28 @@ export default function ListaMovimientos({ open, onClose }) {
                     {
                         cajaActual ? (
                             <div className="flex flex-col items-center">
-                            <form className="my-2 w-full flex flex-col items-center">
-                                <div className="pl-4 grid grid-cols-1 md:grid-cols-12 gap-4 mx-auto w-full">
-                                    <div className="md:col-span-4">
-                                        <HtmlFormSelect legend={"Tipo de Movimiento"} options={options} id={"selTipoMovimiento"} />
+                                <form className="my-2 w-full flex flex-col items-center">
+                                    <div className="pl-4 grid grid-cols-1 md:grid-cols-12 gap-4 mx-auto w-full">
+                                        <div className="md:col-span-4">
+                                            <HtmlFormSelect legend={"Tipo de Movimiento"} options={options} id={"selTipoMovimiento"} />
+                                        </div>
+                                        <div className="md:col-span-4">
+                                            <HtmlFormInput legend={"Monto"} type={"number"} id={"txtMontoMovimiento"} />
+                                        </div>
+                                        <div className="md:col-span-4">
+                                            <HtmlFormInput legend={"Comentario"} id={"txtComentarioMovimiento"} />
+                                        </div>
                                     </div>
-                                    <div className="md:col-span-4">
-                                        <HtmlFormInput legend={"Monto"} type={"number"} id={"txtMontoMovimiento"} />
+                                    <div className="mt-6 pl-4 grid grid-cols-1 md:grid-cols-12 gap-4 mx-auto w-full">
+                                        <div className="md:col-span-3">
+                                            <HtmlButton color={"green"} onClick={() => { onPost_Movimiento() }} icon={Plus} legend={"Registrar"} />
+                                        </div>
+                                        <div className="md:col-span-3">
+                                            <HtmlButton onClick={() => { onClose() }} color={"red"} icon={X} legend={"Cerrar"} />
+                                        </div>
                                     </div>
-                                    <div className="md:col-span-4">
-                                        <HtmlFormInput legend={"Comentario"} id={"txtComentarioMovimiento"} />
-                                    </div>
-                                </div>
-                                <div className="mt-6 pl-4 grid grid-cols-1 md:grid-cols-12 gap-4 mx-auto w-full">
-                                    <div className="md:col-span-3">
-                                        <HtmlButton color={"green"} onClick={() => { onPost_Movimiento() }} icon={Plus} legend={"Registrar"} />
-                                    </div>
-                                    <div className="md:col-span-3">
-                                        <HtmlButton onClick={() => { onClose() }} color={"red"} icon={X} legend={"Cerrar"} />
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
+                                </form>
+                            </div>
                         ) : null
                     }
 
@@ -335,7 +335,7 @@ export default function ListaMovimientos({ open, onClose }) {
                                                                     <td className="px-6 py-4">₡ {item.monto}</td>
 
                                                                     <td className="px-6 py-4">
-                                                                        {item.idEstadoMovimiento === 1 && cajaActual &&  (
+                                                                        {item.idEstadoMovimiento === 1 && cajaActual && (
                                                                             <>
                                                                                 <HtmlTableButton color={"red"} icon={Ban} onClick={() => onUpdate_Movimiento(item.idMovimiento, true)} />
                                                                                 <HtmlTableButton color={"blue"} icon={Printer} onClick={() => { setSelectedItem(item); handlePrintClick(item); }} />

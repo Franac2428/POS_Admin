@@ -140,8 +140,8 @@ export default function Caja() {
             onGet_ListaInfoCaja();
         }
         toastShown.current = true;
+    }, [onGet_ListaInfoCaja, onGet_CajaActual]);
 
-    }, []);
 
     const getItemValue = (id) => {
         return document.getElementById(id).value;

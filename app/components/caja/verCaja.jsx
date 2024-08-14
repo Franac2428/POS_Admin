@@ -1,53 +1,44 @@
 import { InfoCircledIcon } from "@radix-ui/react-icons";
 import { X } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Toaster, toast } from 'sonner';
 import HtmlLabel from "../HtmlHelpers/Label";
-
 
 export default function VerCaja({ open, onClose, idInfoCaja }) {
     const [onLoading, onSet_onLoading] = useState(false);
     const [datosCaja, onSet_DatosCaja] = useState(null);
 
-    const onGet_ListaMovimientos = async () => {
-
+    // Use useCallback to memoize the function
+    const onGet_ListaMovimientos = useCallback(async () => {
         try {
             onSet_onLoading(true);
             const response = await fetch('/api/caja/facturas?idInfoCaja=' + idInfoCaja);
-
             const result = await response.json();
 
-            if (result.status == "success") {
+            if (result.status === "success") {
                 onSet_onLoading(false);
                 onSet_DatosCaja(result.data);
                 console.log(result.data);
-            }
-            else if (result.code == 204) {
+            } else if (result.code === 204) {
                 onSet_onLoading(false);
                 toast.warning('No se encontraron datos');
-            }
-            else {
+            } else {
                 console.log(result.message);
                 onSet_onLoading(false);
                 toast.error('Error al obtener los movimientos');
             }
-
-        }
-        catch (error) {
+        } catch (error) {
             console.log('Error al obtener los movimientos:' + error);
             onSet_onLoading(false);
             toast.error('Sucedió un error al obtener los movimientos');
         }
-    };
-
-
+    }, [idInfoCaja]);
 
     useEffect(() => {
         if (open) {
             onGet_ListaMovimientos();
         }
-    }, [open]);
-
+    }, [open, onGet_ListaMovimientos]); // Added onGet_ListaMovimientos as a dependency
 
     return (
         <div
@@ -70,17 +61,15 @@ export default function VerCaja({ open, onClose, idInfoCaja }) {
                             <InfoCircledIcon />Información Caja # {idInfoCaja}
                         </h2>
                         <hr className="my-3 py-0.5  border-black dark:border-white" />
-
                     </div>
                     {
-                        datosCaja != null ? (
+                        datosCaja !== null ? (
                             onLoading ? (
                                 <div className="w-full flex items-center justify-center">
                                     <div className="spinner-border animate-spin inline-block w-8 h-8 border-4 border-t-transparent border-blue-500 rounded-full" role="status">
                                         <span className="visually-hidden"></span>
                                     </div>
                                 </div>
-
                             ) :
                                 <div>
                                     <div className="grid grid-cols-3 gap-3 m-2">
@@ -94,11 +83,8 @@ export default function VerCaja({ open, onClose, idInfoCaja }) {
                                         <HtmlLabel color={"red"} legend={"Diferencia: ₡" + datosCaja.diferencia} />
                                     </div>
                                 </div>
-
                         ) : null
                     }
-
-
                 </div>
             </div>
             <Toaster richColors />

@@ -209,7 +209,7 @@ export default function AgregarProductoVenta({ open, onClose, reloadProducts, in
               {imagePreview && (
                 <div className="mt-4 flex flex-col items-center">
                   <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">Vista Previa de la Imagen:</h3>
-                  <Image src={imagePreview} alt="Preview" className="max-w-xs max-h-20 mx-auto" />
+                  <Image src={imagePreview} alt="Preview" className="max-w-xs max-h-20 mx-auto" height={200} width={200} />
                 </div>
               )}
             </div>

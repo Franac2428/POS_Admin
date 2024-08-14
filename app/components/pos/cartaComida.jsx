@@ -17,6 +17,8 @@ export default function CartaComida({ producto, reloadTable, agregarProductoTabl
       <div className="w-20 h-20 flex justify-center items-center overflow-hidden rounded-lg">
         <Image
           src={producto.imagen}
+          width={200}
+          height={200}
           alt={""}
           className="object-contain w-full h-full"
         />
