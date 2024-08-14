@@ -80,11 +80,16 @@ export default function Caja() {
 
     useEffect(() => {
         if (!toastShown.current) {
-            onGet_CajaActual();
-            onGet_ListaInfoCaja();
+            const fetchData = async () => {
+                await onGet_CajaActual();
+                await onGet_ListaInfoCaja();
+            };
+            
+            fetchData();
             toastShown.current = true;
         }
-    }, [onGet_CajaActual, onGet_ListaInfoCaja]); // Agregar las dependencias aquí
+    }, [onGet_CajaActual, onGet_ListaInfoCaja]);
+     // Agregar las dependencias aquí
     
 
     async function onPost_InfoCaja() {
