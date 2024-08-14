@@ -29,7 +29,7 @@ export default function Clientes() {
 
        const obtenerClientes = async () => {
         try {
-            const response = await fetch('http://localhost:3000/api/clientes');
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/clientes`);
             if (!response.ok) {
                 throw new Error(`Error al obtener clientes: ${response.statusText}`);
             }

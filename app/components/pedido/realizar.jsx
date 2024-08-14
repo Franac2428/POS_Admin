@@ -27,7 +27,7 @@ const Realizar = ({ AccordionItem, AccordionTrigger, AccordionContent }) => {
     };
 
     try {
-      const res = await fetch(`http://localhost:3000/api/pedido`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/pedido`, {
         method: 'POST',
         body: JSON.stringify(pedido),
         headers: {

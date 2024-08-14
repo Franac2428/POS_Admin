@@ -17,7 +17,7 @@ const Finalizado = ({ pedidoId }) => {
       if (response.ok) {
         const pedidoActualizado = await response.json();
         toast.success('Pedido finalizado con éxito');
-        mutate('http://localhost:3000/api/pedido', (currentData) => {
+        mutate(`${process.env.NEXT_PUBLIC_API_URL}/api/pedido`, (currentData) => {
           return currentData.map((pedido) =>
             pedido.id === pedidoId ? { ...pedido, estado: 'FINALIZADO' } : pedido
           );

@@ -106,7 +106,7 @@ export default function App() {
   //#region [INICIO / CIERRE CAJA]
   const onGet_CajaActual = async () => {
     try {
-      const response = await fetch('http://localhost:3000/api/current');
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/current`);
       if (!response.ok) {
         throw new Error(`Error al obtener la info de caja: ${response.statusText}`);
       }
@@ -131,7 +131,7 @@ export default function App() {
   //#region [EMPRESA]
   const onSearch_InfoEmpresa = useCallback(async () => {
     try {
-      const response = await fetch('http://localhost:3000/api/empresa');
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/empresa`);
       if (!response.ok) {
         throw new Error(`Error al obtener la información de la empresa: ${response.statusText}`);
       }

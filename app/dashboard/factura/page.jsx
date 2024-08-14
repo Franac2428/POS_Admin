@@ -42,7 +42,7 @@ export default function Inventario() {
   const [filtros, setFiltros] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const [facturaSeleccionada, setFacturaSeleccionada] = useState(null);
-  const { data, error } = useSWR('http://localhost:3000/api/factura', fetcher);
+  const { data, error } = useSWR('`${process.env.NEXT_PUBLIC_API_URL}/api/factura`', fetcher);
 
   useEffect(() => {
     if (error) {
