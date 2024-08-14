@@ -12,7 +12,7 @@ import VerCaja from "@/app/components/caja/verCaja";
 import SpinnerOnLoading from "@/app/components/spinner";
 import { LockClosedIcon } from "@radix-ui/react-icons";
 import { ArrowLeftRight, Coins, Eye } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { Toaster, toast } from 'sonner';
 
 const itemsBreadCrumb = ["Home", "Caja"];
@@ -33,41 +33,29 @@ export default function Caja() {
 
 
 
-    const onGet_ListaInfoCaja = async () => {
+    const onGet_ListaInfoCaja = useCallback(async () => {
         onSet_onLoading(true);
-
         try {
             const response = await fetch('http://localhost:3000/api/caja');
-
             const result = await response.json();
-
-            if (result.status == "success") {
-                onSet_onLoading(false);
+            if (result.status === "success") {
                 setInfoCaja(result.data);
-                onGet_CajaActual()
-            }
-            else if (result.code == 204) {
-                onSet_onLoading(false);
-                onGet_CajaActual()
-                //toast.warning('No se encontraron movimientos');
-            }
-            else {
+                onGet_CajaActual();
+            } else if (result.code === 204) {
+                onGet_CajaActual();
+            } else {
                 console.log(result.message);
-                onSet_onLoading(false);
                 toast.error('Error al obtener los movimientos');
             }
-
         } catch (error) {
-            console.log('Error al obtener la lista de cajas:' + error);
-            onSet_onLoading(false);
+            console.error('Error al obtener la lista de cajas:', error);
             toast.error('Sucedió un error al obtener la lista de cajas');
         } finally {
-
+            onSet_onLoading(false);
         }
-    };
+    }, []);
 
-
-    const onGet_CajaActual = async () => {
+    const onGet_CajaActual = useCallback(async () => {
         try {
             onSet_onLoading(true);
             const response = await fetch('http://localhost:3000/api/current');
@@ -75,27 +63,29 @@ export default function Caja() {
                 throw new Error(`Error al obtener la info de caja: ${response.statusText}`);
             }
             const results = await response.json();
-
-            if (results.data.length == 0) {
+            if (results.data.length === 0) {
                 toast.warning(results.message);
                 onSet_ExisteCajaActual(false);
-                onSet_CajaActual(false);
-                onSet_onLoading(false);
-
-
-            }
-            else {
+                onSet_CajaActual(null);
+            } else {
                 onSet_CajaActual(results.data);
                 onSet_ExisteCajaActual(true);
-                onSet_onLoading(false);
-
             }
         } catch (error) {
             console.error('Error:', error);
             toast.error('Sucedió un error al obtener la info de caja');
+        } finally {
             onSet_onLoading(false);
         }
-    };
+    }, []);
+
+    useEffect(() => {
+        if (!toastShown.current) {
+            onGet_CajaActual();
+            onGet_ListaInfoCaja();
+            toastShown.current = true;
+        }
+    }, [onGet_CajaActual, onGet_ListaInfoCaja]);
 
     async function onPost_InfoCaja() {
         var monto = getItemValue("txtMontoInicioCaja");
@@ -140,8 +130,7 @@ export default function Caja() {
             onGet_ListaInfoCaja();
         }
         toastShown.current = true;
-    }, [onGet_ListaInfoCaja, onGet_CajaActual]);
-
+    }, []);
 
     const getItemValue = (id) => {
         return document.getElementById(id).value;
