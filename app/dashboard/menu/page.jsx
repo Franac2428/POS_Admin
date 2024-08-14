@@ -365,29 +365,37 @@ export default function App() {
                         </a>
                       </li>
                     ))}
+
                   </ul>
                 </div>
 
                 <div style={{ maxHeight: '30rem', overflowY: 'auto' }} className="mt-4 grid grid-cols-2 items-stretch sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                  {productos.map((item, index) => {
-                    const bufferImagen = Buffer.from(item.imagen.data);
-                    const imgBase64 = bufferImagen.toString('base64');
+                    {productos.map((item, index) => {
+                      const bufferImagen = Buffer.from(item.imagen.data);
+                      const imgBase64 = bufferImagen.toString('base64');
 
-                    const imgSrc = `data:${item.tipoImagen};base64,${imgBase64}`;
-                    const modelForCard = {
-                      productoVentaId: item.idProductoVenta,
-                      nombre: item.nombre,
-                      precio: item.precio,
-                      cantDisponible: item.cantidad,
-                      cantMinima: item.cantidadMinima,
-                      imagen: imgSrc,
-                      idCategoriaProdVenta: item.idCategoriaProdVenta
-                    };
-                    return (
-                      <CartaComida producto={modelForCard} reloadTable={onSearch_ProductosVenta} agregarProductoTabla={onAdd_LineaDetalle} />
-                    );
-                  })}
-                </div>
+                      const imgSrc = `data:${item.tipoImagen};base64,${imgBase64}`;
+                      const modelForCard = {
+                        productoVentaId: item.idProductoVenta,
+                        nombre: item.nombre,
+                        precio: item.precio,
+                        cantDisponible: item.cantidad,
+                        cantMinima: item.cantidadMinima,
+                        imagen: imgSrc,
+                        idCategoriaProdVenta: item.idCategoriaProdVenta
+                      };
+
+                      return (
+                        <CartaComida 
+                          key={item.idProductoVenta} // Asegúrate de usar una propiedad única
+                          producto={modelForCard} 
+                          reloadTable={onSearch_ProductosVenta} 
+                          agregarProductoTabla={onAdd_LineaDetalle} 
+                        />
+                      );
+                    })}
+                  </div>
+
               </div>
             ) : null
           }
