@@ -3,22 +3,23 @@ import { NextResponse } from 'next/server';
 
 const prisma = new PrismaClient();
 
-export async function POST(request) {
+export async function GET(request) {
     try {
-        const { idInfoCaja } = await request.json(); // Obtener el parámetro desde el cuerpo de la solicitud
+        const url = new URL(request.url);
+        const idInfoCaja = parseInt(url.searchParams.get('idInfoCaja'));
 
-        if (!idInfoCaja) {
+        if (isNaN(idInfoCaja)) {
             return NextResponse.json({
                 code: 400,
                 status: "failed",
                 data: [],
-                message: "Falta el parámetro idInfoCaja"
+                message: "El parámetro idInfoCaja no es válido"
             });
         }
 
         const infoCaja = await prisma.InfoCaja.findFirst({
             where: {
-                idInfoCaja: parseInt(idInfoCaja),
+                idInfoCaja: idInfoCaja,
             },
             select: {
                 idInfoCaja: true,
@@ -31,7 +32,7 @@ export async function POST(request) {
                         pagadoCon: true
                     },
                     where: {
-                        idInfoCaja: parseInt(idInfoCaja),
+                        idInfoCaja: idInfoCaja,
                         estadoFac: {
                             notIn: ['NULA']
                         }
@@ -44,7 +45,7 @@ export async function POST(request) {
                         idTipoMovimiento: true,
                     },
                     where: {
-                        idInfoCaja: parseInt(idInfoCaja),
+                        idInfoCaja: idInfoCaja,
                         idEstadoMovimiento: 1,
                     }
                 },
@@ -60,12 +61,10 @@ export async function POST(request) {
             });
         }
 
-        // Sumar los totales de las facturas y restar los vueltos para calcular el monto real en la caja
         const totalFacturado = infoCaja.facturas
             .reduce((acc, factura) => acc + (Number(factura.pagadoCon) - Number(factura.vuelto)), 0)
             .toFixed(2);
 
-        // Calcular el total de entradas y salidas a partir de los movimientos
         const totalEntradas = infoCaja.movimientos
             .filter(mov => mov.idTipoMovimiento === 1)
             .reduce((acc, mov) => acc + Number(mov.monto), 0);
@@ -97,7 +96,7 @@ export async function POST(request) {
         });
 
     } catch (error) {
-        console.error(error);
+        console.error('Error:', error.message, error.stack);
         return NextResponse.json({
             code: 500,
             status: "failed",
