@@ -105,11 +105,7 @@ export default function Agregar({ open, onClose, mutate }) {
                                 <input type="text" maxLength="8" className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" {...register("telefono", { required: { value: true, message: 'El telefono es requerido' } })} />
                                 {errors.telefono && <span className="text-red-500">{errors.telefono.message}</span>}
                             </div>
-                            <div className="mb-4">
-                                <label htmlFor="salario" className="block text-sm font-medium text-gray-700">Salario x hora</label>
-                                <input type="number" id="salario" name="salario" className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" {...register("salario", { required: { value: true, message: 'El salario es requerido' } })} />
-                                {errors.salario && <span className="text-red-500">{errors.salario.message}</span>}
-                            </div>
+                            
                             <div className="mb-4">
                                 <label htmlFor="roleId" className="block text-sm font-medium text-gray-700">Rol</label>
                                 <select required id="roleId" name="roleId" className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" {...register("roleId", { required: { value: true, message: 'El rol es requerido' } })}>

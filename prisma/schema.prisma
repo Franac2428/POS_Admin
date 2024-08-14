@@ -40,7 +40,7 @@ model Usuarios {
 model Asistencia {
   id         Int       @id @default(autoincrement())
   empleadoId Int
-  empleado   Usuarios  @relation(fields: [empleadoId], references: [Id])
+  empleado   Usuarios  @relation(fields: [empleadoId], references: [Id], onDelete: Cascade) 
   entrada    DateTime
   salida     DateTime?
   observacion     String?
@@ -52,7 +52,8 @@ model Asistencia {
 model Metas {
   id         Int       @id @default(autoincrement())
   empleadoId Int
-  empleado   Usuarios  @relation(fields: [empleadoId], references: [Id])
+  empleado   Usuarios  @relation(fields: [empleadoId], references: [Id], onDelete: Cascade) 
+  asunto String
   observaciones     String?
   fecha      DateTime  
 }
@@ -139,7 +140,8 @@ model Horario {
 
 model Pedido {
   id                Int       @id @default(autoincrement())
-  proveedor         String
+  proveedorId         Int 
+  proveedores       Proveedores   @relation(fields: [proveedorId], references: [ProveedorID])
   medioPedido       String
   productos         Json
   observaciones     String?
@@ -148,6 +150,7 @@ model Pedido {
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt
 }
+
 
 enum Estado {
   EN_PROGRESO
@@ -167,8 +170,9 @@ model Proveedores {
   Direccion     String?
   Telefono      String?
   Email         String          @unique
+  SitioWeb      String?         @unique
   Contacto      String?
-  Pedidos       Pedidos[]
+  Pedido       Pedido[]
   Productos     Productos[]
 }
 
@@ -179,7 +183,6 @@ model Pedidos {
   FechaRecepcion DateTime?
   Estado         String
   Observaciones  String?
-  Proveedor      Proveedores     @relation(fields: [ProveedorID], references: [ProveedorID])
   Detalles       DetallesPedido[]
 }
 

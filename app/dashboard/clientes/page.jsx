@@ -8,7 +8,7 @@ import ActivarCliente from "@/app/components/clientes/activarCliente";
 import AgregarCliente from "@/app/components/clientes/agregarCliente";
 import EditarCliente from "@/app/components/clientes/editarCliente";
 import EliminarCliente from "@/app/components/clientes/eliminarCliente";
-import Buscador from "@/app/components/pos/buscador";
+import Buscador from "@/app/components/buscador/buscar";
 import { Pencil, PlusCircle, Save, Trash, UserPlus } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Toaster, toast } from 'sonner';
@@ -25,53 +25,9 @@ export default function Clientes() {
     const [clientes, setClientes] = useState([]);
     const [loading, setLoading] = useState(true);
     const [clienteSeleccionado, setClienteSeleccionado] = useState(null);
+    const [searchTerm, setSearchTerm] = useState('');
 
-    // async function exportarClientesToExcel() {
-    //     try {
-    //         const response = await fetch('http://localhost:3000/api/clientes');
-    //         if (!response.ok) {
-    //             toast.error('Sucedió un error al exportar los clientes');
-    //             throw new Error(`Error al generar el archivo clientes: ${response.statusText}`);
-    //         }
-
-    //         const clientes = await response.json();
-
-    //         if (clientes.length === 0) {
-    //             toast.warning('No es posible exportar los clientes, no hay datos');
-    //             throw new Error(`No existen clientes: ${response.statusText}`);
-    //         } 
-    //         else {
-    //             const workbook = new Workbook();
-    //             const worksheet = workbook.addWorksheet('Clientes');
-        
-    //             worksheet.addRow(['IdCliente', 'Nombre', 'Apellido', 'Correo','Telefono']);
-        
-    //             clientes.forEach(cliente => {
-    //                 worksheet.addRow([cliente.id, cliente.nombre, cliente.apellido, cliente.correo,cliente.telefono]);
-    //             });
-    //             var date = new Date().toDateString();
-    //             const excelFilePath = 'ExportClientes_'+ date +'.xlsx';
-    //             const writeStream = fs.createWriteStream(excelFilePath);
-        
-    //             console.log('Archivo Excel exportado satisfactoriamente:', excelFilePath);
-    //             writeStream.end();
-    //             return excelFilePath;
-    //         }
-
-            
-    
-    //     } catch (error) {
-    //         console.error('Error al exportar datos a Excel:', error);
-    //         throw new Error('Ocurrió un error al exportar datos a Excel');
-    //     }
-    // }
-
-
-
-
-
-
-    const obtenerClientes = async () => {
+       const obtenerClientes = async () => {
         try {
             const response = await fetch('http://localhost:3000/api/clientes');
             if (!response.ok) {
@@ -96,6 +52,14 @@ export default function Clientes() {
     useEffect(() => {
         obtenerClientes();
     }, []);
+    const filteredData = clientes.filter(cliente => {
+        const nombreCompleto = `${cliente.nombre.toLowerCase()} ${cliente.apellido.toLowerCase()}`;
+        return nombreCompleto.includes(searchTerm.toLowerCase()) || cliente.clienteId.toString().includes(searchTerm);
+    });
+
+    const handleSearch = (term) => {
+        setSearchTerm(term);
+    };
 
     if (loading) return <div>Loading...</div>;
 
@@ -112,7 +76,7 @@ export default function Clientes() {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-12 gap-4 mx-auto">
                 <div className="md:col-span-4">
-                    <Buscador />
+                    <Buscador onSearch={handleSearch} />
                 </div>
 
                 <div className="md:col-span-3">
@@ -158,7 +122,7 @@ export default function Clientes() {
                                 </tr>
                             </thead>
                             <tbody>
-                            {clientes.map((cliente, index) => (
+                            {filteredData.map((cliente, index) => (
                                 <tr key={index} className="bg-white dark:bg-gray-800">
                                     <td hidden className="px-6 py-4">{cliente.clienteId}</td>
                                     <td  className="px-6 py-4">{index+1}</td>

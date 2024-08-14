@@ -1,27 +1,32 @@
-'use client';
-
 import React, { useState, useEffect } from 'react';
 import { ChevronDown } from 'lucide-react';
 import { Toaster, toast } from 'sonner';
 import { mutate } from 'swr';
 
-const Editar = ({ estadoActual, onActualizarEstado, facturaId }) => {
-  const normalizedEstadoActual = estadoActual.charAt(0).toUpperCase() + estadoActual.slice(1).toLowerCase();
+const estadoMap = {
+  ACTIVA: 'Pendiente',
+  PAGADA: 'Pagada',
+  NULA: 'Nula',
+};
 
-  const [selectedOption, setSelectedOption] = useState(normalizedEstadoActual);
+const estadoReverseMap = {
+  Pendiente: 'ACTIVA',
+  Pagada: 'PAGADA',
+  Nula: 'NULA',
+};
+
+const Editar = ({ estadoActual, onActualizarEstado, facturaId }) => {
+  const [selectedOption, setSelectedOption] = useState(estadoMap[estadoActual] || 'Seleccionar estado');
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    const normalizedEstado = estadoActual.charAt(0).toUpperCase() + estadoActual.slice(1).toLowerCase();
-    setSelectedOption(normalizedEstado);
-    setButtonColor(getButtonColor(normalizedEstado));
+    setSelectedOption(estadoMap[estadoActual] || 'Seleccionar estado');
   }, [estadoActual]);
 
   const handleOptionChange = async (event) => {
     const newEstado = event.target.value;
     setSelectedOption(newEstado);
-    setButtonColor(getButtonColor(newEstado));
-
+    
     // Actualizar el estado en la base de datos
     try {
       const response = await fetch(`http://localhost:3000/api/factura/${facturaId}`, {
@@ -29,16 +34,16 @@ const Editar = ({ estadoActual, onActualizarEstado, facturaId }) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ estadoFac: newEstado.toUpperCase() }), // Enviar estado en mayúsculas
+        body: JSON.stringify({ estadoFac: estadoReverseMap[newEstado] }), // Enviar estado en mayúsculas
       });
 
       if (response.ok) {
         const facturaActualizada = await response.json();
         toast.success('Factura actualizada con éxito');
-        onActualizarEstado(newEstado.toUpperCase()); // Actualizar estado en el componente padre
+        onActualizarEstado(estadoReverseMap[newEstado]); // Actualizar estado en el componente padre
         mutate('http://localhost:3000/api/factura', (currentData) => {
           return currentData.map((factura) =>
-            factura.idFactura === facturaId ? { ...factura, estadoFac: newEstado.toUpperCase() } : factura
+            factura.idFactura === facturaId ? { ...factura, estadoFac: estadoReverseMap[newEstado] } : factura
           );
         }, false);
       } else {
@@ -53,19 +58,23 @@ const Editar = ({ estadoActual, onActualizarEstado, facturaId }) => {
   };
 
   const getButtonColor = (estado) => {
-    switch (estado.toUpperCase()) {
-      case 'ACTIVA':
+    switch (estado) {
+      case 'Pendiente':
         return 'bg-green-500';
-      case 'PAGADA':
+      case 'Pagada':
         return 'bg-blue-500';
-      case 'NULA':
+      case 'Nula':
         return 'bg-gray-500';
       default:
         return 'bg-gray-200';
     }
   };
-  const [buttonColor, setButtonColor] = useState(getButtonColor(normalizedEstadoActual));
 
+  const [buttonColor, setButtonColor] = useState(getButtonColor(selectedOption));
+
+  useEffect(() => {
+    setButtonColor(getButtonColor(selectedOption));
+  }, [selectedOption]);
 
   return (
     <div className="relative inline-block text-left">
@@ -73,12 +82,12 @@ const Editar = ({ estadoActual, onActualizarEstado, facturaId }) => {
         onClick={() => setIsOpen(!isOpen)}
         className={`text-white flex px-4 py-1 rounded focus:outline-none items-center ${buttonColor}`}
       >
-        {selectedOption || 'Seleccionar estado'} <ChevronDown size={20} />
+        {selectedOption} <ChevronDown size={20} />
       </button>
       {isOpen && (
         <div className="absolute left-1/2 transform -translate-x-1/2 mt-2 w-40 bg-white border border-gray-300 rounded-lg shadow-lg z-10">
           <div className="p-2">
-            {['Activa', 'Pagada', 'Nula'].map((estado) => (
+            {['Pendiente', 'Pagada', 'Nula'].map((estado) => (
               <div key={estado} className="flex items-center mt-2">
                 <input
                   type="radio"

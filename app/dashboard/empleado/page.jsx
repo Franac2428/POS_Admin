@@ -1,10 +1,9 @@
 'use client';
 
 import Agregar from "@/app/components/empleado/crear";
-import { CirclePlus, FileUp, Pencil, SlidersHorizontal, Trash, Eye, SmilePlus, CalendarClock } from "lucide-react";
+import { CirclePlus, FileUp, Pencil, SlidersHorizontal, Trash, Eye } from "lucide-react";
 import { useState } from "react";
 import Eliminar from "../../components/empleado/eliminar";
-import Buscador from "../../components/pos/buscador";
 import Evaluar from "@/app/components/empleado/evaluar";
 import Editar from "@/app/components/empleado/editar";
 import Ver from "@/app/components/empleado/ver";
@@ -12,6 +11,7 @@ import useSWR from 'swr';
 import { useSession } from "next-auth/react";
 import Horario from "@/app/components/empleado/horario";
 import HorarioEdit from "@/app/components/empleado/horarioEdit";
+import Buscador from "@/app/components/buscador/buscar";
 
 export default function Empleado() {
     const [open, setOpen] = useState(false);
@@ -20,7 +20,8 @@ export default function Empleado() {
     const [editar, setEditar] = useState(false);
     const [evaluar, setEvaluar] = useState(false);
     const [selectedEmployeeId, setSelectedEmployeeId] = useState(null);
-    
+    const [searchTerm, setSearchTerm] = useState('');
+
     const [horarioOpen, setHorarioOpen] = useState(false);
     const [horarioEditOpen, setHorarioEditOpen] = useState(false);
 
@@ -50,7 +51,6 @@ export default function Empleado() {
     if (error) return <div>Error al cargar los datos</div>;
     if (!data || !Array.isArray(data)) return <div>No hay datos disponibles</div>;
 
-    // Asegúrate de que horarios es siempre un array
     const empleados = data.map(empleado => ({
         ...empleado,
         horarios: empleado.horarios || [] // Asegúrate de que horarios es siempre un array
@@ -61,13 +61,22 @@ export default function Empleado() {
         setOpen(false);
     };
 
+    const filteredData = empleados.filter(empleado => {
+        const nombreCompleto = `${empleado.nombre.toLowerCase()} ${empleado.apellido.toLowerCase()}`;
+        return nombreCompleto.includes(searchTerm.toLowerCase()) || empleado.Id.toString().includes(searchTerm);
+    });
+
+    const handleSearch = (term) => {
+        setSearchTerm(term);
+    };
+
     return (
         <>
             <div className="w-full">
                 <div className="grid grid-cols-10 gap-4 max-w-7xl mx-auto py-4">
                     <h1 className="font-semibold col-span-10 text-3xl text-gray-900 dark:text-gray-100">Empleados</h1>
-                    <div className="col-span-3">
-                        <Buscador />
+                    <div className="col-span-7 flex justify-end mb-4 md:mb-0">
+                        <Buscador onSearch={handleSearch} />
                     </div>
                     <div className="col-start-8 col-span-3">
                         <div className="flex justify-end gap-6">
@@ -98,7 +107,7 @@ export default function Empleado() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {empleados.map((empleado) => (
+                                {filteredData.map((empleado) => (
                                     <tr key={empleado.Id}>
                                         <td className="text-center text-sm text-gray-700 whitespace-nowrap">
                                             <a href="#" className="font-bold text-blue-700 hover:underline">{empleado.Id}</a>
