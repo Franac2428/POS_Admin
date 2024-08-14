@@ -37,7 +37,7 @@ INSERT INTO pos.infoempresa (
     '12345678', 
     '87654321', 
     '123 Calle Ejemplo', 
-    LOAD_FILE('/path/to/logo.jpg'), 
+    NULL, 
     'image/jpeg'
 );
 INSERT INTO CategoriasProducto (NombreCategoria, Descripcion)
@@ -54,10 +54,10 @@ VALUES
   ('Proveedor de Utensilios', 'Hogar', '321 Boulevard Cuarto', '111-111-1111', 'proveedorutensilios@example.com', 'María López');
 
 
-INSERT INTO estadomovimiento(nombre)
+INSERT INTO tipomovimiento(nombre)
 VALUES('Entrada')
 
-INSERT INTO estadomovimiento(nombre)
+INSERT INTO tipomovimiento(nombre)
 VALUES('Salida')
 
 INSERT INTO estadomovimiento(nombre)
@@ -68,3 +68,4 @@ VALUES('Pagado')
 
 INSERT INTO estadomovimiento(nombre)
 VALUES('Anulado')
+
