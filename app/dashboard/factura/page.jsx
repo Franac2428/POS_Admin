@@ -1,24 +1,20 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import useSWR from 'swr';
-import * as XLSX from 'xlsx';
 import Editar from "@/app/components/facturas/editar";
 import Ver from "@/app/components/facturas/ver";
 import Buscador from "../../components/buscador/buscar";
 
-const fetcher = (url) => fetch(url).then((res) => res.json());
-
 const obtenerFechaEnEspanol = (fecha) => {
   const date = new Date(fecha);
   const opciones = {
-    weekday: 'short',
-    day: '2-digit',
-    month: 'long',
+    weekday: 'short', 
+    day: '2-digit', 
+    month: 'long', 
   };
 
   const fechaFormateada = new Intl.DateTimeFormat('es-ES', opciones).format(date);
-  const año = date.getFullYear();
+  const año = date.getFullYear(); 
 
   return `${fechaFormateada} del ${año}`;
 };
@@ -26,12 +22,12 @@ const obtenerFechaEnEspanol = (fecha) => {
 const agruparProductos = (detalles) => {
   const productosAgregados = detalles.reduce((acc, producto) => {
     const descripcion = producto.descripcion;
-    const cantidad = parseFloat(producto.cantidad);
+    const cantidad = parseFloat(producto.cantidad); 
 
     if (acc[descripcion]) {
       acc[descripcion].cantidad += cantidad;
     } else {
-      acc[descripcion] = { ...producto, cantidad };
+      acc[descripcion] = { ...producto, cantidad }; 
     }
     return acc;
   }, {});
@@ -39,17 +35,19 @@ const agruparProductos = (detalles) => {
   return Object.values(productosAgregados);
 };
 
-export default function Facturas() {
+export default function Inventario() {
   const [filtros, setFiltros] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const [facturaSeleccionada, setFacturaSeleccionada] = useState(null);
-  const { data, error } = useSWR(`/api/factura`, fetcher);
+  const [data, setData] = useState(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (error) {
-      console.error('Error fetching data:', error);
-    }
-  }, [error]);
+    fetch('/api/factura')
+      .then((res) => res.json())
+      .then((data) => setData(data))
+      .catch((err) => setError(err));
+  }, []);
 
   if (error) return <div className="text-red-500">Error al cargar los datos</div>;
   if (!data) return <div>Cargando...</div>;
@@ -60,7 +58,7 @@ export default function Facturas() {
     const searchLower = searchTerm.toLowerCase();
 
     return (nombreCliente.includes(searchLower) || facturaId.includes(searchTerm)) &&
-      (filtros === '' ||
+      (filtros === '' || 
         (filtros === 'activa' && factura.estadoFac === 'ACTIVA') ||
         (filtros === 'pagada' && factura.estadoFac === 'PAGADA') ||
         (filtros === 'nula' && factura.estadoFac === 'NULA'));
@@ -79,11 +77,10 @@ export default function Facturas() {
       actualizarEstadoFactura(facturaSeleccionada.idFactura, nuevoEstado);
     }
   };
-
+  
   const handleSearch = (term) => {
     setSearchTerm(term);
   };
-
   const getMedioPagoTexto = (idMedioPago) => {
     switch (idMedioPago) {
       case 1:
@@ -96,37 +93,7 @@ export default function Facturas() {
         return "Desconocido";
     }
   };
-
-  const handleExport = () => {
-    if (typeof document !== 'undefined') {
-      generateExcelReport(filteredData);
-    }
-  };
-
-  const generateExcelReport = (data) => {
-    const formattedData = data.map(factura => {
-      return {
-        "ID Factura": factura.idFactura.toString().padStart(6, '0'),
-        "Cliente": `${factura.cliente.nombre} ${factura.cliente.apellido}`,
-        "Fecha Emisión": obtenerFechaEnEspanol(factura.fechaEmision),
-        "Estado": factura.estadoFac,
-        "Medio de Pago": getMedioPagoTexto(factura.idMedioPago),
-        "Total": factura.total,
-      };
-    });
-
-    const worksheet = XLSX.utils.json_to_sheet(formattedData);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Facturas");
-
-    const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
-    const dataBlob = new Blob([excelBuffer], { type: "application/octet-stream" });
-    const downloadLink = document.createElement("a");
-    downloadLink.href = URL.createObjectURL(dataBlob);
-    downloadLink.download = "facturas.xlsx";
-    downloadLink.click();
-  };
-
+  
   return (
     <div className="w-full relative">
       <div className="md:grid gap-4 max-w-7xl mx-auto py-4 md:w-auto flex flex-col md:grid-cols-10 mb-3 md:mb-0 items-stretch md:items-center">
@@ -151,9 +118,6 @@ export default function Facturas() {
 
         <div className="col-span-7 flex justify-end mb-4 md:mb-0">
           <Buscador onSearch={handleSearch} />
-          <button onClick={handleExport} className="ml-4 flex gap-3 shadow-lg text-green-500 dark:text-green-400 font-semibold bg-white dark:bg-gray-700 px-4 py-2 active:scale-95 transition-transform ease-in-out duration-75 hover:scale-105 transform border border-green-500 dark:border-green-400 rounded-lg">
-            Exportar
-          </button>
         </div>
 
         <div className="shadow-lg col-span-10 overflow-x-auto bg-white dark:bg-gray-700 px-5 py-4 rounded-lg">
@@ -171,16 +135,18 @@ export default function Facturas() {
                     </span>
                     <span className='flex flex-col items-start'>
                       <p className="text-md font-semibold text-gray-900 dark:text-gray-400">
-                        {factura.cliente.nombre} {factura.cliente.apellido}
+                      {factura.cliente.nombre} {factura.cliente.apellido}
                       </p>
                       <p className="text-sm font-normal text-gray-900 dark:text-gray-400">
-                        {obtenerFechaEnEspanol(factura.fechaEmision)}
+                      {obtenerFechaEnEspanol(factura.fechaEmision)}
                       </p>
                       <p className="text-md font-normal text-gray-900 dark:text-gray-400">
-                        Pago con: {getMedioPagoTexto(factura.idMedioPago)}
+                      Pago con: {getMedioPagoTexto(factura.idMedioPago)}
                       </p>
                     </span>
+
                   </span>
+
 
                   <div className="overflow-x-auto">
                     <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700 mt-4">
@@ -213,7 +179,7 @@ export default function Facturas() {
                         ))}
                       </tbody>
                     </table>
-
+                    
                     {productosAgrupados.length > 4 && (
                       <button
                         onClick={() => handleVerMasClick(factura)}
@@ -222,8 +188,10 @@ export default function Facturas() {
                         Ver más...
                       </button>
                     )}
+                    
                   </div>
                   <p className="text-md font-bold text-end text-gray-900 dark:text-gray-400">Total: ₡ {factura.total}</p>
+                 
                 </div>
               );
             })}
@@ -232,10 +200,10 @@ export default function Facturas() {
       </div>
 
       {facturaSeleccionada && (
-        <Ver
-          open={!!facturaSeleccionada}
-          factura={facturaSeleccionada}
-          onClose={handleCloseModal}
+        <Ver 
+          open={!!facturaSeleccionada} 
+          factura={facturaSeleccionada} 
+          onClose={handleCloseModal} 
         />
       )}
     </div>
