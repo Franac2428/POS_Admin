@@ -1,8 +1,8 @@
 'use client';
-import React, { useState } from "react";
-import { Toaster, toast } from 'sonner';
 import * as Dialog from '@radix-ui/react-dialog';
 import { SmilePlus } from "lucide-react";
+import { useState } from "react";
+import { Toaster, toast } from 'sonner';
 
 
 const Evaluar = ({ employeeId }) => {
@@ -36,6 +36,8 @@ const Evaluar = ({ employeeId }) => {
 
             if (res.ok) {
                 toast.success('Evaluación de empleado guardada con éxito');
+                setObservation("");
+                setAsunto("");
                 
             } else {
                 const errorData = await res.json();
@@ -48,7 +50,17 @@ const Evaluar = ({ employeeId }) => {
 
         setObservation("");
         setAsunto("");
+
+
+
     };
+
+    
+    const OnCancel = async () => {
+        setObservation("");
+        setAsunto("");
+
+    }
 
     return (
         <>
@@ -95,7 +107,7 @@ const Evaluar = ({ employeeId }) => {
                         
                         <div className="flex justify-end gap-[25px]">
                             <Dialog.Close asChild>
-                                <button className="text-gray-700 bg-mauve4 hover:bg-mauve5 focus:shadow-mauve7 inline-flex h-[35px] items-center justify-center rounded-[4px] px-[15px] font-medium leading-none outline-none focus:shadow-[0_0_0_2px]">
+                                <button onClick={OnCancel} className="text-gray-700 bg-mauve4 hover:bg-mauve5 focus:shadow-mauve7 inline-flex h-[35px] items-center justify-center rounded-[4px] px-[15px] font-medium leading-none outline-none focus:shadow-[0_0_0_2px]">
                                     Cancelar
                                 </button>
                             </Dialog.Close>

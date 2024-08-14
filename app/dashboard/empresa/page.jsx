@@ -61,7 +61,7 @@ export default function InfoEmpresa() {
       }
       catch (error) {
          console.error('Error:', error);
-         console.log("Error al obtener la info de la empresa: " + result.message);
+         console.log("Error al obtener la info de la empresa: " + error );
          toast.error('Sucedió un error al obtener la información');
       }
       finally {
