@@ -313,7 +313,7 @@ export default function InfoEmpresa() {
                      <div className="mt-2 border-2 flex flex-col">
                         <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">Vista Previa:</h3>
                         <div>
-                           <Image src={imagePreview} alt="Preview" className="max-w-40 max-h-40" />
+                           <Image src={imagePreview} alt="Preview" className="max-w-40 max-h-40" width={200} height={200} />
                         </div>
                      </div>
                   </div>
