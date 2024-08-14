@@ -22,13 +22,8 @@ export default function ListaMovimientos({ open, onClose }) {
     const [cajaActual, onSet_CajaActual] = useState();
 
 
-    useEffect(() => {
-        if (open) {
-            onGet_ListaMovimientos();
-            onGet_CajaActual();
-            console.log("CAJA ACTUAL: " + cajaActual)
-        }
-    }, [open]);
+    
+    
 
     useEffect(() => {
         if (selectedItem) {
@@ -87,6 +82,13 @@ export default function ListaMovimientos({ open, onClose }) {
             onSet_onLoading(false);
         }
     }, []);
+
+    useEffect(() => {
+        if (open) {
+            onGet_ListaMovimientos();
+            onGet_CajaActual();
+        }
+    }, [open, onGet_ListaMovimientos, onGet_CajaActual]);
 
     async function onPost_Movimiento() {
         let monto = getItemValue("txtMontoMovimiento");
@@ -206,7 +208,8 @@ export default function ListaMovimientos({ open, onClose }) {
 
     useEffect(() => {
         onGet_ListaMovimientos();
-    }, []);
+    }, [onGet_ListaMovimientos]);
+    
 
     return (
         <div
