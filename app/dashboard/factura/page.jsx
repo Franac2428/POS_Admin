@@ -72,7 +72,17 @@ export default function Inventario() {
     const nombreCliente = factura.cliente.nombre.toLowerCase() + factura.cliente.apellido.toLowerCase();
     const facturaId = factura.idFactura.toString().padStart(6, '0');
     const searchLower = searchTerm.toLowerCase();
+  const filteredData = Array.isArray(data) ? data.filter(factura => {
+    const nombreCliente = factura.cliente.nombre.toLowerCase() + factura.cliente.apellido.toLowerCase();
+    const facturaId = factura.idFactura.toString().padStart(6, '0');
+    const searchLower = searchTerm.toLowerCase();
 
+    return (nombreCliente.includes(searchLower) || facturaId.includes(searchTerm)) &&
+      (filtros === '' || 
+        (filtros === 'activa' && factura.estadoFac === 'ACTIVA') ||
+        (filtros === 'pagada' && factura.estadoFac === 'PAGADA') ||
+        (filtros === 'nula' && factura.estadoFac === 'NULA'));
+  }) : [];
     return (nombreCliente.includes(searchLower) || facturaId.includes(searchTerm)) &&
       (filtros === '' || 
         (filtros === 'activa' && factura.estadoFac === 'ACTIVA') ||

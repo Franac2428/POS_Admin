@@ -21,6 +21,7 @@ ChartJS.register(
 
 const BarChartProductos = () => {
     const [chartData, setChartData] = useState({
+        labels: [],
         datasets: [],
     });
     const [chartOptions, setChartOptions] = useState({});
@@ -28,45 +29,68 @@ const BarChartProductos = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const res = await fetch(`/api/reportes/productos?periodo=${periodo}`);
-            const data = await res.json();
+            try {
+                const res = await fetch(`/api/reportes/productos/${periodo}`);
+                if (!res.ok) {
+                    throw new Error(`Error: ${res.status}`);
+                }
+                const data = await res.json();
 
-            if (data.ventasProductos) {
-                // Extrae los periodos y productos
-                const labels = [...new Set(data.ventasProductos.map(item => item.periodo))];
-                const productos = [...new Set(data.ventasProductos.map(item => item.producto))];
+                if (data.ventasProductos) {
+                    // Extrae los periodos y productos
+                    const labels = [...new Set(data.ventasProductos.map(item => item.periodo))];
+                    const productos = [...new Set(data.ventasProductos.map(item => item.producto))];
 
-                // Construye los datasets para cada producto
-                const datasets = productos.map(producto => {
-                    return {
-                        label: producto,
-                        data: labels.map(label => {
-                            const venta = data.ventasProductos.find(item => item.periodo === label && item.producto === producto);
-                            return venta ? venta.total_ventas : 0;
-                        }),
-                        borderColor: 'rgb(75, 192, 192)',
-                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                    };
-                });
+                    // Construye los datasets para cada producto
+                    const datasets = productos.map(producto => {
+                        return {
+                            label: producto,
+                            data: labels.map(label => {
+                                const venta = data.ventasProductos.find(item => item.periodo === label && item.producto === producto);
+                                return venta ? venta.total_ventas : 0;
+                            }),
+                            borderColor: 'rgb(75, 192, 192)',
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                            borderWidth: 1
+                        };
+                    });
 
-                setChartData({
-                    labels: labels,
-                    datasets: datasets,
-                });
+                    setChartData({
+                        labels: labels,
+                        datasets: datasets,
+                    });
 
-                setChartOptions({
-                    plugins: {
-                        legend: {
-                            position: 'top',
+                    setChartOptions({
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                            },
+                            title: {
+                                display: true,
+                                text: `Ventas de productos (${periodo})`
+                            }
                         },
-                        title: {
-                            display: true,
-                            text: `Ventas de productos (${periodo})`
+                        maintainAspectRatio: false,
+                        responsive: true,
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Periodo'
+                                }
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: 'Ventas Totales'
+                                },
+                                beginAtZero: true
+                            }
                         }
-                    },
-                    maintainAspectRatio: false,
-                    responsive: true,
-                });
+                    });
+                }
+            } catch (error) {
+                console.error('Error al obtener datos de productos:', error);
             }
         };
 
