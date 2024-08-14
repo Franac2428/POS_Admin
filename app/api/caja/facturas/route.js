@@ -7,8 +7,8 @@ export async function GET(request) {
     console.log(request)
 
     try {
-        const { searchParams } = new URL(request.url);
-        const idInfoCaja = parseInt(searchParams.get('idInfoCaja'));
+        const idInfoCaja = parseInt(request.nextUrl.searchParams.get('idInfoCaja'));
+
 
 
         const infoCaja = await prisma.InfoCaja.findFirst({
