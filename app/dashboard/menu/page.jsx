@@ -13,7 +13,7 @@ import CartaComida from "@/app/components/pos/cartaComida";
 import ModalRegistrarPago from "@/app/components/pos/modalPago";
 import PrintTicket from "@/app/components/pos/printTicket";
 import { CoinsIcon, Files, HandPlatter, Trash } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState,useCallback } from "react";
 import { Toaster, toast } from 'sonner';
 
 
@@ -45,7 +45,7 @@ export default function App() {
 
 
   //#region [EMPRESA]
-  const onSearch_InfoEmpresa = async () => {
+  const onSearch_InfoEmpresa = useCallback(async () => {
     try {
       const response = await fetch('http://localhost:3000/api/empresa');
       if (!response.ok) {
@@ -77,9 +77,12 @@ export default function App() {
       console.log("Error al obtener la info: " + error)
 
     }
-  };
+  }, []); // Agrega dependencias si es necesario
 
   //#endregion
+  useEffect(() => {
+    onSearch_InfoEmpresa();
+  }, [onSearch_InfoEmpresa]);  
 
   //#region [CLIENTES]
   const onSearch_Cliente = async (value) => {
@@ -335,9 +338,6 @@ export default function App() {
 
 
   //#region [ON_INIT]
-  useEffect(() => {
-    onSearch_InfoEmpresa();
-  }, [onSearch_InfoEmpresa]);  // Agrega onSearch_InfoEmpresa a las dependencias
 
 
   useEffect(() => {
@@ -428,14 +428,18 @@ export default function App() {
 
                 <div className="border-b border-gray-200 dark:border-gray-700">
                   <ul className="flex flex-wrap -mb-px text-sm font-medium text-center text-gray-500 dark:text-gray-400">
-
-                    {categorias.map((item) => (
-                      <li className="me-2" key={item.idCategoriaProdVenta}>
-                        <a href="#" id={`tab_${item.idCategoriaProdVenta}`} onClick={() => onSet_TabActivo(item.idCategoriaProdVenta)} className="tab-categorias inline-block p-4 hover:text-blue-600 rounded-t-lg dark:hover:text-blue-600 ">
-                          {item.nombre}
-                        </a>
-                      </li>
-                    ))}
+                  {categorias.map((item) => (
+                        <li className="me-2" key={item.idCategoriaProdVenta}>
+                          <a
+                            href="#"
+                            id={`tab_${item.idCategoriaProdVenta}`}
+                            onClick={() => onSet_TabActivo(item.idCategoriaProdVenta)}
+                            className="tab-categorias inline-block p-4 hover:text-blue-600 rounded-t-lg dark:hover:text-blue-600"
+                          >
+                            {item.nombre}
+                          </a>
+                        </li>
+                      ))}
                   </ul>
                 </div>
 
