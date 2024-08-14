@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useEffect, useState, useCallback } from 'react'; // Importa useCallback
 import { useSession } from 'next-auth/react';
 import { formatDistanceToNow } from 'date-fns';
