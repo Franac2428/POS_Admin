@@ -31,6 +31,30 @@ export default function Caja() {
     const toastShown = useRef(false);
     const [onLoading, onSet_onLoading] = useState(false);
 
+
+
+    const onGet_ListaInfoCaja = useCallback(async () => {
+        onSet_onLoading(true);
+        try {
+            const response = await fetch('http://localhost:3000/api/caja');
+            const result = await response.json();
+            if (result.status === "success") {
+                setInfoCaja(result.data);
+                onGet_CajaActual();
+            } else if (result.code === 204) {
+                onGet_CajaActual();
+            } else {
+                console.log(result.message);
+                toast.error('Error al obtener los movimientos');
+            }
+        } catch (error) {
+            console.error('Error al obtener la lista de cajas:', error);
+            toast.error('Sucedió un error al obtener la lista de cajas');
+        } finally {
+            onSet_onLoading(false);
+        }
+    }, []);
+
     const onGet_CajaActual = useCallback(async () => {
         try {
             onSet_onLoading(true);
@@ -55,42 +79,13 @@ export default function Caja() {
         }
     }, []);
 
-    const onGet_ListaInfoCaja = useCallback(async () => {
-        onSet_onLoading(true);
-        try {
-            const response = await fetch('http://localhost:3000/api/caja');
-            const result = await response.json();
-            if (result.status === "success") {
-                setInfoCaja(result.data);
-                onGet_CajaActual();
-            } else if (result.code === 204) {
-                onGet_CajaActual();
-            } else {
-                console.log(result.message);
-                toast.error('Error al obtener los movimientos');
-            }
-        } catch (error) {
-            console.error('Error al obtener la lista de cajas:', error);
-            toast.error('Sucedió un error al obtener la lista de cajas');
-        } finally {
-            onSet_onLoading(false);
-        }
-    }, [onGet_CajaActual]); // Agrega onGet_CajaActual aquí
-    
-
     useEffect(() => {
         if (!toastShown.current) {
-            const fetchData = async () => {
-                await onGet_CajaActual();
-                await onGet_ListaInfoCaja();
-            };
-            
-            fetchData();
+            onGet_CajaActual();
+            onGet_ListaInfoCaja();
             toastShown.current = true;
         }
     }, [onGet_CajaActual, onGet_ListaInfoCaja]);
-     // Agregar las dependencias aquí
-    
 
     async function onPost_InfoCaja() {
         var monto = getItemValue("txtMontoInicioCaja");
