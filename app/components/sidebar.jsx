@@ -55,7 +55,7 @@ export default function Sidebar() {
       <aside className={`h-screen ${isSmallScreen && expanded ? "fixed" : "static"} inset-y-0 left-0 z-50 transform transition-transform duration-200 ease-in-out"}`}>
         <nav className="h-full flex flex-col bg-white dark:bg-gray-800 border-r shadow-sm">
           <div className="p-4 pb-2 flex justify-between items-center bg-custom-yellow">
-            <Image src="/nombre.png" className={`overflow-hidden transition-all ${expanded ? "w-32" : "w-0"}`} />
+            <Image src="/nombre.png" width={200} height={200} className={`overflow-hidden transition-all ${expanded ? "w-32" : "w-0"}`} />
 
             <button
               onClick={() => setExpanded(!expanded)}
