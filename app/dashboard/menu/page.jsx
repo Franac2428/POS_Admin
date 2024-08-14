@@ -59,13 +59,13 @@ export default function App() {
         onSearch_ProductosVenta();
         onGet_CajaActual()
       }
-
-      else if (result.code == 204) {
+      
+      else if(result.code == 204){
         onModal_InfoEmpresa(true);
         console.log("No hay info de la empresa")
       }
 
-      else {
+      else{
         console.log("Error al obtener la info: " + result.message)
         toast.error("Sucedió un error al obtener la información de la empresa")
       }
@@ -337,8 +337,8 @@ export default function App() {
   //#region [ON_INIT]
   useEffect(() => {
     onSearch_InfoEmpresa();
-  }, [onSearch_InfoEmpresa]);  // Agrega onSearch_InfoEmpresa a las dependencias
 
+  }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -429,8 +429,8 @@ export default function App() {
                 <div className="border-b border-gray-200 dark:border-gray-700">
                   <ul className="flex flex-wrap -mb-px text-sm font-medium text-center text-gray-500 dark:text-gray-400">
 
-                    {categorias.map((item) => (
-                      <li className="me-2" key={item.idCategoriaProdVenta}>
+                    {categorias.map((item, index) => (
+                      <li className="me-2" key={index}>
                         <a href="#" id={`tab_${item.idCategoriaProdVenta}`} onClick={() => onSet_TabActivo(item.idCategoriaProdVenta)} className="tab-categorias inline-block p-4 hover:text-blue-600 rounded-t-lg dark:hover:text-blue-600 ">
                           {item.nombre}
                         </a>
@@ -573,7 +573,7 @@ export default function App() {
         ) : null
       }
 
-      <AgregarProductoVenta open={modalAgregar} onClose={() => openModalAgregar(false)} setOptions={catalogoCategoria} reloadProducts={onSearch_ProductosVenta} infoEmpresa={infoEmpresa} />
+      <AgregarProductoVenta open={modalAgregar} onClose={() => openModalAgregar(false)} setOptions={catalogoCategoria} reloadProducts={onSearch_ProductosVenta} infoEmpresa={infoEmpresa}  />
       <MultipleSelectCliente open={modalMultipleClientes} onClose={() => onModal_MultiplesClientes(false)} listaClientes={listaMultiplesClientes} handleClienteInput={onChange_Cliente} />
       <ModalRegistrarPago open={modalRegistrarPago} onClose={() => onModal_RegistrarPago(false)} objFactura={modelFactura} onReload={onClear_Factura} />
       <AgregarCLientePos open={modalAgregarClientePos} onClose={() => onModal_AgregarClientePos(false)} />
