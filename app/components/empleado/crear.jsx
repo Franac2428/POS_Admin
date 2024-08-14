@@ -102,7 +102,7 @@ export default function Agregar({ open, onClose, mutate }) {
                             </div>
                             <div className="mb-4 flex flex-col">
                                 <label htmlFor="telefono" className="text-sm font-medium text-gray-700">Telefono</label>
-                                <input type="text" className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" {...register("telefono", { required: { value: true, message: 'El telefono es requerido' } })} />
+                                <input type="text" maxLength="8" className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" {...register("telefono", { required: { value: true, message: 'El telefono es requerido' } })} />
                                 {errors.telefono && <span className="text-red-500">{errors.telefono.message}</span>}
                             </div>
                             <div className="mb-4">

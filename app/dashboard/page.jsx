@@ -33,9 +33,9 @@ export default function DashboardPage() {
                 <h1 className="text-3xl font-semibold text-gray-800 mb-4">Dashboard</h1>
                 <div className="text-center">
                     {role === 'Administrador' ? (
-                        <p className="text-xl text-green-600">Welcome, Admin <span className="font-bold">{name}</span>!</p>
+                        <p className="text-xl text-green-600">¡Hola!, Administrador: <span className="font-bold">{name}</span>!</p>
                     ) : role === 'Empleado' ? (
-                        <p className="text-xl text-blue-600">Welcome, Employee <span className="font-bold">{name}</span>!</p>
+                        <p className="text-xl text-blue-600">¡Hola!, Trabajador: <span className="font-bold">{name}</span>!</p>
                     ) : (
                         <p className="text-xl text-gray-700">Welcome, <span className="font-bold">{name}</span>!</p>
                     )}

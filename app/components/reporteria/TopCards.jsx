@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { CirclePlus, Users, DollarSign } from "lucide-react";
+import { CirclePlus, Users, BadgeCent } from "lucide-react";
 
 const TopCards = () => {
     const [data, setData] = useState({
@@ -54,7 +54,7 @@ const TopCards = () => {
             <div className="bg-white p-6 rounded-xl border border-gray-200">
                 <Users size={24} strokeWidth={2} />
                 <p className="text-3xl font-semibold text-gray-800">{data.totalClientes}</p>
-                <p className="text-sm text-gray-600">Total Clientes</p>
+                <p className="text-sm text-gray-600">Total Clientes Activos</p>
                 <div className="flex items-center mt-4">
                     <span className={`font-semibold mr-2 ${totalClientesChange >= 0 ? 'text-blue-500' : 'text-red-500'}`}>
                         {totalClientesChange.toFixed(2)}%
@@ -62,7 +62,7 @@ const TopCards = () => {
                 </div>
             </div>
             <div className="bg-white p-6 rounded-xl border border-gray-200">
-                <DollarSign size={24} strokeWidth={2} />
+                <BadgeCent size={24} strokeWidth={2} />
                 <p className="text-3xl font-semibold text-gray-800">{data.ventasTotales}</p>
                 <p className="text-sm text-gray-600">Ventas totales</p>
                 <div className="flex items-center mt-4">
@@ -72,7 +72,7 @@ const TopCards = () => {
                 </div>
             </div>
             <div className="bg-white p-6 rounded-xl border border-gray-200">
-                <DollarSign size={24} strokeWidth={2} />
+                <BadgeCent size={24} strokeWidth={2} />
                 <p className="text-3xl font-semibold text-gray-800">{data.ventasMensuales}</p>
                 <p className="text-sm text-gray-600">Ventas Mensuales</p>
                 <div className="flex items-center mt-4">

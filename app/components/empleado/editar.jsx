@@ -57,7 +57,7 @@ export default function Editar({ open, onClose, employeeId, mutate }) {
             correoRef.current.value = empleado.email;
             telefonoRef.current.value = empleado.telefono;
             direccionRef.current.value = empleado.direccion;
-            rolRef.current.value = empleado.roleId || "";  
+            rolRef.current.value = empleado.roleId || "";
         }
     }, [empleado]);
 
@@ -82,7 +82,7 @@ export default function Editar({ open, onClose, employeeId, mutate }) {
             if (response.ok) {
                 const empleadoActualizado = await response.json();
                 toast.success('Usuario editado con éxito');
-                mutate();  
+                mutate();
                 setTimeout(() => {
                     onClose();
                 }, 500);
@@ -128,7 +128,7 @@ export default function Editar({ open, onClose, employeeId, mutate }) {
                                 </div>
                                 <div className="mb-4">
                                     <label htmlFor="telefono" className="block text-sm font-medium text-gray-700 dark:text-gray-200">Telefono</label>
-                                    <input required type="number" id="telefono" name="telefono" ref={telefonoRef} className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
+                                    <input required type="text" maxLength="8" id="telefono" name="telefono" ref={telefonoRef} className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
                                 </div>
                                 <div className="mb-4">
                                     <label htmlFor="rol" className="block text-sm font-medium text-gray-700 dark:text-gray-200">Rol</label>
