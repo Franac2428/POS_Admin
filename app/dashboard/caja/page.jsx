@@ -85,6 +85,7 @@ export default function Caja() {
             onGet_ListaInfoCaja();
             toastShown.current = true;
         }
+        //eslint-disable-next-line react-hooks/exhaustive-deps
     }, [onGet_CajaActual, onGet_ListaInfoCaja]);
 
     async function onPost_InfoCaja() {
@@ -130,6 +131,7 @@ export default function Caja() {
             onGet_ListaInfoCaja();
         }
         toastShown.current = true;
+        //eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const getItemValue = (id) => {
