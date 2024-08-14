@@ -45,44 +45,9 @@ export default function App() {
 
 
   //#region [EMPRESA]
-  const onSearch_InfoEmpresa = useCallback(async () => {
-    try {
-      const response = await fetch('http://localhost:3000/api/empresa');
-      if (!response.ok) {
-        throw new Error(`Error al obtener la información de la empresa: ${response.statusText}`);
-      }
-      const result = await response.json();
-
-      if (result.status == "success") {
-        onSet_InfoEmpresa(result.data);
-        onSearch_CategoriasProdVenta();
-        onSearch_ProductosVenta();
-        onGet_CajaActual()
-      }
-
-      else if (result.code == 204) {
-        onModal_InfoEmpresa(true);
-        console.log("No hay info de la empresa")
-      }
-
-      else {
-        console.log("Error al obtener la info: " + result.message)
-        toast.error("Sucedió un error al obtener la información de la empresa")
-      }
-
-
-
-    }
-    catch (error) {
-      console.log("Error al obtener la info: " + error)
-
-    }
-  }, []); // Agrega dependencias si es necesario
 
   //#endregion
-  useEffect(() => {
-    onSearch_InfoEmpresa();
-  }, [onSearch_InfoEmpresa]);  
+ 
 
   //#region [CLIENTES]
   const onSearch_Cliente = async (value) => {
@@ -397,7 +362,43 @@ export default function App() {
   //     );
 
   //  }
+  const onSearch_InfoEmpresa = useCallback(async () => {
+    try {
+      const response = await fetch('http://localhost:3000/api/empresa');
+      if (!response.ok) {
+        throw new Error(`Error al obtener la información de la empresa: ${response.statusText}`);
+      }
+      const result = await response.json();
 
+      if (result.status == "success") {
+        onSet_InfoEmpresa(result.data);
+        onSearch_CategoriasProdVenta();
+        onSearch_ProductosVenta();
+        onGet_CajaActual()
+      }
+
+      else if (result.code == 204) {
+        onModal_InfoEmpresa(true);
+        console.log("No hay info de la empresa")
+      }
+
+      else {
+        console.log("Error al obtener la info: " + result.message)
+        toast.error("Sucedió un error al obtener la información de la empresa")
+      }
+
+
+
+    }
+    catch (error) {
+      console.log("Error al obtener la info: " + error)
+
+    }
+  }, [onSet_InfoEmpresa, onSearch_CategoriasProdVenta, onSearch_ProductosVenta, onGet_CajaActual, onModal_InfoEmpresa]);
+
+  useEffect(() => {
+    onSearch_InfoEmpresa();
+  }, [onSearch_InfoEmpresa]);  
   return (
     <div style={{ overflow: 'hidden' }} className="flex h-screen">
       <div className="w-5/6">
