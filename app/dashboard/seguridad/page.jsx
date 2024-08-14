@@ -2,13 +2,10 @@
 
 import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
-import UsuariosLista from "../../components/seguridad/usuariosList";
 import RoleTable from "../../components/seguridad/roles";
-import HorariosList from "../../components/seguridad/horarios";
-import AddUser from '@/app/components/seguridad/addUser';
+
 
 export default function SeguridadGeneral() {
-    const [adduser, SetAddUser] = useState(false);
 
     const { data: session, status } = useSession();
 

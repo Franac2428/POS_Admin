@@ -21,7 +21,6 @@ export default function Inventario() {
   const [editar, setEditar] = useState(false);
   const [selectedProductoId, setSelectedProductoId] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
-  const [pedidosOpen, setPedidosOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [filtros, setFiltros] = useState({
     filterCategoria: '',
