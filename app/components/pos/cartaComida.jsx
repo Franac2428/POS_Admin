@@ -14,7 +14,7 @@ export default function CartaComida({ producto, reloadTable, agregarProductoTabl
       <p className={`text-${Number(producto.cantMinima) > Number(producto.cantDisponible) ? 'red' : 'blue'}-600 dark:text-${Number(producto.cantMinima) > Number(producto.cantDisponible) ? 'red' : 'blue'}-400`}><strong>Cantidad: {producto.cantDisponible}</strong></p>
 
       <div className="w-20 h-20 flex justify-center items-center overflow-hidden rounded-lg">
-        <img
+        <Image
           src={producto.imagen}
           alt={""}
           className="object-contain w-full h-full"

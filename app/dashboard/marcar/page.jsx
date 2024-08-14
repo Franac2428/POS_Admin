@@ -1,7 +1,7 @@
 // pages/index.js
 
 import RegistroHoras from '@/app/components/registro_horas/registroHoras';
-const HomePage = () => {
+const MarcarPage = () => {
     return (
         <div>
             <RegistroHoras />
@@ -9,4 +9,4 @@ const HomePage = () => {
     );
 };
 
-export default HomePage;
+export default MarcarPage;
