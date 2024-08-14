@@ -14,7 +14,7 @@ export default function Filtro() {
           <a href="/integrations">Integrations</a>
         </div>
 
-        <Image src="/solutions.jpg" alt="" />
+        <Image src="/solutions.jpg"  width={200} height={200} alt="" />
       </Popover.Panel>
     </Popover>
 

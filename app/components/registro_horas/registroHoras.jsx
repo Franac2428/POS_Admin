@@ -7,6 +7,8 @@ import Salida from './horaSalida';
 import Nota from './observacion';
 import MyCalendar from './vistaAsistencia';
 
+import { useCallback } from 'react';
+
 const RegistroHoras = () => {
     const fecha = new Date();
     const horaLocal = fecha.toLocaleTimeString('es-ES', {
@@ -25,7 +27,7 @@ const RegistroHoras = () => {
     const [fechas, setFechas] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    const fetchAsistencia = async () => {
+    const fetchAsistencia = useCallback(async () => {
         if (!employeeId) return; 
         try {
             const response = await fetch(`/api/marcar/${employeeId}`);
@@ -40,20 +42,9 @@ const RegistroHoras = () => {
         } finally {
             setLoading(false);
         }
-    }
-     
-    useEffect(() => {
-        fetchAsistencia();
-        fetchCalendario();
     }, [employeeId]);
 
-    useEffect(() => {
-        if (asistencia) {
-            setLoading(false);
-        }
-    }, [asistencia]);
-
-    const fetchCalendario = async () => {
+    const fetchCalendario = useCallback(async () => {
         if (!employeeId) return; 
         try {
             const response = await fetch(`/api/calendario/${employeeId}`);
@@ -66,10 +57,21 @@ const RegistroHoras = () => {
         } catch (err) {
             toast.error('Error al comunicar con el servidor');
         }
-    }
+    }, [employeeId]);
+    
+    useEffect(() => {
+        fetchAsistencia();
+        fetchCalendario();
+    }, [fetchAsistencia, fetchCalendario]);
+
+    useEffect(() => {
+        if (asistencia) {
+            setLoading(false);
+        }
+    }, [asistencia]);
+
     const horaEntrada = new Date(asistencia?.entrada).toUTCString().split(' ')[4];
     const horaSalida = new Date(asistencia?.salida).toUTCString().split(' ')[4];
-
 
     return (
         <div className="container mx-auto px-4 py-8 text-gray-900 dark:text-gray-100">

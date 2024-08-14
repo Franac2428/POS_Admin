@@ -244,7 +244,7 @@ export default function EditarProductoVenta({ open, onClose, reloadProducts, pro
               {imagePreviewEdit && (
                 <div className="mt-4 flex flex-col items-center">
                   <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">Vista Previa de la Imagen:</h3>
-                  <Image src={imagePreviewEdit} alt="Preview" className="max-w-xs max-h-20 mx-auto" />
+                  <Image src={imagePreviewEdit}  width={200} height={200} alt="Preview" className="max-w-xs max-h-20 mx-auto" />
                 </div>
               )}
             </div>

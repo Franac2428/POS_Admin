@@ -134,14 +134,14 @@ export default function Caja() {
 
     }
 
+
     useEffect(() => {
         if (!toastShown.current) {
-            onGet_CajaActual();
-            onGet_ListaInfoCaja();
+          onGet_CajaActual();
+          onGet_ListaInfoCaja();
         }
         toastShown.current = true;
-
-    }, []);
+      }, [onGet_CajaActual, onGet_ListaInfoCaja]); 
 
     const getItemValue = (id) => {
         return document.getElementById(id).value;
