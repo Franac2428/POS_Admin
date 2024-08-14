@@ -141,7 +141,8 @@ export default function ModalRegistrarPago({ open, onClose, objFactura, onReload
     if (objFactura) {
       setObservaciones("Dirección: " + objFactura.Receptor.Direccion.DireccionExacta + "\n");
     }
-  }, [open]);
+  }, [open, objFactura]); 
+  
 
   if (!open) {
     return null;
