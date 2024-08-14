@@ -1,5 +1,3 @@
-'use client';
-
 import { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
 import { Toaster, toast } from 'sonner';
@@ -49,7 +47,7 @@ export default function Horario({ open, onClose, mutate, employeeId }) {
       };
       fetchHorario();
     }
-  }, [open, employeeId]);
+  }, [open, employeeId, initialHorario]); // Añadido initialHorario
 
   const handleChange = (dia, tipo, valor) => {
     setHorario(prev => ({
@@ -89,7 +87,7 @@ export default function Horario({ open, onClose, mutate, employeeId }) {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    
+
     if (!validateForm()) return;
 
     if (!employeeId) {
@@ -98,10 +96,10 @@ export default function Horario({ open, onClose, mutate, employeeId }) {
     }
 
     setLoading(true);
-    
+
     try {
       const response = await fetch(`/api/horario/${employeeId}`, {
-        method: 'PUT',  
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
         },
@@ -117,8 +115,8 @@ export default function Horario({ open, onClose, mutate, employeeId }) {
 
       if (response.ok) {
         toast.success('Horario guardado exitosamente');
-        mutate();  
-        resetForm(); 
+        mutate();
+        resetForm();
         onClose();
       } else {
         const errorData = await response.json();
@@ -140,7 +138,7 @@ export default function Horario({ open, onClose, mutate, employeeId }) {
   };
 
   const handleCancel = () => {
-    resetForm(); 
+    resetForm();
     onClose();
   };
 
