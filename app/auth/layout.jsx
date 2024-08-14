@@ -8,7 +8,7 @@ export const metadata = {
   description: "Página login Petote",
 };
 
-export default function RootLayout({ children }) {
+export default function LoginLayout({ children }) {
   return (
     <html lang="en">
       <body className={roboto.className}>

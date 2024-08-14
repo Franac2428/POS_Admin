@@ -19,7 +19,8 @@ export async function GET(request) {
                 FROM Facturas f 
                 JOIN DetallesFactura df ON f.idFactura = df.idFactura 
                 JOIN ProductoVenta pv ON df.idProductoVenta = pv.idProductoVenta 
-                WHERE f.fechaEmision >= DATE_SUB(DATE_SUB(CURDATE(), INTERVAL 6 HOUR), INTERVAL 1 WEEK) 
+                WHERE f.fechaEmision >= DATE_SUB(DATE_SUB(CURDATE(), INTERVAL 6 HOUR), INTERVAL 1 WEEK)
+                  AND f.estadoFac IN ('ACTIVA', 'PAGADA') 
                 GROUP BY periodo, producto 
                 ORDER BY periodo
             `;
@@ -34,6 +35,7 @@ export async function GET(request) {
                 JOIN DetallesFactura df ON f.idFactura = df.idFactura 
                 JOIN ProductoVenta pv ON df.idProductoVenta = pv.idProductoVenta 
                 WHERE f.fechaEmision >= DATE_SUB(DATE_SUB(CURDATE(), INTERVAL 6 HOUR), INTERVAL 1 MONTH) 
+                  AND f.estadoFac IN ('ACTIVA', 'PAGADA') 
                 GROUP BY periodo, producto 
                 ORDER BY periodo
             `;
@@ -48,6 +50,7 @@ export async function GET(request) {
                 JOIN DetallesFactura df ON f.idFactura = df.idFactura 
                 JOIN ProductoVenta pv ON df.idProductoVenta = pv.idProductoVenta 
                 WHERE f.fechaEmision >= DATE_SUB(DATE_SUB(CURDATE(), INTERVAL 6 HOUR), INTERVAL 1 YEAR) 
+                  AND f.estadoFac IN ('ACTIVA', 'PAGADA') 
                 GROUP BY periodo, producto 
                 ORDER BY periodo
             `;
@@ -62,6 +65,7 @@ export async function GET(request) {
                 JOIN DetallesFactura df ON f.idFactura = df.idFactura 
                 JOIN ProductoVenta pv ON df.idProductoVenta = pv.idProductoVenta 
                 WHERE f.fechaEmision >= DATE_SUB(DATE_SUB(CURDATE(), INTERVAL 6 HOUR), INTERVAL 1 DAY) 
+                  AND f.estadoFac IN ('ACTIVA', 'PAGADA') 
                 GROUP BY periodo, producto 
                 ORDER BY periodo
             `;
