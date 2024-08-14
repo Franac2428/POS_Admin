@@ -1,12 +1,9 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import useSWR from 'swr';
 import Editar from "@/app/components/facturas/editar";
 import Ver from "@/app/components/facturas/ver";
 import Buscador from "../../components/buscador/buscar";
-
-const fetcher = (url) => fetch(url).then((res) => res.json());
 
 const obtenerFechaEnEspanol = (fecha) => {
   const date = new Date(fecha);
@@ -42,29 +39,30 @@ export default function Inventario() {
   const [filtros, setFiltros] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const [facturaSeleccionada, setFacturaSeleccionada] = useState(null);
-  const { data, error } = useSWR(`/api/factura`, fetcher);
+  const [data, setData] = useState(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (error) {
-      console.error('Error fetching data:', error);
-    }
-  }, [error]);
+    fetch('/api/factura')
+      .then((res) => res.json())
+      .then((data) => setData(data))
+      .catch((err) => setError(err));
+  }, []);
 
   if (error) return <div className="text-red-500">Error al cargar los datos</div>;
   if (!data) return <div>Cargando...</div>;
 
-// Verifica que `data` es un array antes de filtrar
-const filteredData = Array.isArray(data) ? data.filter(factura => {
-  const nombreCliente = factura.cliente.nombre.toLowerCase() + factura.cliente.apellido.toLowerCase();
-  const facturaId = factura.idFactura.toString().padStart(6, '0');
-  const searchLower = searchTerm.toLowerCase();
+  const filteredData = Array.isArray(data) ? data.filter(factura => {
+    const nombreCliente = factura.cliente.nombre.toLowerCase() + factura.cliente.apellido.toLowerCase();
+    const facturaId = factura.idFactura.toString().padStart(6, '0');
+    const searchLower = searchTerm.toLowerCase();
 
-  return (nombreCliente.includes(searchLower) || facturaId.includes(searchTerm)) &&
-    (filtros === '' || 
-      (filtros === 'activa' && factura.estadoFac === 'ACTIVA') ||
-      (filtros === 'pagada' && factura.estadoFac === 'PAGADA') ||
-      (filtros === 'nula' && factura.estadoFac === 'NULA'));
-}) : [];
+    return (nombreCliente.includes(searchLower) || facturaId.includes(searchTerm)) &&
+      (filtros === '' || 
+        (filtros === 'activa' && factura.estadoFac === 'ACTIVA') ||
+        (filtros === 'pagada' && factura.estadoFac === 'PAGADA') ||
+        (filtros === 'nula' && factura.estadoFac === 'NULA'));
+  }) : [];
 
   const handleVerMasClick = (factura) => {
     setFacturaSeleccionada(factura);
