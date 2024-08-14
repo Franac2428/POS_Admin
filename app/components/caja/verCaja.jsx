@@ -12,8 +12,7 @@ export default function VerCaja({ open, onClose, idInfoCaja }) {
     const onGet_ListaMovimientos = useCallback(async () => {
         try {
             onSet_onLoading(true);
-            const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
-            const response = await fetch(`${apiBaseUrl}/api/caja/facturas?idInfoCaja=${idInfoCaja}`);
+            const response = await fetch(`/api/caja/facturas?idInfoCaja=${idInfoCaja}`);
             const result = await response.json();
 
             if (result.status === "success") {
