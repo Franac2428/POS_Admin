@@ -22,7 +22,7 @@ export default function Categorias() {
     const [searchTerm, setSearchTerm] = useState('');
     const [filteredData, setFilteredData] = useState([]);
 
-    const { data, error, mutate } = useSWR('http://localhost:3000/api/categorias', fetcher);
+    const { data, error, mutate } = useSWR('`${process.env.NEXT_PUBLIC_API_URL}/api/categorias`', fetcher);
 
     useEffect(() => {
         if (data) {

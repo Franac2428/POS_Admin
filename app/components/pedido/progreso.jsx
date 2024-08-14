@@ -16,7 +16,7 @@ const Progreso = ({ AccordionItem, AccordionTrigger, AccordionContent }) => {
 
     const pedidosEnProgreso = data.filter(pedido => pedido.estado !== 'FINALIZADO');
     const eliminarPedido = (pedidoId) => {
-        mutate('http://localhost:3000/api/pedido', data.filter(pedido => pedido.id !== pedidoId), false);
+        mutate(`${process.env.NEXT_PUBLIC_API_URL}/api/pedido`, data.filter(pedido => pedido.id !== pedidoId), false);
     };
 
     return (

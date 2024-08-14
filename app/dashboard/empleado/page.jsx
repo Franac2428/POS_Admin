@@ -26,7 +26,7 @@ export default function Empleado() {
     const [horarioEditOpen, setHorarioEditOpen] = useState(false);
 
     const { data: session, status } = useSession();
-    const { data, error, mutate } = useSWR('http://localhost:3000/api/empleado', async (url) => {
+    const { data, error, mutate } = useSWR('`${process.env.NEXT_PUBLIC_API_URL}/api/empleado`', async (url) => {
         const response = await fetch(url);
         const data = await response.json();
         return data;
