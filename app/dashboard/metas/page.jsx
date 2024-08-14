@@ -37,7 +37,7 @@ const EvaluacionesDesempeno = () => {
 
     const handleEliminar = async (metaId) => {
         try {
-            const response = await fetch(`http://localhost:3000/api/metas/${metaId}`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/metas/${metaId}`, {
                 method: 'DELETE',
             });
             const result = await response.json();

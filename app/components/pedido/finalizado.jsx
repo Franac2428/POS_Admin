@@ -6,7 +6,7 @@ import { mutate } from 'swr';
 const Finalizado = ({ pedidoId }) => {
   const handleEditar = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/api/pedido/${pedidoId}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/pedido/${pedidoId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

@@ -29,7 +29,7 @@ const Editar = ({ estadoActual, onActualizarEstado, facturaId }) => {
     
     // Actualizar el estado en la base de datos
     try {
-      const response = await fetch(`http://localhost:3000/api/factura/${facturaId}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/factura/${facturaId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -41,7 +41,7 @@ const Editar = ({ estadoActual, onActualizarEstado, facturaId }) => {
         const facturaActualizada = await response.json();
         toast.success('Factura actualizada con éxito');
         onActualizarEstado(estadoReverseMap[newEstado]); // Actualizar estado en el componente padre
-        mutate('http://localhost:3000/api/factura', (currentData) => {
+        mutate(`${process.env.NEXT_PUBLIC_API_URL}/api/factura`, (currentData) => {
           return currentData.map((factura) =>
             factura.idFactura === facturaId ? { ...factura, estadoFac: estadoReverseMap[newEstado] } : factura
           );

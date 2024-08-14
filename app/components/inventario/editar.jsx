@@ -27,7 +27,7 @@ export default function Editar({ open, onClose, productoId, mutate }) {
 
       const fetchProducto = async () => {
         try {
-          const response = await fetch(`http://localhost:3000/api/inventario/${productoId}`);
+          const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/inventario/${productoId}`);
           if (!response.ok) throw new Error('Network response was not ok');
           const data = await response.json();
           setFormData({
@@ -52,7 +52,7 @@ export default function Editar({ open, onClose, productoId, mutate }) {
 
       const fetchCategorias = async () => {
         try {
-          const response = await fetch('http://localhost:3000/api/categorias');
+          const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/categorias`);
           if (!response.ok) throw new Error('Network response was not ok');
           const data = await response.json();
           setCategorias(data);
@@ -63,7 +63,7 @@ export default function Editar({ open, onClose, productoId, mutate }) {
 
       const fetchProveedores = async () => {
         try {
-          const response = await fetch('http://localhost:3000/api/proveedor');
+          const response = await fetch('${process.env.NEXT_PUBLIC_API_URL}/api/proveedor');
           if (!response.ok) throw new Error('Network response was not ok');
           const data = await response.json();
           setProveedores(data);
@@ -94,7 +94,7 @@ export default function Editar({ open, onClose, productoId, mutate }) {
     }
 
     try {
-      const response = await fetch(`http://localhost:3000/api/inventario/${productoId}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/inventario/${productoId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

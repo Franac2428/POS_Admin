@@ -30,7 +30,7 @@ const RegistroHoras = () => {
     const fetchAsistencia = useCallback(async () => {
         if (!employeeId) return; 
         try {
-            const response = await fetch(`/api/marcar/${employeeId}`);
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/marcar/${employeeId}`);
             if (!response.ok) {
                 toast.info('Aún debe marcar la asistencia de hoy');
                 return;
@@ -43,11 +43,11 @@ const RegistroHoras = () => {
             setLoading(false);
         }
     }, [employeeId]);
-
+    
     const fetchCalendario = useCallback(async () => {
         if (!employeeId) return; 
         try {
-            const response = await fetch(`/api/calendario/${employeeId}`);
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/calendario/${employeeId}`);
             if (!response.ok) {
                 toast.info('Aún debe marcar la asistencia de hoy');
                 return;
@@ -58,6 +58,7 @@ const RegistroHoras = () => {
             toast.error('Error al comunicar con el servidor');
         }
     }, [employeeId]);
+    
     
     useEffect(() => {
         fetchAsistencia();
