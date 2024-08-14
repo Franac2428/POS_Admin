@@ -7,6 +7,7 @@ import HtmlFormInput from "@/app/components/HtmlHelpers/FormInput";
 import { ArrowLeftCircle, Check } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Toaster, toast } from 'sonner';
+import Image from "next/image";
 
 const itemsBreadCrumb = ["Home", "Info Empresa"];
 
@@ -15,7 +16,7 @@ export default function InfoEmpresa() {
    const [imagePreview, setImagePreview] = useState(null);
    const [imageType, setImageType] = useState(null);
    const [actualizaImagen, onSet_ActualizarImagen] = useState(false);
-   const[esActualizar,onSet_EsActualizar] = useState(false);
+   const [esActualizar, onSet_EsActualizar] = useState(false);
    const onReady = useRef(false);
 
 
@@ -61,7 +62,7 @@ export default function InfoEmpresa() {
       }
       catch (error) {
          console.error('Error:', error);
-         console.log("Error al obtener la info de la empresa: " + result.message);
+         console.log("Error al obtener la info de la empresa: " + error);
          toast.error('Sucedió un error al obtener la información');
       }
       finally {
@@ -312,7 +313,7 @@ export default function InfoEmpresa() {
                      <div className="mt-2 border-2 flex flex-col">
                         <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">Vista Previa:</h3>
                         <div>
-                           <img src={imagePreview} alt="Preview" className="max-w-40 max-h-40" />
+                           <Image src={imagePreview} alt="Preview" className="max-w-40 max-h-40" />
                         </div>
                      </div>
                   </div>

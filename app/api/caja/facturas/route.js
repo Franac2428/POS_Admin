@@ -26,7 +26,10 @@ export async function GET(request) {
                         pagadoCon: true
                     },
                     where: {
-                        idInfoCaja: idInfoCaja
+                        idInfoCaja: idInfoCaja,
+                        estadoFac: {
+                            notIn: ['NULA']
+                        }
                     }
                 },
                 movimientos: {

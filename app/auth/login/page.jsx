@@ -9,7 +9,7 @@ import { useForm } from "react-hook-form";
 
 
 
-export default function login() {
+export default function Login() {
 
     const [cambioClave, setCambioClave] = useState(false);
     const { register, handleSubmit, formState: { errors } } = useForm();
@@ -27,7 +27,7 @@ export default function login() {
         if (res.error) {
             alert(res.error);
         } else {
-            router.push('/dashboard/reporteria')
+            router.push('/dashboard')
             console.log("Enviando a /dashboard");
         }
 

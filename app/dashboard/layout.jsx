@@ -16,7 +16,7 @@ export const metadata = {
   description: "Restaurante",
 };
 
-export default function RootLayout({ children }) {
+export default function DashboardLayout({ children }) {
   return (
     <Providers>
       <ThemeProvider>
@@ -26,7 +26,7 @@ export default function RootLayout({ children }) {
           <main className="flex overflow-hidden">
             <Sidebar />
             <div className="overflow-auto p-2 h-screen w-full">
-              {children}
+              <section>{children}</section>
             </div>
           </main>
           <Toaster richColors />

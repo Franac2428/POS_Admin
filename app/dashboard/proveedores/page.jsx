@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import Agregar from "@/app/components/proveedor/crear";
 import { CirclePlus, FileUp, Pencil, SlidersHorizontal, Trash, Eye } from "lucide-react";
@@ -124,4 +124,3 @@ export default function Proveedores() {
         </>
     );
 }
-
