@@ -15,7 +15,7 @@ export default function InfoEmpresa() {
    const [imagePreview, setImagePreview] = useState(null);
    const [imageType, setImageType] = useState(null);
    const [actualizaImagen, onSet_ActualizarImagen] = useState(false);
-   const[esActualizar,onSet_EsActualizar] = useState(false);
+   const [esActualizar, onSet_EsActualizar] = useState(false);
    const onReady = useRef(false);
 
 

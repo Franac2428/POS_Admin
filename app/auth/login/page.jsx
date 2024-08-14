@@ -27,7 +27,7 @@ export default function login() {
         if (res.error) {
             alert(res.error);
         } else {
-            router.push('/dashboard/reporteria')
+            router.push('/dashboard')
             console.log("Enviando a /dashboard");
         }
 
