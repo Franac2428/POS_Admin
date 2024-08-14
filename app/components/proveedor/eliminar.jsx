@@ -7,7 +7,7 @@ export default function Eliminar({ open, onClose, proveedorId, mutate }) {
 
   useEffect(() => {
     if (proveedorId) {
-      fetch(`http://localhost:3000/api/proveedor/${proveedorId}`)
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/proveedor/${proveedorId}`)
         .then(response => response.json())
         .then(data => setProveedor(data))
         .catch(error => {
@@ -19,7 +19,7 @@ export default function Eliminar({ open, onClose, proveedorId, mutate }) {
 
   const handleEliminar = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/api/proveedor/${proveedorId}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/proveedor/${proveedorId}`, {
         method: 'DELETE',
       });
 

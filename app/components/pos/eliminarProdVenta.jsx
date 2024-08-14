@@ -16,7 +16,7 @@ export default function EliminarProdVenta({ open, onClose, productoVenta, reload
 
     const eliminar = async (productoVentaId) => {
         try {
-            const response = await fetch(`http://localhost:3000/api/productosventa`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/productosventa`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',

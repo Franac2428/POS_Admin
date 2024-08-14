@@ -24,26 +24,27 @@ export default function Agregar({ open, onClose, mutate }) {
   const handleAgregar = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:3000/api/proveedor', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/proveedor`, {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData),
       });
-
+  
       if (response.ok) {
-        toast.success('Proveedor agregado con éxito');
-        mutate();  // Refresca los datos
-        setTimeout(() => {
-          onClose();
-        }, 1500);
+          toast.success('Proveedor agregado con éxito');
+          mutate(); // Refresca los datos
+          setTimeout(() => {
+              onClose();
+          }, 1500);
       } else {
-        toast.error('Error al agregar el proveedor');
+          toast.error('Error al agregar el proveedor');
       }
-    } catch (error) {
+  } catch (error) {
       toast.error('Error al conectar con el servidor');
-    }
+  }
+  
   };
 
   return (

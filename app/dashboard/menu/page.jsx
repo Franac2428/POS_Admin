@@ -47,7 +47,7 @@ export default function App() {
 
   const onSearch_CategoriasProdVenta = async () => {
     try {
-      const response = await fetch('http://localhost:3000/api/categoriasprodventa');
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/categoriasprodventa`);
       if (!response.ok) {
         throw new Error(`Error al obtener las categorias: ${response.statusText}`);
       }
@@ -69,7 +69,7 @@ export default function App() {
 
   const onSearch_ProductosVenta = async () => {
     try {
-      const response = await fetch('http://localhost:3000/api/productosventa');
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/productosventa`);
       if (!response.ok) {
         throw new Error(`Error al obtener los productos: ${response.statusText}`);
       }
@@ -162,7 +162,7 @@ export default function App() {
   //#region [CLIENTES]
   const onSearch_Cliente = async (value) => {
     try {
-      const response = await fetch(`http://localhost:3000/api/clientes/${value}`);
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/clientes/${value}`);
       if (!response.ok) {
         throw new Error(`Error al obtener clientes: ${response.statusText}`);
       }

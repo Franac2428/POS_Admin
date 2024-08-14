@@ -23,13 +23,14 @@ const Entrada = ({ actual, usuarioId, onAsistencia }) => {
             fecha : fechaHoy,
         };
         try {
-            const res = await fetch(`/api/marcar`, {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/marcar`, {
                 method: 'POST',
                 body: JSON.stringify(asistencia),
                 headers: {
                     'Content-Type': 'application/json',
                 },
             });
+            
 
             if (res.ok) {
                 toast.success('Hora de entrada guardada con éxito');

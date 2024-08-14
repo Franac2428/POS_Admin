@@ -12,7 +12,7 @@ const fetcher = async (url) => {
 };
 
 const Monitorizacion = () => {
-    const { data, error } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/api/horas`, fetcher);
+    const { data, error } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/api/marcar`, fetcher);
 
     if (error) return <div>Error al cargar los datos</div>;
     if (!data) return <div>Cargando...</div>;

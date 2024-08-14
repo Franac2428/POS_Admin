@@ -32,7 +32,7 @@ export default function AgregarProductoVenta({ open, onClose, reloadProducts, in
   useEffect(() => {
     const obtenerCategoriasProdVenta = async () => {
       try {
-        const response = await fetch('http://localhost:3000/api/categoriasprodventa');
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/categoriasprodventa`);
         if (!response.ok) {
           throw new Error(`Error al obtener las categorías: ${response.statusText}`);
         }

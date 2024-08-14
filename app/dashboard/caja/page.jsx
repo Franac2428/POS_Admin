@@ -33,7 +33,7 @@ export default function Caja() {
     const onGet_CajaActual = useCallback(async () => {
         try {
             onSet_onLoading(true);
-            const response = await fetch('http://localhost:3000/api/current');
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/current`);
             if (!response.ok) {
                 throw new Error(`Error al obtener la info de caja: ${response.statusText}`);
             }
@@ -57,7 +57,7 @@ export default function Caja() {
     const onGet_ListaInfoCaja = useCallback(async () => {
         onSet_onLoading(true);
         try {
-            const response = await fetch('http://localhost:3000/api/caja');
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/caja`);
             const result = await response.json();
             if (result.status === "success") {
                 setInfoCaja(result.data);
@@ -138,8 +138,6 @@ export default function Caja() {
     const getItemValue = (id) => {
         return document.getElementById(id).value;
     }
-
-
 
 
     return (

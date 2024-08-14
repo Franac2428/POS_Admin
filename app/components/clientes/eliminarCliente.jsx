@@ -17,7 +17,7 @@ export default function EliminarCliente({ open, onClose, cliente,reloadTable }) 
 
     const eliminar = async (clienteId) => {
         try {
-          const response = await fetch(`http://localhost:3000/api/clientes`, {
+          const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/clientes`, {
             method: 'DELETE',
             headers: {
               'Content-Type': 'application/json',

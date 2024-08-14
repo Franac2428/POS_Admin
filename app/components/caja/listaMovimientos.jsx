@@ -46,7 +46,7 @@ export default function ListaMovimientos({ open, onClose }) {
     const onGet_ListaMovimientos = useCallback(async () => {
         try {
             onSet_onLoading(true);
-            const response = await fetch('http://localhost:3000/api/caja/movimientos');
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/caja/movimientos`);
             const result = await response.json();
 
             if (result.status === "success") {
@@ -66,7 +66,7 @@ export default function ListaMovimientos({ open, onClose }) {
     const onGet_CajaActual = useCallback(async () => {
         try {
             onSet_onLoading(true);
-            const response = await fetch('http://localhost:3000/api/current');
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/current`);
             if (!response.ok) throw new Error(`Error al obtener la info de caja: ${response.statusText}`);
             const results = await response.json();
 
