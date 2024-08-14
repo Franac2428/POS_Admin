@@ -1,11 +1,17 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 
 const FiltroMenu = ({ onFilterChange }) => {
   const [filterEstado, setFilterEstado] = useState('');
 
+  // Use useCallback to memoize onFilterChange if it changes too often
+  const memoizedOnFilterChange = useCallback(
+    (filter) => onFilterChange(filter),
+    [onFilterChange]
+  );
+
   useEffect(() => {
-    onFilterChange({ filterEstado });
-  }, [filterEstado]);
+    memoizedOnFilterChange({ filterEstado });
+  }, [filterEstado, memoizedOnFilterChange]); // Agrega memoizedOnFilterChange a las dependencias
 
   return (
     <div className="absolute top-16 right-16 bg-white dark:bg-gray-800 p-4 rounded-lg shadow-lg w-72">
