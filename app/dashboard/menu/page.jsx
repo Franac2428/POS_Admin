@@ -12,10 +12,9 @@ import AgregarProductoVenta from "@/app/components/pos/agregarProdVenta";
 import CartaComida from "@/app/components/pos/cartaComida";
 import ModalRegistrarPago from "@/app/components/pos/modalPago";
 import PrintTicket from "@/app/components/pos/printTicket";
-import { CoinsIcon, Files, HandPlatter, Trash } from "lucide-react";
-import { useEffect, useState } from "react";
+import { CoinsIcon, HandPlatter, Trash } from "lucide-react";
+import { useEffect, useState, useCallback } from "react";
 import { Toaster, toast } from 'sonner';
-
 
 export default function App() {
   const itemsBreadCrumb = ["Home", "POS"];
@@ -43,75 +42,147 @@ export default function App() {
   const [cajaActual, onSet_CajaActual] = useState([]);
   const [modalInfoEmpresa, onModal_InfoEmpresa] = useState(false);
 
+  //#region [PRODUCTOS VENTA]
+  const catalogo = [];
+
+  const onSearch_CategoriasProdVenta = async () => {
+    try {
+      const response = await fetch(`/api/categoriasprodventa`);
+      if (!response.ok) {
+        throw new Error(`Error al obtener las categorias: ${response.statusText}`);
+      }
+      const data = await response.json();
+      if (data.length === 0) {
+        console.log("No hay categorías de productos");
+      } else {
+        const listadoCategoriasPV = [{ idCategoriaProdVenta: "", nombre: "---Todas---" }, ...data];
+        setCategorias(listadoCategoriasPV);
+        data.forEach((item) => {
+          catalogo.push({ value: item.idCategoriaProdVenta, label: item.nombre });
+        });
+        setCatalogoCategorias(catalogo);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
+  const onSearch_ProductosVenta = async () => {
+    try {
+      const response = await fetch(`/api/productosventa`);
+      if (!response.ok) {
+        throw new Error(`Error al obtener los productos: ${response.statusText}`);
+      }
+      const data = await response.json();
+      if (data.length === 0) {
+        //toast.warning('No se encontraron registros');
+      } else {
+        setListadoProductos(data);
+        setProductos(data);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      toast.error('Sucedió un error al obtener los productos');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const onSet_TabActivo = (id) => {
+    const tabs = document.querySelectorAll('.tab-categorias');
+    tabs.forEach(tab => tab.classList.remove('tab-active'));
+    let item = document.getElementById("tab_" + id);
+    item.classList.add("tab-active");
+
+    if (id === "") {
+      setProductos(listadoProductos);
+    } else {
+      const productosFiltrados = listadoProductos.filter(p => p.idCategoriaProdVenta === id);
+      setProductos(productosFiltrados);
+    }
+  };
+  //#endregion
+
+  //#region [INICIO / CIERRE CAJA]
+  const onGet_CajaActual = async () => {
+    try {
+      const response = await fetch(`/api/current`);
+      if (!response.ok) {
+        throw new Error(`Error al obtener la info de caja: ${response.statusText}`);
+      }
+      const results = await response.json();
+
+      if (results.data.length === 0) {
+        onSet_ExisteCajaAbierta(false);
+        onModal_IniciarCaja(true);
+        onSet_CajaActual(null);
+        //toast.warning(results.message);
+      } else {
+        onSet_CajaActual(results.data);
+        onSet_ExisteCajaAbierta(true);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      toast.error('Sucedió un error al obtener la info de caja');
+    }
+  };
+  //#endregion
 
   //#region [EMPRESA]
-  const onSearch_InfoEmpresa = async () => {
+  const onSearch_InfoEmpresa = useCallback(async () => {
     try {
-      const response = await fetch('http://localhost:3000/api/empresa');
+      const response = await fetch(`/api/empresa`);
       if (!response.ok) {
         throw new Error(`Error al obtener la información de la empresa: ${response.statusText}`);
       }
       const result = await response.json();
 
-      if (result.status == "success") {
+      if (result.status === "success") {
         onSet_InfoEmpresa(result.data);
         onSearch_CategoriasProdVenta();
         onSearch_ProductosVenta();
-        onGet_CajaActual()
-      }
-      
-      else if(result.code == 204){
+        onGet_CajaActual();
+      } else if (result.code === 204) {
         onModal_InfoEmpresa(true);
-        console.log("No hay info de la empresa")
+        console.log("No hay info de la empresa");
+      } else {
+        console.log("Error al obtener la info: " + result.message);
+        toast.error("Sucedió un error al obtener la información de la empresa");
       }
-
-      else{
-        console.log("Error al obtener la info: " + result.message)
-        toast.error("Sucedió un error al obtener la información de la empresa")
-      }
-
-
-
+    } catch (error) {
+      console.log("Error al obtener la info: " + error);
     }
-    catch (error) {
-      console.log("Error al obtener la info: " + error)
+  }, []);
 
-    }
-  };
-
+  useEffect(() => {
+    onSearch_InfoEmpresa();
+  }, [onSearch_InfoEmpresa]);
   //#endregion
 
   //#region [CLIENTES]
   const onSearch_Cliente = async (value) => {
     try {
-      const response = await fetch(`http://localhost:3000/api/clientes/${value}`);
+      const response = await fetch(`/api/clientes/${value}`);
       if (!response.ok) {
         throw new Error(`Error al obtener clientes: ${response.statusText}`);
       }
       const data = await response.json();
       if (data.length === 0) {
-        //toast.warning('No se encontraron registros');
         AddRemoveClassById("txtSelCliente", "", "is-valid");
         AddRemoveClassById("txtSelCliente", "", "is-invalid");
         onModal_AgregarClientePos(true);
-
-      }
-      else {
+      } else {
         if (data.length === 1) {
           toast.success('Se ha encontrado el cliente');
-          console.log(data);
           setNombreCliente(data[0].nombre + " " + data[0].apellido);
           setModelReceptor(data[0]);
-          AddRemoveClassById("txtSelCliente", "is-valid", "is-invalid")
-
-        }
-        else {
+          AddRemoveClassById("txtSelCliente", "is-valid", "is-invalid");
+        } else {
           toast.info('Se encontraron múltiples registros, seleccione el correcto');
           onModal_MultiplesClientes(true);
-          setListaMultiplesClientes(data)
-          AddRemoveClassById("txtSelCliente", "", "is-invalid")
-          AddRemoveClassById("txtSelCliente", "", "is-valid")
-
+          setListaMultiplesClientes(data);
+          AddRemoveClassById("txtSelCliente", "", "is-invalid");
+          AddRemoveClassById("txtSelCliente", "", "is-valid");
         }
       }
     } catch (error) {
@@ -122,7 +193,7 @@ export default function App() {
 
   const onSelect_Enter = (event) => {
     if (event.key === 'Enter') {
-      toast.info("Buscando...")
+      toast.info("Buscando...");
       onSearch_Cliente(nombreCliente);
     }
   };
@@ -130,25 +201,20 @@ export default function App() {
   const onChange_Cliente = (cliente) => {
     setNombreCliente(cliente.nombre + " " + cliente.apellido);
     setModelReceptor(cliente);
-    // setObservaciones("Dirección: " + cliente.direccion + "\n");
     onModal_MultiplesClientes(false);
-    AddRemoveClassById("txtSelCliente", "is-valid", "is-invalid")
-
-    toast.success("Cliente seleccionado")
+    AddRemoveClassById("txtSelCliente", "is-valid", "is-invalid");
+    toast.success("Cliente seleccionado");
   };
-
   //#endregion
 
   //#region [DETALLES FACTURA]
-
   const onAdd_LineaDetalle = (obj) => {
-    var existeCliente = document.getElementById("txtSelCliente").value != "";
+    var existeCliente = document.getElementById("txtSelCliente").value !== "";
 
     if (!existeCliente) {
       toast.warning("Debe seleccionar un cliente");
       document.getElementById("txtSelCliente").classList.add("is-invalid");
-    }
-    else {
+    } else {
       document.getElementById("txtSelCliente").classList.remove("is-invalid");
 
       const newRow = {
@@ -163,7 +229,6 @@ export default function App() {
 
       setRows([...rows, newRow]);
       setTotal(total + Number(newRow.precio * newRow.cantidad));
-
     }
   };
 
@@ -172,8 +237,7 @@ export default function App() {
     setRows(updatedRows);
 
     const newTotal = updatedRows.reduce((acc, curr) => acc + (Number(curr.cantidad) * Number(curr.precio)), 0);
-    const roundedTotal = Number(newTotal.toFixed(2));
-    setTotal(roundedTotal);
+    setTotal(Number(newTotal.toFixed(2)));
   };
 
   const onChange_CantPrecio = (e, id, field) => {
@@ -186,94 +250,13 @@ export default function App() {
       setTotal(newTotal);
     }
   };
-
-  //#endregion
-
-  //#region [PRODUCTOS VENTA]
-  const catalogo = [];
-
-  const onSearch_CategoriasProdVenta = async () => {
-    try {
-      const response = await fetch('http://localhost:3000/api/categoriasprodventa');
-      if (!response.ok) {
-        throw new Error(`Error al obtener las categorias: ${response.statusText}`);
-      }
-      const data = await response.json();
-      if (data.length === 0) {
-        console.log("No hay categorías de productos")
-      }
-      else {
-        const listadoCategoriasPV = [{ idCategoriaProdVenta: "", nombre: "---Todas---" }, ...data];
-
-        setCategorias(listadoCategoriasPV);
-
-        data.forEach((item) => {
-          catalogo.push({ value: item.idCategoriaProdVenta, label: item.nombre });
-        });
-
-        setCatalogoCategorias(catalogo)
-      }
-    }
-    catch (error) {
-      console.error('Error:', error);
-    }
-  };
-
-
-  const onSet_TabActivo = (id) => {
-    const tabs = document.querySelectorAll('.tab-categorias');
-    tabs.forEach(tab => tab.classList.remove('tab-active'));
-
-    let item = document.getElementById("tab_" + id)
-    item.classList.add("tab-active");
-    debugger
-
-    if (id == "") {
-      setProductos(listadoProductos);
-    }
-    else {
-      const productosFiltrados = listadoProductos.filter(p => p.idCategoriaProdVenta == id);
-      setProductos(productosFiltrados);
-    }
-
-  };
-
-  const onSearch_ProductosVenta = async () => {
-    try {
-      const response = await fetch('http://localhost:3000/api/productosventa');
-      if (!response.ok) {
-        throw new Error(`Error al obtener los productos: ${response.statusText}`);
-      }
-      const data = await response.json();
-      if (data.length === 0) {
-        //toast.warning('No se encontraron registros');
-      }
-      else {
-        setListadoProductos(data);
-        setProductos(data);
-
-      }
-    }
-    catch (error) {
-      console.error('Error:', error);
-      toast.error('Sucedió un error al obtener los productos');
-    }
-    finally {
-      setLoading(false);
-    }
-  };
-
-
-
   //#endregion
 
   //#region [CREAR FACTURA]
-
   const onCreate_ModelFactura = () => {
     var r = modelReceptor;
     var c = infoEmpresa;
 
-    //Encabezado:
     var objetoFactura = {
       FechaEmision: new Date(),
       Emisor: {
@@ -291,16 +274,14 @@ export default function App() {
         ClienteId: r.clienteId,
         Nombre: FormatName(r.nombre, r.apellido),
         Email: r.email,
-        Telefono: r.telefono != "" ? r.telefono : "0000-0000",
-        Celular: r.celular != "" ? r.celular : "0000-0000",
+        Telefono: r.telefono !== "" ? r.telefono : "0000-0000",
+        Celular: r.celular !== "" ? r.celular : "0000-0000",
         Direccion: {
           DireccionExacta: r.direccion
         }
-      },
+      }
+    };
 
-    }
-
-    //Detalles:
     var listaDetalles = rows.map(row => ({
       NumeroLinea: row.id,
       Cantidad: row.cantidad,
@@ -309,18 +290,16 @@ export default function App() {
       IdProductoVenta: row.idProductoVenta
     }));
 
-
     objetoFactura.Detalles = listaDetalles;
     objetoFactura.Observaciones = "";
     objetoFactura.Total = total;
     objetoFactura.idInfoCaja = cajaActual.idInfoCaja;
 
-
     setModelFactura(objetoFactura);
-  }
+  };
 
   const onClear_Factura = (json) => {
-    console.log(json)
+    console.log(json);
     onSearch_ProductosVenta();
     setRows([]);
     setTotal(0);
@@ -328,18 +307,12 @@ export default function App() {
     setModelReceptor(null);
     AddRemoveClassById("txtSelCliente", "", "is-valid");
     AddRemoveClassById("txtSelCliente", "", "is-invalid");
-    onSet_ObjectImpresion(json)
+    onSet_ObjectImpresion(json);
     onModal_Print(true);
-  }
+  };
   //#endregion
 
-
   //#region [ON_INIT]
-  useEffect(() => {
-    onSearch_InfoEmpresa();
-
-  }, []);
-
   useEffect(() => {
     const timer = setTimeout(() => {
       const tabTodas = document.getElementById("tab_");
@@ -352,51 +325,7 @@ export default function App() {
 
     return () => clearTimeout(timer);
   }, [categorias, listadoProductos]);
-
   //#endregion
-
-  //#region [INICIO / CIERRE CAJA]
-
-  const onGet_CajaActual = async () => {
-    try {
-      const response = await fetch('http://localhost:3000/api/current');
-      if (!response.ok) {
-        throw new Error(`Error al obtener la info de caja: ${response.statusText}`);
-      }
-      const results = await response.json();
-
-      if (results.data.length == 0) {
-        onSet_ExisteCajaAbierta(false);
-        onModal_IniciarCaja(true);
-        onSet_CajaActual(null);
-        //toast.warning(results.message);
-      }
-      else {
-        onSet_CajaActual(results.data);
-        onSet_ExisteCajaAbierta(true);
-      }
-    } catch (error) {
-      console.error('Error:', error);
-      toast.error('Sucedió un error al obtener la info de caja');
-    } finally {
-
-    }
-  };
-
-
-  //#endregion
-
-  //#region [-----------RENDER HTML-------------]
-  //   if (loading) {
-  //     return (
-  //       <div className="w-full h-screen flex items-center justify-center">
-  //         <div className="spinner-border animate-spin inline-block w-8 h-8 border-4 border-t-transparent border-blue-500 rounded-full" role="status">
-  //           <span className="visually-hidden"></span>
-  //         </div>
-  //       </div>
-  //     );
-
-  //  }
 
   return (
     <div style={{ overflow: 'hidden' }} className="flex h-screen">
@@ -436,29 +365,37 @@ export default function App() {
                         </a>
                       </li>
                     ))}
+
                   </ul>
                 </div>
 
                 <div style={{ maxHeight: '30rem', overflowY: 'auto' }} className="mt-4 grid grid-cols-2 items-stretch sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                  {productos.map((item, index) => {
-                    const bufferImagen = Buffer.from(item.imagen.data);
-                    const imgBase64 = bufferImagen.toString('base64');
+                    {productos.map((item, index) => {
+                      const bufferImagen = Buffer.from(item.imagen.data);
+                      const imgBase64 = bufferImagen.toString('base64');
 
-                    const imgSrc = `data:${item.tipoImagen};base64,${imgBase64}`;
-                    const modelForCard = {
-                      productoVentaId: item.idProductoVenta,
-                      nombre: item.nombre,
-                      precio: item.precio,
-                      cantDisponible: item.cantidad,
-                      cantMinima: item.cantidadMinima,
-                      imagen: imgSrc,
-                      idCategoriaProdVenta: item.idCategoriaProdVenta
-                    };
-                    return (
-                      <CartaComida producto={modelForCard} reloadTable={onSearch_ProductosVenta} agregarProductoTabla={onAdd_LineaDetalle} />
-                    );
-                  })}
-                </div>
+                      const imgSrc = `data:${item.tipoImagen};base64,${imgBase64}`;
+                      const modelForCard = {
+                        productoVentaId: item.idProductoVenta,
+                        nombre: item.nombre,
+                        precio: item.precio,
+                        cantDisponible: item.cantidad,
+                        cantMinima: item.cantidadMinima,
+                        imagen: imgSrc,
+                        idCategoriaProdVenta: item.idCategoriaProdVenta
+                      };
+
+                      return (
+                        <CartaComida 
+                          key={item.idProductoVenta} // Asegúrate de usar una propiedad única
+                          producto={modelForCard} 
+                          reloadTable={onSearch_ProductosVenta} 
+                          agregarProductoTabla={onAdd_LineaDetalle} 
+                        />
+                      );
+                    })}
+                  </div>
+
               </div>
             ) : null
           }

@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Toaster, toast } from 'sonner';
 import HtmlFormInput from "../HtmlHelpers/FormInput";
 import HtmlFormSelect from "../HtmlHelpers/FormSelect";
+import Image from "next/image";
 
 
 export default function AgregarProductoVenta({ open, onClose, reloadProducts, infoEmpresa }) {
@@ -19,19 +20,19 @@ export default function AgregarProductoVenta({ open, onClose, reloadProducts, in
       element.classList.remove('is-valid');
     });
     setImagePreview(null);
-        const fileInput = document.getElementById("txtImagenProducto");
-        if (fileInput) {
-          fileInput.value = "";
-        }    
-        setImagePreview(null);
-        setImageType(null);
-    
+    const fileInput = document.getElementById("txtImagenProducto");
+    if (fileInput) {
+      fileInput.value = "";
+    }
+    setImagePreview(null);
+    setImageType(null);
+
   };
 
   useEffect(() => {
     const obtenerCategoriasProdVenta = async () => {
       try {
-        const response = await fetch('http://localhost:3000/api/categoriasprodventa');
+        const response = await fetch(`/api/categoriasprodventa`);
         if (!response.ok) {
           throw new Error(`Error al obtener las categorías: ${response.statusText}`);
         }
@@ -155,7 +156,7 @@ export default function AgregarProductoVenta({ open, onClose, reloadProducts, in
         const data = await response.json();
         onClose();
         toast.success('Producto registrado satisfactoriamente');
-        limpiarCamposForm(); 
+        limpiarCamposForm();
 
         setTimeout(() => {
           reloadProducts();
@@ -208,7 +209,8 @@ export default function AgregarProductoVenta({ open, onClose, reloadProducts, in
               {imagePreview && (
                 <div className="mt-4 flex flex-col items-center">
                   <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">Vista Previa de la Imagen:</h3>
-                  <img src={imagePreview} alt="Preview" className="max-w-xs max-h-20 mx-auto" />
+
+                  <Image src={imagePreview} alt="Preview" className="max-w-xs max-h-20 mx-auto" height={200} width={200} />
                 </div>
               )}
             </div>

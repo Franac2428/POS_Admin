@@ -1,10 +1,9 @@
 'use client';
 import { AlarmClock, ScrollText, BadgeCent, BookUser, BriefcaseBusiness, ChevronFirst, ChevronLast, Computer, FileLineChart, Flag, LockKeyhole, LogOut, MoreVertical, Truck, Utensils, Warehouse } from "lucide-react";
 import { useSession } from "next-auth/react";
-
+import Image from "next/image";
 import Link from "next/link";
 import { createContext, useEffect, useState } from "react";
-import ThemeButton from "./theme/ChangeTheme";
 
 const SidebarContext = createContext();
 
@@ -55,7 +54,7 @@ export default function Sidebar() {
       <aside className={`h-screen ${isSmallScreen && expanded ? "fixed" : "static"} inset-y-0 left-0 z-50 transform transition-transform duration-200 ease-in-out"}`}>
         <nav className="h-full flex flex-col bg-white dark:bg-gray-800 border-r shadow-sm">
           <div className="p-4 pb-2 flex justify-between items-center bg-custom-yellow">
-            <img src="/nombre.png" className={`overflow-hidden transition-all ${expanded ? "w-32" : "w-0"}`} />
+          <Image src="/nombre.png" width={200} height={200} alt="Nombre de la empresa" className={`overflow-hidden transition-all ${expanded ? "w-32" : "w-0"}`} />
 
             <button
               onClick={() => setExpanded(!expanded)}
@@ -80,7 +79,6 @@ export default function Sidebar() {
                 </span>
               </div>
               <div className="flex flex-row space-x-2">
-                <ThemeButton />
                 <button className="inline-flex items-center p-2 text-sm font-medium text-gray-500 rounded-lg dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-600">
                   <MoreVertical size={16} />
                 </button>

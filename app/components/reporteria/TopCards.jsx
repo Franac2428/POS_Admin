@@ -20,20 +20,21 @@ const TopCards = () => {
         const fetchData = async () => {
             const res = await fetch('/api/reportes/cards');
             const result = await res.json();
-            setPreviousData(data);
             setData(result.topCardsData);
         };
 
         fetchData();
     }, []);
 
-    // Calcular el porcentaje de cambio
+    useEffect(() => {
+        setPreviousData(data);
+    }, [data]);
+
     const calculatePercentageChange = (current, previous) => {
         if (previous === 0) return 0;
         return ((current - previous) / previous) * 100;
     };
 
-    // Calcula los porcentajes de cambio
     const productosInventarioChange = calculatePercentageChange(data.productosInventario, previousData.productosInventario);
     const totalClientesChange = calculatePercentageChange(data.totalClientes, previousData.totalClientes);
     const ventasTotalesChange = calculatePercentageChange(data.ventasTotales, previousData.ventasTotales);
@@ -54,7 +55,7 @@ const TopCards = () => {
             <div className="bg-white p-6 rounded-xl border border-gray-200">
                 <Users size={24} strokeWidth={2} />
                 <p className="text-3xl font-semibold text-gray-800">{data.totalClientes}</p>
-                <p className="text-sm text-gray-600">Total Clientes Activos</p>
+                <p className="text-sm text-gray-600">Total Clientes</p>
                 <div className="flex items-center mt-4">
                     <span className={`font-semibold mr-2 ${totalClientesChange >= 0 ? 'text-blue-500' : 'text-red-500'}`}>
                         {totalClientesChange.toFixed(2)}%

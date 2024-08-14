@@ -40,6 +40,7 @@ CREATE TABLE `Asistencia` (
 CREATE TABLE `Metas` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `empleadoId` INTEGER NOT NULL,
+    `asunto` VARCHAR(191) NOT NULL,
     `observaciones` VARCHAR(191) NULL,
     `fecha` DATETIME(3) NOT NULL,
 
@@ -134,7 +135,7 @@ CREATE TABLE `Horario` (
 -- CreateTable
 CREATE TABLE `Pedido` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `proveedor` VARCHAR(191) NOT NULL,
+    `proveedorId` INTEGER NOT NULL,
     `medioPedido` VARCHAR(191) NOT NULL,
     `productos` JSON NOT NULL,
     `observaciones` VARCHAR(191) NULL,
@@ -154,9 +155,11 @@ CREATE TABLE `Proveedores` (
     `Direccion` VARCHAR(191) NULL,
     `Telefono` VARCHAR(191) NULL,
     `Email` VARCHAR(191) NOT NULL,
+    `SitioWeb` VARCHAR(191) NULL,
     `Contacto` VARCHAR(191) NULL,
 
     UNIQUE INDEX `Proveedores_Email_key`(`Email`),
+    UNIQUE INDEX `Proveedores_SitioWeb_key`(`SitioWeb`),
     PRIMARY KEY (`ProveedorID`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -313,10 +316,10 @@ CREATE TABLE `Movimientos` (
 ALTER TABLE `usuarios` ADD CONSTRAINT `usuarios_roleId_fkey` FOREIGN KEY (`roleId`) REFERENCES `roles`(`IdRole`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Asistencia` ADD CONSTRAINT `Asistencia_empleadoId_fkey` FOREIGN KEY (`empleadoId`) REFERENCES `usuarios`(`Id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `Asistencia` ADD CONSTRAINT `Asistencia_empleadoId_fkey` FOREIGN KEY (`empleadoId`) REFERENCES `usuarios`(`Id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Metas` ADD CONSTRAINT `Metas_empleadoId_fkey` FOREIGN KEY (`empleadoId`) REFERENCES `usuarios`(`Id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `Metas` ADD CONSTRAINT `Metas_empleadoId_fkey` FOREIGN KEY (`empleadoId`) REFERENCES `usuarios`(`Id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `AuditoriaLogin` ADD CONSTRAINT `AuditoriaLogin_IdStatusAuditoriaLogin_fkey` FOREIGN KEY (`IdStatusAuditoriaLogin`) REFERENCES `StatusAuditoriaLogin`(`IdStatusAuditoriaLogin`) ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -328,7 +331,7 @@ ALTER TABLE `ProductoVenta` ADD CONSTRAINT `ProductoVenta_idCategoriaProdVenta_f
 ALTER TABLE `Horario` ADD CONSTRAINT `Horario_usuarioId_fkey` FOREIGN KEY (`usuarioId`) REFERENCES `usuarios`(`Id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Pedidos` ADD CONSTRAINT `Pedidos_ProveedorID_fkey` FOREIGN KEY (`ProveedorID`) REFERENCES `Proveedores`(`ProveedorID`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `Pedido` ADD CONSTRAINT `Pedido_proveedorId_fkey` FOREIGN KEY (`proveedorId`) REFERENCES `Proveedores`(`ProveedorID`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `DetallesPedido` ADD CONSTRAINT `DetallesPedido_PedidoID_fkey` FOREIGN KEY (`PedidoID`) REFERENCES `Pedidos`(`PedidoID`) ON DELETE RESTRICT ON UPDATE CASCADE;

@@ -20,7 +20,7 @@ export default function Proveedores() {
     const [searchTerm, setSearchTerm] = useState('');
     const [filteredData, setFilteredData] = useState([]);
 
-    const { data, error, mutate } = useSWR('http://localhost:3000/api/proveedor', fetcher);
+    const { data, error, mutate } = useSWR(`/api/proveedor`, fetcher);
 
     useEffect(() => {
         if (data) {
@@ -46,7 +46,7 @@ export default function Proveedores() {
     if (!data || !Array.isArray(data)) return <div>No hay datos disponibles</div>;
 
     const eliminarProveedor = async (proveedorId) => {
-        await fetch(`http://localhost:3000/api/proveedor/${proveedorId}`, {
+        await fetch(`/api/proveedor/${proveedorId}`, {
             method: 'DELETE',
         });
         mutate(data.filter(proveedor => proveedor.ProveedorID !== proveedorId), false);
@@ -63,9 +63,6 @@ export default function Proveedores() {
                     </div>
                     <div className="col-start-8 col-span-3">
                         <div className="flex justify-end gap-6">
-                            <button className="transition-transform ease-in-out duration-75 hover:scale-105 active:scale-95 transform shadow-lg bg-white dark:bg-gray-700 px-3 py-2 rounded-lg">
-                                <SlidersHorizontal className="text-gray-500 dark:text-gray-400" />
-                            </button>
                             <button className="flex items-center gap-3 shadow-lg active:scale-95 transition-transform ease-in-out duration-75 hover:scale-105 transform text-white font-semibold bg-green-500 dark:bg-green-600 px-4 py-2 rounded-lg" onClick={() => setAgregar(true)}>
                                 <CirclePlus className="text-white" />
                                 Agregar

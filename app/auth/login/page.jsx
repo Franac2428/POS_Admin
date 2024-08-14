@@ -9,7 +9,7 @@ import { useForm } from "react-hook-form";
 
 
 
-export default function login() {
+export default function Login() {
 
     const [cambioClave, setCambioClave] = useState(false);
     const { register, handleSubmit, formState: { errors } } = useForm();

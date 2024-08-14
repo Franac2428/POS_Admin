@@ -6,7 +6,6 @@ import Agregar from "@/app/components/inventario/crearProducto";
 import Eliminar from "../../components/inventario/eliminarProducto";
 import Editar from "../../components/inventario/editar";
 import Ver from "../../components/inventario/ver";
-import Pedidos from "../../components/inventario/pedidos";
 import FiltroMenu from "../../components/buscador/filtros";
 import Buscador from "../../components/buscador/buscar";
 import Estados from "../../components/inventario/estados";
@@ -22,7 +21,6 @@ export default function Inventario() {
   const [editar, setEditar] = useState(false);
   const [selectedProductoId, setSelectedProductoId] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
-  const [pedidosOpen, setPedidosOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [filtros, setFiltros] = useState({
     filterCategoria: '',
@@ -33,7 +31,7 @@ export default function Inventario() {
   const filterButtonRef = useRef(null);
   const menuRef = useRef(null);
 
-  const { data, error, mutate } = useSWR('http://localhost:3000/api/inventario', fetcher);
+  const { data, error, mutate } = useSWR(`/api/inventario`, fetcher);
 
   useEffect(() => {
     if (error) {
@@ -114,10 +112,6 @@ export default function Inventario() {
                 <FileUp className="text-green-500 dark:text-green-400" />
                 Exportar
               </button>
-              <button className="flex items-center gap-3 shadow-lg active:scale-95 transition-transform ease-in-out duration-75 hover:scale-105 transform text-white font-semibold bg-blue-500 dark:bg-blue-600 px-4 py-2 rounded-lg" onClick={() => setPedidosOpen(true)}>
-                <ClipboardList className="text-white" />
-                Pedidos
-              </button>
             </div>
           </div>
           <div className="shadow-lg col-span-10 overflow-x-auto bg-white dark:bg-gray-700 px-5 py-4 rounded-lg">
@@ -155,7 +149,6 @@ export default function Inventario() {
         <Agregar open={agregar} onClose={() => setAgregar(false)} mutate={mutate} />
         <Editar open={editar} onClose={() => setEditar(false)} productoId={selectedProductoId} mutate={mutate} />
         <Ver open={ver} onClose={() => setVer(false)} productoId={selectedProductoId} />
-        <Pedidos open={pedidosOpen} onClose={() => setPedidosOpen(false)} />
         {isMenuOpen && (
           <div
             ref={menuRef}

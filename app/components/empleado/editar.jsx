@@ -1,6 +1,6 @@
 import { X } from "lucide-react";
 import { Toaster, toast } from 'sonner';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useForm } from "react-hook-form";
 
 export default function Editar({ open, onClose, employeeId, mutate }) {
@@ -15,7 +15,8 @@ export default function Editar({ open, onClose, employeeId, mutate }) {
     const direccionRef = useRef();
     const rolRef = useRef();
 
-    const fetchEmpleado = async () => {
+    // Memorize fetchEmpleado with useCallback
+    const fetchEmpleado = useCallback(async () => {
         if (employeeId) {
             try {
                 const response = await fetch(`/api/empleado/${employeeId}`);
@@ -29,11 +30,12 @@ export default function Editar({ open, onClose, employeeId, mutate }) {
                 toast.error('Error al obtener los datos del empleado');
             }
         }
-    };
+    }, [employeeId]);
 
-    const fetchRoles = async () => {
+    // Memorize fetchRoles with useCallback
+    const fetchRoles = useCallback(async () => {
         try {
-            const response = await fetch('/api/role'); // Asegúrate de que la ruta sea correcta
+            const response = await fetch('/api/role');
             const result = await response.json();
             if (response.ok) {
                 setRoles(result);
@@ -43,12 +45,12 @@ export default function Editar({ open, onClose, employeeId, mutate }) {
         } catch (error) {
             toast.error('Error al obtener los roles');
         }
-    };
+    }, []);
 
     useEffect(() => {
         fetchEmpleado();
         fetchRoles();
-    }, [employeeId]);
+    }, [fetchEmpleado, fetchRoles]);
 
     useEffect(() => {
         if (empleado) {
@@ -75,7 +77,7 @@ export default function Editar({ open, onClose, employeeId, mutate }) {
                     email: correoRef.current.value,
                     telefono: telefonoRef.current.value,
                     direccion: direccionRef.current.value,
-                    roleId: rolRef.current.value,  // Añadir el rol al payload
+                    roleId: rolRef.current.value,
                 }),
             });
 
@@ -98,7 +100,7 @@ export default function Editar({ open, onClose, employeeId, mutate }) {
     const handleCancel = () => {
         fetchEmpleado();  // Reload the original data
         onClose();
-    }
+    };
 
     return (
         <div onClick={handleCancel} className={`fixed inset-0 flex justify-center items-center transition-opacity ${open ? "visible bg-black bg-opacity-20 dark:bg-opacity-30" : "invisible"}`}>

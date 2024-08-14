@@ -1,53 +1,39 @@
 import { InfoCircledIcon } from "@radix-ui/react-icons";
 import { X } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Toaster, toast } from 'sonner';
 import HtmlLabel from "../HtmlHelpers/Label";
 
-
 export default function VerCaja({ open, onClose, idInfoCaja }) {
-    const [onLoading, onSet_onLoading] = useState(false);
-    const [datosCaja, onSet_DatosCaja] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [datosCaja, setDatosCaja] = useState(null);
 
-    const onGet_ListaMovimientos = async () => {
-
+    // Fetching data
+    const fetchMovimientos = useCallback(async () => {
         try {
-            onSet_onLoading(true);
-            const response = await fetch('/api/caja/facturas?idInfoCaja=' + idInfoCaja);
-
+            setLoading(true);
+            const response = await fetch(`/api/caja/facturas/${idInfoCaja}`);
             const result = await response.json();
 
-            if (result.status == "success") {
-                onSet_onLoading(false);
-                onSet_DatosCaja(result.data);
-                console.log(result.data);
-            }
-            else if (result.code == 204) {
-                onSet_onLoading(false);
+            if (result.status === "success") {
+                setDatosCaja(result.data);
+            } else if (result.code === 204) {
                 toast.warning('No se encontraron datos');
-            }
-            else {
-                console.log(result.message);
-                onSet_onLoading(false);
+            } else {
                 toast.error('Error al obtener los movimientos');
             }
-
-        }
-        catch (error) {
-            console.log('Error al obtener los movimientos:' + error);
-            onSet_onLoading(false);
+        } catch (error) {
             toast.error('Sucedió un error al obtener los movimientos');
+        } finally {
+            setLoading(false);
         }
-    };
-
-
+    }, [idInfoCaja]);
 
     useEffect(() => {
         if (open) {
-            onGet_ListaMovimientos();
+            fetchMovimientos();
         }
-    }, [open]);
-
+    }, [open, fetchMovimientos]);
 
     return (
         <div
@@ -69,36 +55,30 @@ export default function VerCaja({ open, onClose, idInfoCaja }) {
                         <h2 className="text-xl font-bold flex gap-3 justify-center items-center text-gray-900 dark:text-gray-100">
                             <InfoCircledIcon />Información Caja # {idInfoCaja}
                         </h2>
-                        <hr className="my-3 py-0.5  border-black dark:border-white" />
-
+                        <hr className="my-3 py-0.5 border-black dark:border-white" />
                     </div>
-                    {
-                        datosCaja != null ? (
-                            onLoading ? (
-                                <div className="w-full flex items-center justify-center">
-                                    <div className="spinner-border animate-spin inline-block w-8 h-8 border-4 border-t-transparent border-blue-500 rounded-full" role="status">
-                                        <span className="visually-hidden"></span>
-                                    </div>
+                    {loading ? (
+                        <div className="w-full flex items-center justify-center">
+                            <div className="spinner-border animate-spin inline-block w-8 h-8 border-4 border-t-transparent border-blue-500 rounded-full" role="status">
+                                <span className="visually-hidden"></span>
+                            </div>
+                        </div>
+                    ) : (
+                        datosCaja && (
+                            <div>
+                                <div className="grid grid-cols-3 gap-3 m-2">
+                                    <HtmlLabel color="blue" legend={`Inicio de Caja: ₡${datosCaja.montoInicioCaja}`} />
+                                    <HtmlLabel color="green" legend={`Entradas: ₡${datosCaja.totalEntradas}`} />
+                                    <HtmlLabel color="yellow" legend={`Facturado: ₡${datosCaja.totalFacturado}`} />
                                 </div>
-
-                            ) :
-                                <div>
-                                    <div className="grid grid-cols-3 gap-3 m-2">
-                                        <HtmlLabel color={"blue"} legend={"Inicio de Caja: ₡" + datosCaja.montoInicioCaja} />
-                                        <HtmlLabel color={"green"} legend={"Entradas: ₡" + datosCaja.totalEntradas} />
-                                        <HtmlLabel color={"yellow"} legend={"Facturado: ₡" + datosCaja.totalFacturado} />
-                                    </div>
-                                    <div className="grid grid-cols-3 gap-3 m-2">
-                                        <HtmlLabel color={"green"} legend={"Cierre de Caja: ₡" + datosCaja.montoCierreCaja} />
-                                        <HtmlLabel color={"blue"} legend={"Salidas: ₡" + datosCaja.totalSalidas} />
-                                        <HtmlLabel color={"red"} legend={"Diferencia: ₡" + datosCaja.diferencia} />
-                                    </div>
+                                <div className="grid grid-cols-3 gap-3 m-2">
+                                    <HtmlLabel color="green" legend={`Cierre de Caja: ₡${datosCaja.montoCierreCaja}`} />
+                                    <HtmlLabel color="blue" legend={`Salidas: ₡${datosCaja.totalSalidas}`} />
+                                    <HtmlLabel color="red" legend={`Diferencia: ₡${datosCaja.diferencia}`} />
                                 </div>
-
-                        ) : null
-                    }
-
-
+                            </div>
+                        )
+                    )}
                 </div>
             </div>
             <Toaster richColors />
