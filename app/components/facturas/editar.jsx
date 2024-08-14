@@ -41,11 +41,7 @@ const Editar = ({ estadoActual, onActualizarEstado, facturaId }) => {
         const facturaActualizada = await response.json();
         toast.success('Factura actualizada con éxito');
         onActualizarEstado(estadoReverseMap[newEstado]); // Actualizar estado en el componente padre
-        mutate(`/api/factura`, (currentData) => {
-          return currentData.map((factura) =>
-            factura.idFactura === facturaId ? { ...factura, estadoFac: estadoReverseMap[newEstado] } : factura
-          );
-        }, false);
+
       } else {
         const errorData = await response.json();
         toast.error(`Error: ${errorData.message}`);
