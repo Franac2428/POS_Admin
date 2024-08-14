@@ -13,7 +13,7 @@ import CartaComida from "@/app/components/pos/cartaComida";
 import ModalRegistrarPago from "@/app/components/pos/modalPago";
 import PrintTicket from "@/app/components/pos/printTicket";
 import { CoinsIcon, Files, HandPlatter, Trash } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState,useCallback } from "react";
 import { Toaster, toast } from 'sonner';
 
 
@@ -79,7 +79,9 @@ export default function App() {
     }
   };
 
+
   //#endregion
+ 
 
   //#region [CLIENTES]
   const onSearch_Cliente = async (value) => {
@@ -338,6 +340,7 @@ export default function App() {
   useEffect(() => {
     onSearch_InfoEmpresa();
 
+
   }, []);
 
   useEffect(() => {
@@ -397,7 +400,43 @@ export default function App() {
   //     );
 
   //  }
+  const onSearch_InfoEmpresa = useCallback(async () => {
+    try {
+      const response = await fetch('http://localhost:3000/api/empresa');
+      if (!response.ok) {
+        throw new Error(`Error al obtener la información de la empresa: ${response.statusText}`);
+      }
+      const result = await response.json();
 
+      if (result.status == "success") {
+        onSet_InfoEmpresa(result.data);
+        onSearch_CategoriasProdVenta();
+        onSearch_ProductosVenta();
+        onGet_CajaActual()
+      }
+
+      else if (result.code == 204) {
+        onModal_InfoEmpresa(true);
+        console.log("No hay info de la empresa")
+      }
+
+      else {
+        console.log("Error al obtener la info: " + result.message)
+        toast.error("Sucedió un error al obtener la información de la empresa")
+      }
+
+
+
+    }
+    catch (error) {
+      console.log("Error al obtener la info: " + error)
+
+    }
+  }, [onSet_InfoEmpresa, onSearch_CategoriasProdVenta, onSearch_ProductosVenta, onGet_CajaActual, onModal_InfoEmpresa]);
+
+  useEffect(() => {
+    onSearch_InfoEmpresa();
+  }, [onSearch_InfoEmpresa]);  
   return (
     <div style={{ overflow: 'hidden' }} className="flex h-screen">
       <div className="w-5/6">
@@ -436,29 +475,37 @@ export default function App() {
                         </a>
                       </li>
                     ))}
+
                   </ul>
                 </div>
 
                 <div style={{ maxHeight: '30rem', overflowY: 'auto' }} className="mt-4 grid grid-cols-2 items-stretch sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                  {productos.map((item, index) => {
-                    const bufferImagen = Buffer.from(item.imagen.data);
-                    const imgBase64 = bufferImagen.toString('base64');
+                    {productos.map((item, index) => {
+                      const bufferImagen = Buffer.from(item.imagen.data);
+                      const imgBase64 = bufferImagen.toString('base64');
 
-                    const imgSrc = `data:${item.tipoImagen};base64,${imgBase64}`;
-                    const modelForCard = {
-                      productoVentaId: item.idProductoVenta,
-                      nombre: item.nombre,
-                      precio: item.precio,
-                      cantDisponible: item.cantidad,
-                      cantMinima: item.cantidadMinima,
-                      imagen: imgSrc,
-                      idCategoriaProdVenta: item.idCategoriaProdVenta
-                    };
-                    return (
-                      <CartaComida producto={modelForCard} reloadTable={onSearch_ProductosVenta} agregarProductoTabla={onAdd_LineaDetalle} />
-                    );
-                  })}
-                </div>
+                      const imgSrc = `data:${item.tipoImagen};base64,${imgBase64}`;
+                      const modelForCard = {
+                        productoVentaId: item.idProductoVenta,
+                        nombre: item.nombre,
+                        precio: item.precio,
+                        cantDisponible: item.cantidad,
+                        cantMinima: item.cantidadMinima,
+                        imagen: imgSrc,
+                        idCategoriaProdVenta: item.idCategoriaProdVenta
+                      };
+
+                      return (
+                        <CartaComida 
+                          key={item.idProductoVenta} // Asegúrate de usar una propiedad única
+                          producto={modelForCard} 
+                          reloadTable={onSearch_ProductosVenta} 
+                          agregarProductoTabla={onAdd_LineaDetalle} 
+                        />
+                      );
+                    })}
+                  </div>
+
               </div>
             ) : null
           }
