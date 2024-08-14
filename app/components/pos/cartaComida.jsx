@@ -3,6 +3,7 @@ import { useState } from "react";
 import HtmlTableButton from "../HtmlHelpers/TableButton";
 import EditarProdVenta from "./editarProdVenta";
 import EliminarProdVenta from "./eliminarProdVenta";
+import Image from "next/image";
 
 export default function CartaComida({ producto, reloadTable, agregarProductoTabla }) {
   const [modalEliminar, openModalEliminar] = useState(false);

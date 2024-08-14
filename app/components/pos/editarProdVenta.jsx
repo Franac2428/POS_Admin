@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { Toaster, toast } from 'sonner';
 import HtmlFormInput from "../HtmlHelpers/FormInput";
 import HtmlFormSelect from "../HtmlHelpers/FormSelect";
+import Image from "next/image";
 
 export default function EditarProductoVenta({ open, onClose, reloadProducts, productoVenta }) {
   const [catalogoEditarCategorias, setCatalogoEditarCategorias] = useState([]);
