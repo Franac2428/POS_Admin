@@ -7,8 +7,8 @@
       {
          "type": "chrome",
          "request": "launch",
-         "name": "Launch Chrome against ${process.env.NEXT_PUBLIC_API_URL}",
-         "url": "${process.env.NEXT_PUBLIC_API_URL}",
+         "name": "Launch Chrome against ",
+         "url": "",
          "webRoot": "${workspaceFolder}"
       }
    ]

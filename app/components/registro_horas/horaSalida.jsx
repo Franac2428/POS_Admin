@@ -11,7 +11,7 @@ const Salida = ({ actual, asistenciaId, onAsistencia,onCalendario }) => {
   const fechaLocal = `${ano}-${mes}-${dia}T${actual}.${millis}Z`;
   const handleEditar = async () => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/marcar/${asistenciaId}`, {
+      const response = await fetch(`/api/marcar/${asistenciaId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

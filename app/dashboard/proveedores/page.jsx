@@ -20,7 +20,7 @@ export default function Proveedores() {
     const [searchTerm, setSearchTerm] = useState('');
     const [filteredData, setFilteredData] = useState([]);
 
-    const { data, error, mutate } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/api/proveedor`, fetcher);
+    const { data, error, mutate } = useSWR(`/api/proveedor`, fetcher);
 
     useEffect(() => {
         if (data) {
@@ -46,7 +46,7 @@ export default function Proveedores() {
     if (!data || !Array.isArray(data)) return <div>No hay datos disponibles</div>;
 
     const eliminarProveedor = async (proveedorId) => {
-        await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/proveedor/${proveedorId}`, {
+        await fetch(`/api/proveedor/${proveedorId}`, {
             method: 'DELETE',
         });
         mutate(data.filter(proveedor => proveedor.ProveedorID !== proveedorId), false);

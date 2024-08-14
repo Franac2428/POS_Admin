@@ -11,7 +11,7 @@ const Listado = ({ AccordionItem, AccordionTrigger, AccordionContent }) => {
         const data = await response.json();
         return data;
     };
-    const { data, error } = useSWR('${process.env.NEXT_PUBLIC_API_URL}/api/metas', fetcher);
+    const { data, error } = useSWR(`/api/metas`, fetcher);
 
     if (error) return <div>Error al cargar los datos</div>;
     if (!data) return <div>Cargando...</div>;

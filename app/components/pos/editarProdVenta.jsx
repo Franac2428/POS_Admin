@@ -73,7 +73,7 @@ export default function EditarProductoVenta({ open, onClose, reloadProducts, pro
   useEffect(() => {
     const obtenerCategoriasProductoVentaEdit = async () => {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/categoriasprodventa`);
+        const response = await fetch(`/api/categoriasprodventa`);
         if (!response.ok) {
           throw new Error(`Error al obtener las categorías: ${response.statusText}`);
         }

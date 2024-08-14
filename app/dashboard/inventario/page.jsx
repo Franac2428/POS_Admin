@@ -31,7 +31,7 @@ export default function Inventario() {
   const filterButtonRef = useRef(null);
   const menuRef = useRef(null);
 
-  const { data, error, mutate } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/api/inventario`, fetcher);
+  const { data, error, mutate } = useSWR(`/api/inventario`, fetcher);
 
   useEffect(() => {
     if (error) {

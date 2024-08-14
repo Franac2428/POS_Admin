@@ -6,7 +6,7 @@ import { mutate } from 'swr';
 const Finalizado = ({ pedidoId }) => {
   const handleEditar = async () => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/pedido/${pedidoId}`, {
+      const response = await fetch(`/api/pedido/${pedidoId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -17,7 +17,7 @@ const Finalizado = ({ pedidoId }) => {
       if (response.ok) {
         const pedidoActualizado = await response.json();
         toast.success('Pedido finalizado con éxito');
-        mutate(`${process.env.NEXT_PUBLIC_API_URL}/api/pedido`, (currentData) => {
+        mutate(`/api/pedido`, (currentData) => {
           return currentData.map((pedido) =>
             pedido.id === pedidoId ? { ...pedido, estado: 'FINALIZADO' } : pedido
           );

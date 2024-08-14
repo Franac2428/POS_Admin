@@ -23,7 +23,7 @@ const Entrada = ({ actual, usuarioId, onAsistencia }) => {
             fecha : fechaHoy,
         };
         try {
-            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/marcar`, {
+            const res = await fetch(`/api/marcar`, {
                 method: 'POST',
                 body: JSON.stringify(asistencia),
                 headers: {

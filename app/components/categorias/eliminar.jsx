@@ -7,7 +7,7 @@ export default function Eliminar({ open, onClose, categoriaId, mutate }) {
 
   useEffect(() => {
     if (categoriaId) {
-      fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/categorias/${categoriaId}`)
+      fetch(`/api/categorias/${categoriaId}`)
         .then(response => response.json())
         .then(data => setCategoria(data))
         .catch(error => {
@@ -19,7 +19,7 @@ export default function Eliminar({ open, onClose, categoriaId, mutate }) {
 
   const handleEliminar = async () => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/categorias/${categoriaId}`, {
+      const response = await fetch(`/api/categorias/${categoriaId}`, {
         method: 'DELETE',
       });
 

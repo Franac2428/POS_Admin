@@ -47,7 +47,7 @@ export default function App() {
 
   const onSearch_CategoriasProdVenta = async () => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/categoriasprodventa`);
+      const response = await fetch(`/api/categoriasprodventa`);
       if (!response.ok) {
         throw new Error(`Error al obtener las categorias: ${response.statusText}`);
       }
@@ -69,7 +69,7 @@ export default function App() {
 
   const onSearch_ProductosVenta = async () => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/productosventa`);
+      const response = await fetch(`/api/productosventa`);
       if (!response.ok) {
         throw new Error(`Error al obtener los productos: ${response.statusText}`);
       }
@@ -106,7 +106,7 @@ export default function App() {
   //#region [INICIO / CIERRE CAJA]
   const onGet_CajaActual = async () => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/current`);
+      const response = await fetch(`/api/current`);
       if (!response.ok) {
         throw new Error(`Error al obtener la info de caja: ${response.statusText}`);
       }
@@ -131,7 +131,7 @@ export default function App() {
   //#region [EMPRESA]
   const onSearch_InfoEmpresa = useCallback(async () => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/empresa`);
+      const response = await fetch(`/api/empresa`);
       if (!response.ok) {
         throw new Error(`Error al obtener la información de la empresa: ${response.statusText}`);
       }
@@ -162,7 +162,7 @@ export default function App() {
   //#region [CLIENTES]
   const onSearch_Cliente = async (value) => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/clientes/${value}`);
+      const response = await fetch(`/api/clientes/${value}`);
       if (!response.ok) {
         throw new Error(`Error al obtener clientes: ${response.statusText}`);
       }

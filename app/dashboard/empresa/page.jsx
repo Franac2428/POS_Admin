@@ -35,7 +35,7 @@ export default function InfoEmpresa() {
 
    const onGet_InfoEmpresa = async () => {
       try {
-         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/empresa`);
+         const response = await fetch(`/api/empresa`);
          if (!response.ok) {
             throw new Error(`Error al obtener la información de la empresa: ${response.statusText}`);
          }

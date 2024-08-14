@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.4.0, for Win64 (x86_64)
 --
--- Host: ${process.env.NEXT_PUBLIC_API_URL}    Database: ProyectoPrueba
+-- Host:     Database: ProyectoPrueba
 -- ------------------------------------------------------
 -- Server version	8.4.0
 
