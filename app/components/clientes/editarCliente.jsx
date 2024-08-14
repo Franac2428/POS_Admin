@@ -73,12 +73,12 @@ export default function EditarCliente({ open, onClose, reloadTable, cliente }) {
       }
     });
 
-    const emailElement = document.getElementById("email");
-    if (!emailRegex.test(emailElement.value)) {
-      emailElement.classList.add('is-invalid');
-      emailElement.classList.remove('is-valid');
-      isValid = false;
-    }
+    // const emailElement = document.getElementById("email");
+    // if (!emailRegex.test(emailElement.value)) {
+    //   emailElement.classList.add('is-invalid');
+    //   emailElement.classList.remove('is-valid');
+    //   isValid = false;
+    // }
 
     return isValid;
   };
@@ -132,12 +132,12 @@ export default function EditarCliente({ open, onClose, reloadTable, cliente }) {
               <HtmlFormInput legend={"Apellidos"} type={"text"} colSize={1} id={"apellido"} value={formData.apellido} onChange={handleChange} additionalClass={"fc-edit-client"} />
             </div>
             <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4 mx-auto">
-              <HtmlFormInput legend={"Email"} type={"text"} colSize={1} id={"email"} value={formData.email} onChange={handleChange} additionalClass={"fc-edit-client"} />
-              <HtmlFormInput legend={"Teléfono"} type={"text"} colSize={1} id={"telefono"} value={formData.telefono} onChange={handleChange} additionalClass={"fc-edit-client"} />
-              <HtmlFormInput legend={"Celular"} type={"text"} colSize={1} id={"celular"} value={formData.celular} onChange={handleChange} additionalClass={"fc-edit-client"} />
+              <HtmlFormInput legend={"Email"} type={"text"} colSize={1} id={"email"} value={formData.email} onChange={handleChange}  />
+              <HtmlFormInput legend={"Teléfono"} type={"text"} colSize={1} id={"telefono"} value={formData.telefono} onChange={handleChange} maxLength={9}   />
+              <HtmlFormInput legend={"Celular"} type={"text"} colSize={1} id={"celular"} value={formData.celular} onChange={handleChange} maxLength={9}  />
             </div>
             <div className="mt-4 grid grid-cols-1 md:grid-cols-1 gap-4 mx-auto">
-              <HtmlTextArea legend={"Dirección"} colSize={1} id={"direccion"} value={formData.direccion} onChange={handleChange} additionalClass={"fc-edit-client"} />
+              <HtmlTextArea legend={"Dirección"} colSize={1} id={"direccion"} value={formData.direccion} onChange={handleChange}  />
             </div>
             <div className="flex justify-center gap-6 mt-5">
               <button type="submit" className="bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-md py-2 px-8">

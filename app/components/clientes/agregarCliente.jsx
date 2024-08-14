@@ -56,9 +56,9 @@ export default function AgregarCliente({ open, onClose, reloadTable }) {
     if (!isValid && isFromButton) {
       toast.warning('Aún existen campos por completar');
     }
-    else if(isValid && isFromButton && !onValidateEmail(document.getElementById("txtEmail"))){
-      toast.warning("El formato de correo es inválido. Verifique e intente de nuevo")
-    }
+    // else if(isValid && isFromButton && !onValidateEmail(document.getElementById("txtEmail"))){
+    //   toast.warning("El formato de correo es inválido. Verifique e intente de nuevo")
+    // }
     else{
       if(isFromButton){
         agregarCliente();
@@ -71,10 +71,10 @@ export default function AgregarCliente({ open, onClose, reloadTable }) {
     let model = {
       nombre: getItemValue("txtNombre"),
       apellido: getItemValue("txtApellidos"),
-      email: getItemValue("txtEmail"),
-      telefono: getItemValue("txtTelefono"),
-      celular: getItemValue("txtCelular"),
-      direccion: getItemValue("txtDireccion")
+      email: getItemValue("txtEmail") == "" ? 'cliente@mail.com' : getItemValue("txtEmail"),
+      telefono: getItemValue("txtTelefono") == "" ? '0000-0000' : getItemValue("txtTelefono"),
+      celular: getItemValue("txtCelular") == "" ? '0000-0000' : getItemValue("txtCelular"),
+      direccion: getItemValue("txtDireccion") == "" ? '--Sin Dirección--' : getItemValue("txtCelular")
     }
     
     try{
@@ -131,12 +131,12 @@ export default function AgregarCliente({ open, onClose, reloadTable }) {
               <HtmlFormInput legend={"Apellidos"} type={"text"} colSize={1} id={"txtApellidos"} onChange={handleChange} additionalClass={"fc-client"} />
             </div>
             <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4 mx-auto">
-              <HtmlFormInput legend={"Email"} type={"text"} colSize={1} id={"txtEmail"} onChange={handleChange} additionalClass={"fc-client"} />
-              <HtmlFormInput legend={"Teléfono"} type={"text"} colSize={1} id={"txtTelefono"} onChange={handleChange} additionalClass={"fc-client"} />
-              <HtmlFormInput legend={"Celular"} type={"text"} colSize={1} id={"txtCelular"} onChange={handleChange} additionalClass={"fc-client"} />
+              <HtmlFormInput legend={"Email"} type={"text"} colSize={1} id={"txtEmail"} onChange={handleChange}  />
+              <HtmlFormInput legend={"Teléfono"} type={"text"} colSize={1} id={"txtTelefono"} onChange={handleChange} maxLength={9}   />
+              <HtmlFormInput legend={"Celular"} type={"text"} colSize={1} id={"txtCelular"} onChange={handleChange} maxLength={9}  />
             </div>
             <div className="mt-4 grid grid-cols-1 md:grid-cols-1 gap-4 mx-auto">
-              <HtmlTextArea legend={"Dirección"} colSize={1} id={"txtDireccion"} onChange={handleChange} additionalClass={"fc-client"} />
+              <HtmlTextArea legend={"Dirección"} colSize={1} id={"txtDireccion"} onChange={handleChange}/>
             </div>
             <div className="flex justify-center gap-6 mt-5">
               <button type="submit" className="bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-md py-2 px-8">
