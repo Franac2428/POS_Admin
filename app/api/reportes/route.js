@@ -4,9 +4,12 @@ import { NextResponse } from 'next/server';
 const prisma = new PrismaClient();
 
 export async function GET(req) {
-    const { searchParams } = new URL(req.url);
+    // Obtener y analizar los parámetros de la consulta de la URL
+    const url = new URL(req.url);
+    const searchParams = new URLSearchParams(url.search);
     const periodo = searchParams.get('periodo');
 
+    // Validar el parámetro 'periodo'
     if (!['diario', 'semanal', 'mensual', 'anual'].includes(periodo)) {
         return NextResponse.json({ error: 'Parámetro de período no válido' }, { status: 400 });
     }
@@ -14,6 +17,7 @@ export async function GET(req) {
     try {
         let ventas;
 
+        // Ejecutar la consulta según el período
         switch (periodo) {
             case 'diario':
                 ventas = await prisma.$queryRaw`
@@ -68,8 +72,11 @@ export async function GET(req) {
                 break;
         }
 
+        // Responder con los datos de ventas
         return NextResponse.json({ ventas });
     } catch (error) {
-        return NextResponse.json({ error: error.message }, { status: 500 });
+        // Manejar errores y responder con un mensaje de error
+        console.error('Error al obtener ventas:', error);
+        return NextResponse.json({ error: 'Error al obtener datos de ventas' }, { status: 500 });
     }
 }
