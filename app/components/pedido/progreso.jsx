@@ -4,7 +4,7 @@ import Finalizado from './finalizado';
 import useSWR, { mutate } from 'swr';
 
 const Progreso = ({ AccordionItem, AccordionTrigger, AccordionContent }) => {
-    const { data, error } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/api/pedido`, async (url) => {
+    const { data, error } = useSWR(`/api/pedido`, async (url) => {
         const response = await fetch(url);
         const data = await response.json();
         return data;
@@ -16,7 +16,7 @@ const Progreso = ({ AccordionItem, AccordionTrigger, AccordionContent }) => {
 
     const pedidosEnProgreso = data.filter(pedido => pedido.estado !== 'FINALIZADO');
     const eliminarPedido = (pedidoId) => {
-        mutate(`${process.env.NEXT_PUBLIC_API_URL}/api/pedido`, data.filter(pedido => pedido.id !== pedidoId), false);
+        mutate(`/api/pedido`, data.filter(pedido => pedido.id !== pedidoId), false);
     };
 
     return (

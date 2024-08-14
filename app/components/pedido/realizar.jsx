@@ -27,7 +27,7 @@ const Realizar = ({ AccordionItem, AccordionTrigger, AccordionContent }) => {
     };
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/pedido`, {
+      const res = await fetch(`/api/pedido`, {
         method: 'POST',
         body: JSON.stringify(pedido),
         headers: {
@@ -40,7 +40,7 @@ const Realizar = ({ AccordionItem, AccordionTrigger, AccordionContent }) => {
         toast.success('Nuevo pedido realizado con éxito');
         reset();
         setProductos([]); // Limpiar lista de productos después de realizar el pedido
-        mutate(`${process.env.NEXT_PUBLIC_API_URL}/api/pedido`, (currentData) => [...currentData, newPedido], false);
+        mutate(`/api/pedido`, (currentData) => [...currentData, newPedido], false);
       } else {
         const errorData = await res.json();
         toast.error(`Error: ${errorData.message}`);
@@ -52,7 +52,7 @@ const Realizar = ({ AccordionItem, AccordionTrigger, AccordionContent }) => {
   });
 
   useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/proveedor`)
+    fetch(`/api/proveedor`)
       .then(response => response.json())
       .then(data => setProveedores(data))
       .catch(error => console.error('Error fetching proveedores:', error));

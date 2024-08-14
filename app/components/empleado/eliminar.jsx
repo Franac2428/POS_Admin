@@ -9,7 +9,7 @@ export default function Eliminar({ open, onClose, employeeId, onEliminar }) {
         const fetchEmpleado = async () => {
             if (employeeId) {
                 try {
-                    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/empleado/${employeeId}`);
+                    const response = await fetch(`/api/empleado/${employeeId}`);
                     const result = await response.json();
                     if (response.ok) {
                         setempleado(result);
@@ -27,7 +27,7 @@ export default function Eliminar({ open, onClose, employeeId, onEliminar }) {
 
     const handleEliminar = async () => {
         try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/empleado/${employeeId}`, {
+            const response = await fetch(`/api/empleado/${employeeId}`, {
                 method: 'DELETE',
             });
             const result = await response.json();

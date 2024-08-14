@@ -19,12 +19,12 @@ export default function Agregar({ open, onClose, mutate }) {
   const [proveedores, setProveedores] = useState([]);
 
   useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/categorias`)
+    fetch(`/api/categorias`)
       .then(response => response.json())
       .then(data => setCategorias(data))
       .catch(error => console.error('Error fetching categorias:', error));
 
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/proveedor`)
+    fetch(`/api/proveedor`)
       .then(response => response.json())
       .then(data => setProveedores(data))
       .catch(error => console.error('Error fetching proveedores:', error));
@@ -41,7 +41,7 @@ export default function Agregar({ open, onClose, mutate }) {
   const handleAgregar = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/inventario`, {
+      const response = await fetch(`/api/inventario`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

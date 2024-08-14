@@ -12,7 +12,7 @@ export default function Ver({ open, onClose, productoId }) {
       console.log(`Fetching data for product ID: ${productoId}`);
       setIsLoading(true);
       setIsError(false);
-      fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/inventario/${productoId}`)
+      fetch(`/api/inventario/${productoId}`)
         .then(response => {
           console.log('Response status:', response.status);
           if (!response.ok) {

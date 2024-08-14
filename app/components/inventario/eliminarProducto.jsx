@@ -12,7 +12,7 @@ export default function Eliminar({ open, onClose, productoId, mutate }) {
       setIsLoading(true);
       setIsError(false);
 
-      fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/inventario/${productoId}`)
+      fetch(`/api/inventario/${productoId}`)
         .then(response => {
           if (!response.ok) throw new Error('Network response was not ok');
           return response.json();
@@ -31,7 +31,7 @@ export default function Eliminar({ open, onClose, productoId, mutate }) {
 
   const handleEliminar = async () => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/inventario/${productoId}`, {
+      const response = await fetch(`/api/inventario/${productoId}`, {
         method: 'DELETE',
       });
 

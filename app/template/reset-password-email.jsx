@@ -9,7 +9,7 @@ export const ResetPasswordEmailTemplate = ({ email, resetPasswordToken }) => (
             Para reiniciar su contraseña, haga clic en este link y siga las instrucciones:
         </p>
         <a
-            href={`${process.env.NEXT_PUBLIC_API_URL}/auth/reset?token=${resetPasswordToken}`}
+            href={`/auth/reset?token=${resetPasswordToken}`}
         >
             Clic aquí para reasignar la contraseña
         </a>

@@ -7,7 +7,7 @@ export const VerifyEmailTemplate = ({ email, emailVerificationToken }) => (
         </h1>
         <p>Para verificar su email, entre a este link:</p>
         <a
-            href={`${process.env.NEXT_PUBLIC_API_URL}/auth/verificar-email?token=${emailVerificationToken}`}
+            href={`/auth/verificar-email?token=${emailVerificationToken}`}
         >
             Clic aquí para verificar su email
         </a>

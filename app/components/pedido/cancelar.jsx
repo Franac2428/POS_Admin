@@ -5,7 +5,7 @@ import * as AlertDialog from '@radix-ui/react-alert-dialog';
 const Cancelar = ({ pedidoId, onEliminar }) => {
   const handleEliminar = async () => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/pedido/${pedidoId}`, {
+      const response = await fetch(`/api/pedido/${pedidoId}`, {
         method: 'DELETE',
       });
       const result = await response.json();

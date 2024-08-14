@@ -19,7 +19,7 @@ export default function Editar({ open, onClose, proveedorId, mutate }) {
     if (proveedorId) {
       setIsLoading(true);
       setIsError(false);
-      fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/proveedor/${proveedorId}`)
+      fetch(`/api/proveedor/${proveedorId}`)
         .then(response => response.json())
         .then(data => {
           setFormData({
@@ -57,7 +57,7 @@ export default function Editar({ open, onClose, proveedorId, mutate }) {
     }
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/proveedor/${proveedorId}`, {
+      const response = await fetch(`/api/proveedor/${proveedorId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

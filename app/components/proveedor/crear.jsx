@@ -24,7 +24,7 @@ export default function Agregar({ open, onClose, mutate }) {
   const handleAgregar = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/proveedor`, {
+      const response = await fetch(`/api/proveedor`, {
           method: 'POST',
           headers: {
               'Content-Type': 'application/json',

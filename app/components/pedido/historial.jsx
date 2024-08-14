@@ -7,7 +7,7 @@ import DetallePedido from '@/app/components/inventario/detallePedido';
 import { Eye } from "lucide-react";
 
 const Historial = () => {
-    const { data, error } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/api/pedido`, async (url) => {
+    const { data, error } = useSWR(`/api/pedido`, async (url) => {
         const response = await fetch(url);
         const data = await response.json();
         return data;
@@ -23,7 +23,7 @@ const Historial = () => {
 
     const eliminarPedido = (pedidoId) => {
         // Actualiza los datos después de eliminar un pedido
-        mutate(`${process.env.NEXT_PUBLIC_API_URL}/api/pedido`, data.filter(pedido => pedido.id !== pedidoId), false);
+        mutate(`/api/pedido`, data.filter(pedido => pedido.id !== pedidoId), false);
     };
 
     return (

@@ -21,7 +21,7 @@ const Estados = ({ fechaCaducidad, productoId, mutate }) => {
   useEffect(() => {
     const actualizarEstadoEnBD = async () => {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/inventario/${productoId}`, {
+        const response = await fetch(`/api/inventario/${productoId}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',

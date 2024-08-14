@@ -11,7 +11,7 @@ export default function Ver({ open, onClose, proveedorId }) {
         if (proveedorId) {
             setIsLoading(true);
             setIsError(false);
-            fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/proveedor/${proveedorId}`)
+            fetch(`/api/proveedor/${proveedorId}`)
                 .then(response => response.json())
                 .then(data => {
                     setProveedor(data);

@@ -14,7 +14,7 @@ const Nota = ({ actual, asistenciaId, onAsistencia }) => {
 
     const handleEditar = async () => {
         try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/marcar/${asistenciaId}`, {
+        const response = await fetch(`/api/marcar/${asistenciaId}`, {
             method: 'PUT',
             headers: {
             'Content-Type': 'application/json',

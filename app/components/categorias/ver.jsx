@@ -11,7 +11,7 @@ export default function Ver({ open, onClose, categoriaId }) {
         if (categoriaId) {
             setIsLoading(true);
             setIsError(false);
-            fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/categorias/${categoriaId}`)
+            fetch(`/api/categorias/${categoriaId}`)
                 .then(response => response.json())
                 .then(data => {
                     setCategoria(data);
