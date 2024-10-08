@@ -14,7 +14,7 @@ const Nota = ({ actual, asistenciaId, onAsistencia }) => {
 
     const handleEditar = async () => {
         try {
-        const response = await fetch(`/api/marcar/${asistenciaId}`, {
+        const response = await fetch(`http://localhost:3000/api/marcar/${asistenciaId}`, {
             method: 'PUT',
             headers: {
             'Content-Type': 'application/json',

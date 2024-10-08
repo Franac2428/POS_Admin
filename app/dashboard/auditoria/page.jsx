@@ -3,7 +3,7 @@ import useSWR from 'swr';
 
 export default function RegistroAuditoria() {
 
-    const { data, error, mutate } = useSWR(`/api/audit`, async (url) => {
+    const { data, error, mutate } = useSWR('http://localhost:3000/api/audit', async (url) => {
         const response = await fetch(url);
         const data = await response.json();
         console.log("Listado Auditoría: " + data);
@@ -11,7 +11,7 @@ export default function RegistroAuditoria() {
     });
 
     function RespaldarBase() {
-        let url = "/backups";
+        let url = "http://localhost:3001/backups";
         window.location.href = url;
     }
 

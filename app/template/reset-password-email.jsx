@@ -9,7 +9,7 @@ export const ResetPasswordEmailTemplate = ({ email, resetPasswordToken }) => (
             Para reiniciar su contraseña, haga clic en este link y siga las instrucciones:
         </p>
         <a
-            href={`/auth/reset?token=${resetPasswordToken}`}
+            href={`http://localhost:3000/auth/reset?token=${resetPasswordToken}`}
         >
             Clic aquí para reasignar la contraseña
         </a>

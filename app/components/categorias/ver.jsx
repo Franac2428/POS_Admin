@@ -11,7 +11,7 @@ export default function Ver({ open, onClose, categoriaId }) {
         if (categoriaId) {
             setIsLoading(true);
             setIsError(false);
-            fetch(`/api/categorias/${categoriaId}`)
+            fetch(`http://localhost:3000/api/categorias/${categoriaId}`)
                 .then(response => response.json())
                 .then(data => {
                     setCategoria(data);

@@ -50,7 +50,11 @@ export async function GET() {
             ventasMensuales: ventasMensuales._sum.total || 0,
         };
 
-        return NextResponse.json({ topCardsData });
+        const data = {
+            topCardsData
+        };
+
+        return NextResponse.json(data);
 
     } catch (error) {
         return NextResponse.json({ error: error.message }, { status: 500 });

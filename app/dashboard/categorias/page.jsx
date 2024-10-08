@@ -22,7 +22,7 @@ export default function Categorias() {
     const [searchTerm, setSearchTerm] = useState('');
     const [filteredData, setFilteredData] = useState([]);
 
-    const { data, error, mutate } = useSWR(`/api/categorias`, fetcher);
+    const { data, error, mutate } = useSWR('http://localhost:3000/api/categorias', fetcher);
 
     useEffect(() => {
         if (data) {
@@ -48,7 +48,7 @@ export default function Categorias() {
     if (!data || !Array.isArray(data)) return <div>No hay datos disponibles</div>;
 
     const eliminarCategoria = async (categoriaId) => {
-        await fetch(`/api/categorias/${categoriaId}`, {
+        await fetch(`http://localhost:3000/api/categorias/${categoriaId}`, {
             method: 'DELETE',
         });
         mutate(data.filter(categoria => categoria.CategoriaProductoID !== categoriaId), false);

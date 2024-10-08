@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.4.0, for Win64 (x86_64)
 --
--- Host:     Database: ProyectoPrueba
+-- Host: localhost    Database: ProyectoPrueba
 -- ------------------------------------------------------
 -- Server version	8.4.0
 

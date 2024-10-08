@@ -30,7 +30,6 @@ const Entrada = ({ actual, usuarioId, onAsistencia }) => {
                     'Content-Type': 'application/json',
                 },
             });
-            
 
             if (res.ok) {
                 toast.success('Hora de entrada guardada con éxito');

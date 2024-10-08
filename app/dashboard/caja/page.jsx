@@ -12,7 +12,7 @@ import VerCaja from "@/app/components/caja/verCaja";
 import SpinnerOnLoading from "@/app/components/spinner";
 import { LockClosedIcon } from "@radix-ui/react-icons";
 import { ArrowLeftRight, Coins, Eye } from "lucide-react";
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Toaster, toast } from 'sonner';
 
 const itemsBreadCrumb = ["Home", "Caja"];
@@ -20,6 +20,7 @@ const itemsBreadCrumb = ["Home", "Caja"];
 
 
 export default function Caja() {
+
     const [infoCaja, setInfoCaja] = useState([]);
     const [openModalCaja, onSet_ModalCaja] = useState(false);
     const [cajaActual, onSet_CajaActual] = useState(null);
@@ -30,65 +31,71 @@ export default function Caja() {
     const toastShown = useRef(false);
     const [onLoading, onSet_onLoading] = useState(false);
 
-    const onGet_CajaActual = useCallback(async () => {
+
+
+    const onGet_ListaInfoCaja = async () => {
+        onSet_onLoading(true);
+
+        try {
+            const response = await fetch('http://localhost:3000/api/caja');
+
+            const result = await response.json();
+
+            if (result.status == "success") {
+                onSet_onLoading(false);
+                setInfoCaja(result.data);
+                onGet_CajaActual()
+            }
+            else if (result.code == 204) {
+                onSet_onLoading(false);
+                onGet_CajaActual()
+                //toast.warning('No se encontraron movimientos');
+            }
+            else {
+                console.log(result.message);
+                onSet_onLoading(false);
+                toast.error('Error al obtener los movimientos');
+            }
+
+        } catch (error) {
+            console.log('Error al obtener la lista de cajas:' + error);
+            onSet_onLoading(false);
+            toast.error('Sucedió un error al obtener la lista de cajas');
+        } finally {
+
+        }
+    };
+
+
+    const onGet_CajaActual = async () => {
         try {
             onSet_onLoading(true);
-            const response = await fetch(`/api/current`);
+            const response = await fetch('http://localhost:3000/api/current');
             if (!response.ok) {
                 throw new Error(`Error al obtener la info de caja: ${response.statusText}`);
             }
             const results = await response.json();
-            if (results.data.length === 0) {
+
+            if (results.data.length == 0) {
                 toast.warning(results.message);
                 onSet_ExisteCajaActual(false);
-                onSet_CajaActual(null);
-            } else {
+                onSet_CajaActual(false);
+                onSet_onLoading(false);
+
+
+            }
+            else {
                 onSet_CajaActual(results.data);
                 onSet_ExisteCajaActual(true);
+                onSet_onLoading(false);
+
             }
         } catch (error) {
             console.error('Error:', error);
             toast.error('Sucedió un error al obtener la info de caja');
-        } finally {
             onSet_onLoading(false);
         }
-    }, []); // Asegúrate de no tener ninguna dependencia externa aquí
-    
-    const onGet_ListaInfoCaja = useCallback(async () => {
-        onSet_onLoading(true);
-        try {
-            const response = await fetch(`/api/caja`);
-            const result = await response.json();
-            if (result.status === "success") {
-                setInfoCaja(result.data);
-                onGet_CajaActual(); // Esto es seguro porque onGet_CajaActual es estable
-            } else if (result.code === 204) {
-                onGet_CajaActual(); // Esto es seguro porque onGet_CajaActual es estable
-            } else {
-                console.log(result.message);
-                toast.error('Error al obtener los movimientos');
-            }
-        } catch (error) {
-            console.error('Error al obtener la lista de cajas:', error);
-            toast.error('Sucedió un error al obtener la lista de cajas');
-        } finally {
-            onSet_onLoading(false);
-        }
-    }, [onGet_CajaActual]); // Asegúrate de incluir onGet_CajaActual como dependencia
-    
-    useEffect(() => {
-        if (!toastShown.current) {
-            const fetchData = async () => {
-                await onGet_CajaActual();
-                await onGet_ListaInfoCaja();
-            };
-            
-            fetchData();
-            toastShown.current = true;
-        }
-    }, [onGet_CajaActual, onGet_ListaInfoCaja]); // Asegúrate de incluir ambas funciones en las dependencias
-    
-    
+    };
 
     async function onPost_InfoCaja() {
         var monto = getItemValue("txtMontoInicioCaja");
@@ -133,7 +140,8 @@ export default function Caja() {
             onGet_ListaInfoCaja();
         }
         toastShown.current = true;
-    }, []);
+    }, [onGet_ListaInfoCaja, onGet_CajaActual]);
+
 
     const getItemValue = (id) => {
         return document.getElementById(id).value;
