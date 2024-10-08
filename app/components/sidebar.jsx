@@ -4,7 +4,6 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { createContext, useEffect, useState } from "react";
-import ThemeButton from "./theme/ChangeTheme";
 
 const SidebarContext = createContext();
 
@@ -80,7 +79,6 @@ export default function Sidebar() {
                 </span>
               </div>
               <div className="flex flex-row space-x-2">
-                <ThemeButton />
                 <button className="inline-flex items-center p-2 text-sm font-medium text-gray-500 rounded-lg dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-600">
                   <MoreVertical size={16} />
                 </button>

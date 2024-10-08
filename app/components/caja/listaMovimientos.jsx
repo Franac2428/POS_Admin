@@ -1,6 +1,6 @@
 import { FormatOnlyDate } from "@/app/api/utils/js-helpers";
 import { Ban, Plus, PlusIcon, Printer, X } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { useReactToPrint } from "react-to-print";
 import { Toaster, toast } from 'sonner';
 import HtmlButton from "../HtmlHelpers/Button";
@@ -22,13 +22,8 @@ export default function ListaMovimientos({ open, onClose }) {
     const [cajaActual, onSet_CajaActual] = useState();
 
 
-    useEffect(() => {
-        if (open) {
-            onGet_ListaMovimientos();
-            onGet_CajaActual();
-            console.log("CAJA ACTUAL: " + cajaActual)
-        }
-    }, [open]);
+    
+    
 
     useEffect(() => {
         if (selectedItem) {
@@ -48,64 +43,52 @@ export default function ListaMovimientos({ open, onClose }) {
         documentTitle: 'Comprobante de Movimiento de Dinero',
     });
 
-    const onGet_ListaMovimientos = async () => {
-
+    const onGet_ListaMovimientos = useCallback(async () => {
         try {
             onSet_onLoading(true);
-            const response = await fetch('http://localhost:3000/api/caja/movimientos');
-
+            const response = await fetch(`/api/caja/movimientos`);
             const result = await response.json();
 
-            if (result.status == "success") {
-                onSet_onLoading(false);
+            if (result.status === "success") {
                 onSet_ListaMovimientos(result.data);
-            }
-            else if (result.code == 204) {
-                onSet_onLoading(false);
+            } else if (result.code === 204) {
                 //toast.warning('No se encontraron movimientos');
-            }
-            else {
-                console.log(result.message);
-                onSet_onLoading(false);
+            } else {
                 toast.error('Error al obtener los movimientos');
             }
-
         } catch (error) {
-            console.log('Error al obtener los movimientos:' + error);
-            onSet_onLoading(false);
             toast.error('Sucedió un error al obtener los movimientos');
         } finally {
-
-        }
-    };
-
-    const onGet_CajaActual = async () => {
-        try {
-            onSet_onLoading(true);
-            const response = await fetch('http://localhost:3000/api/current');
-            if (!response.ok) {
-                throw new Error(`Error al obtener la info de caja: ${response.statusText}`);
-            }
-            const results = await response.json();
-
-            if (results.data.length == 0) {
-                //toast.warning(results.message);
-                onSet_CajaActual(false);
-                onSet_onLoading(false);
-
-
-            }
-            else {
-                onSet_CajaActual(results.data);
-                onSet_onLoading(false);
-
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            toast.error('Sucedió un error al obtener la info de caja');
             onSet_onLoading(false);
         }
-    };
+    }, []);
+
+    const onGet_CajaActual = useCallback(async () => {
+        try {
+            onSet_onLoading(true);
+            const response = await fetch(`/api/current`);
+            if (!response.ok) throw new Error(`Error al obtener la info de caja: ${response.statusText}`);
+            const results = await response.json();
+
+            if (results.data.length === 0) {
+                //toast.warning(results.message);
+                onSet_CajaActual(false);
+            } else {
+                onSet_CajaActual(results.data);
+            }
+        } catch (error) {
+            toast.error('Sucedió un error al obtener la info de caja');
+        } finally {
+            onSet_onLoading(false);
+        }
+    }, []);
+
+    useEffect(() => {
+        if (open) {
+            onGet_ListaMovimientos();
+            onGet_CajaActual();
+        }
+    }, [open, onGet_ListaMovimientos, onGet_CajaActual]);
 
     async function onPost_Movimiento() {
         let monto = getItemValue("txtMontoMovimiento");
@@ -225,7 +208,8 @@ export default function ListaMovimientos({ open, onClose }) {
 
     useEffect(() => {
         onGet_ListaMovimientos();
-    }, []);
+    }, [onGet_ListaMovimientos]);
+    
 
     return (
         <div
