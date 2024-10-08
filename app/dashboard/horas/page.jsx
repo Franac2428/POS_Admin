@@ -12,7 +12,7 @@ const fetcher = async (url) => {
 };
 
 const Monitorizacion = () => {
-    const { data, error } = useSWR('http://localhost:3000/api/marcar', fetcher);
+    const { data, error } = useSWR(`/api/marcar`, fetcher);
 
     if (error) return <div>Error al cargar los datos</div>;
     if (!data) return <div>Cargando...</div>;
