@@ -17,7 +17,7 @@ export default function ActivarCliente({ open, onClose, cliente,reloadTable }) {
 
     const activar = async (clienteId) => {
         try {
-          const response = await fetch(`http://localhost:3000/api/clientes`, {
+          const response = await fetch(`/api/clientes`, {
             method: 'DELETE',
             headers: {
               'Content-Type': 'application/json',
