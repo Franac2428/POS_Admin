@@ -11,7 +11,7 @@ export default function Ver({ open, onClose, proveedorId }) {
         if (proveedorId) {
             setIsLoading(true);
             setIsError(false);
-            fetch(`/api/proveedor/${proveedorId}`)
+            fetch(`http://localhost:3000/api/proveedor/${proveedorId}`)
                 .then(response => response.json())
                 .then(data => {
                     setProveedor(data);

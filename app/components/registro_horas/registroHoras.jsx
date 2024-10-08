@@ -43,7 +43,7 @@ const RegistroHoras = () => {
             setLoading(false);
         }
     }, [employeeId]);
-    
+
     const fetchCalendario = useCallback(async () => {
         if (!employeeId) return; 
         try {
@@ -58,7 +58,6 @@ const RegistroHoras = () => {
             toast.error('Error al comunicar con el servidor');
         }
     }, [employeeId]);
-    
     
     useEffect(() => {
         fetchAsistencia();

@@ -26,7 +26,7 @@ export default function Empleado() {
     const [horarioEditOpen, setHorarioEditOpen] = useState(false);
 
     const { data: session, status } = useSession();
-    const { data, error, mutate } = useSWR(`/api/empleado`, async (url) => {
+    const { data, error, mutate } = useSWR('http://localhost:3000/api/empleado', async (url) => {
         const response = await fetch(url);
         const data = await response.json();
         return data;
@@ -80,6 +80,9 @@ export default function Empleado() {
                     </div>
                     <div className="col-start-8 col-span-3">
                         <div className="flex justify-end gap-6">
+                            <button className="transition-transform ease-in-out duration-75 hover:scale-105 active:scale-95 transform shadow-lg bg-white dark:bg-gray-700 px-3 py-2 rounded-lg">
+                                <SlidersHorizontal className="text-gray-500 dark:text-gray-400" />
+                            </button>
                             <button className="flex items-center gap-3 shadow-lg active:scale-95 transition-transform ease-in-out duration-75 hover:scale-105 transform text-white font-semibold bg-green-500 dark:bg-green-600 px-4 py-2 rounded-lg" onClick={() => setAgregar(true)}>
                                 <CirclePlus className="text-white" />
                                 Agregar

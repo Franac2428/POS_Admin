@@ -7,7 +7,7 @@ export const VerifyEmailTemplate = ({ email, emailVerificationToken }) => (
         </h1>
         <p>Para verificar su email, entre a este link:</p>
         <a
-            href={`/auth/verificar-email?token=${emailVerificationToken}`}
+            href={`http://localhost:3000/auth/verificar-email?token=${emailVerificationToken}`}
         >
             Clic aquí para verificar su email
         </a>

@@ -14,7 +14,7 @@ export default function Editar({ open, onClose, categoriaId, mutate }) {
     if (categoriaId) {
       setIsLoading(true);
       setIsError(false);
-      fetch(`/api/categorias/${categoriaId}`)
+      fetch(`http://localhost:3000/api/categorias/${categoriaId}`)
         .then(response => response.json())
         .then(data => {
           setFormData({
@@ -47,7 +47,7 @@ export default function Editar({ open, onClose, categoriaId, mutate }) {
     }
 
     try {
-      const response = await fetch(`/api/categorias/${categoriaId}`, {
+      const response = await fetch(`http://localhost:3000/api/categorias/${categoriaId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

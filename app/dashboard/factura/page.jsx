@@ -1,9 +1,12 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import useSWR from 'swr';
 import Editar from "@/app/components/facturas/editar";
 import Ver from "@/app/components/facturas/ver";
 import Buscador from "../../components/buscador/buscar";
+
+const fetcher = (url) => fetch(url).then((res) => res.json());
 
 const obtenerFechaEnEspanol = (fecha) => {
   const date = new Date(fecha);
@@ -39,25 +42,7 @@ export default function Inventario() {
   const [filtros, setFiltros] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const [facturaSeleccionada, setFacturaSeleccionada] = useState(null);
-  const [data, setData] = useState([]);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(`/api/factura`);
-        if (!response.ok) {
-          throw new Error('Error en la respuesta de la red');
-        }
-        const result = await response.json();
-        setData(result);
-      } catch (err) {
-        setError(err);
-      }
-    };
-
-    fetchData();
-  }, []); // Solo se ejecuta al montar el componente
+  const { data, error } = useSWR('http://localhost:3000/api/factura', fetcher);
 
   useEffect(() => {
     if (error) {
@@ -66,29 +51,20 @@ export default function Inventario() {
   }, [error]);
 
   if (error) return <div className="text-red-500">Error al cargar los datos</div>;
-  if (!data.length) return <div>Cargando...</div>;
+  if (!data) return <div>Cargando...</div>;
 
-  const filteredData = Array.isArray(data) ? data.filter(factura => {
-    const nombreCliente = factura.cliente.nombre.toLowerCase() + factura.cliente.apellido.toLowerCase();
-    const facturaId = factura.idFactura.toString().padStart(6, '0');
-    const searchLower = searchTerm.toLowerCase();
-  const filteredData = Array.isArray(data) ? data.filter(factura => {
-    const nombreCliente = factura.cliente.nombre.toLowerCase() + factura.cliente.apellido.toLowerCase();
-    const facturaId = factura.idFactura.toString().padStart(6, '0');
-    const searchLower = searchTerm.toLowerCase();
+// Verifica que `data` es un array antes de filtrar
+const filteredData = Array.isArray(data) ? data.filter(factura => {
+  const nombreCliente = factura.cliente.nombre.toLowerCase() + factura.cliente.apellido.toLowerCase();
+  const facturaId = factura.idFactura.toString().padStart(6, '0');
+  const searchLower = searchTerm.toLowerCase();
 
-    return (nombreCliente.includes(searchLower) || facturaId.includes(searchTerm)) &&
-      (filtros === '' || 
-        (filtros === 'activa' && factura.estadoFac === 'ACTIVA') ||
-        (filtros === 'pagada' && factura.estadoFac === 'PAGADA') ||
-        (filtros === 'nula' && factura.estadoFac === 'NULA'));
-  }) : [];
-    return (nombreCliente.includes(searchLower) || facturaId.includes(searchTerm)) &&
-      (filtros === '' || 
-        (filtros === 'activa' && factura.estadoFac === 'ACTIVA') ||
-        (filtros === 'pagada' && factura.estadoFac === 'PAGADA') ||
-        (filtros === 'nula' && factura.estadoFac === 'NULA'));
-  }) : [];
+  return (nombreCliente.includes(searchLower) || facturaId.includes(searchTerm)) &&
+    (filtros === '' || 
+      (filtros === 'activa' && factura.estadoFac === 'ACTIVA') ||
+      (filtros === 'pagada' && factura.estadoFac === 'PAGADA') ||
+      (filtros === 'nula' && factura.estadoFac === 'NULA'));
+}) : [];
 
   const handleVerMasClick = (factura) => {
     setFacturaSeleccionada(factura);
@@ -107,7 +83,6 @@ export default function Inventario() {
   const handleSearch = (term) => {
     setSearchTerm(term);
   };
-
   const getMedioPagoTexto = (idMedioPago) => {
     switch (idMedioPago) {
       case 1:
@@ -171,7 +146,9 @@ export default function Inventario() {
                       Pago con: {getMedioPagoTexto(factura.idMedioPago)}
                       </p>
                     </span>
+
                   </span>
+
 
                   <div className="overflow-x-auto">
                     <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700 mt-4">
@@ -205,8 +182,6 @@ export default function Inventario() {
                       </tbody>
                     </table>
                     
-                   
-
                     {productosAgrupados.length > 4 && (
                       <button
                         onClick={() => handleVerMasClick(factura)}

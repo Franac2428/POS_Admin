@@ -23,16 +23,14 @@ const BarChart = () => {
     const [chartData, setChartData] = useState({
         datasets: [],
     });
+
     const [chartOptions, setChartOptions] = useState({});
     const [selectedTab, setSelectedTab] = useState('diario');
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
 
     useEffect(() => {
         const fetchData = async () => {
-            setLoading(true);
             try {
-                const res = await fetch(`/api/reportes/${selectedTab}`);
+                const res = await fetch(`/api/reportes?periodo=${selectedTab}`);
                 const data = await res.json();
 
                 if (data.ventas) {
@@ -80,9 +78,6 @@ const BarChart = () => {
                 }
             } catch (error) {
                 console.error("Error fetching data:", error);
-                setError('Error al obtener datos de ventas');
-            } finally {
-                setLoading(false);
             }
         };
 
@@ -117,8 +112,6 @@ const BarChart = () => {
                     Anual
                 </button>
             </div>
-            {loading && <p>Cargando datos...</p>}
-            {error && <p>{error}</p>}
             <Bar data={chartData} options={chartOptions} />
         </div>
     );
